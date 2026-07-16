@@ -1,0 +1,7 @@
+@import './styles/variables.css';
+@import './styles/navbar.css';
+@import './styles/home.css';
+@import './styles/pages.css';
+@import './styles/responsive.css';
+
+main { padding-top: var(--header-height); min-height: 60vh; }

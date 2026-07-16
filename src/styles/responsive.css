@@ -1,0 +1,63 @@
+@media (max-width: 1024px) {
+  .feature-grid, .card-grid { grid-template-columns: repeat(2, 1fr); }
+  .client-grid { grid-template-columns: repeat(3, 1fr); }
+  .vmv-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  .navbar-links { display: none; }
+  .navbar-toggle { display: block; }
+  .topbar-contacts a:last-child { display: none; }
+}
+
+@media (max-width: 640px) {
+  .feature-grid, .card-grid { grid-template-columns: 1fr; }
+  .client-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-title { font-size: 1.9rem; }
+  .cta-strip-inner { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 900px) {
+  .about-grid, .director-grid { grid-template-columns: 1fr; }
+  .director-image { order: -1; }
+}
+
+@media (max-width: 800px) {
+  .solution-feature, .solution-feature.reverse { grid-template-columns: 1fr; direction: ltr; }
+  .solution-feature-image img { height: 200px; }
+}
+
+@media (max-width: 700px) {
+  .cert-card { flex-direction: column; text-align: center; }
+  .cert-card-image { width: 100%; height: 280px; }
+}
+
+@media (max-width: 1024px) {
+  .client-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 700px) {
+  .client-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 420px) {
+  .client-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  :root { --header-height: 70px; }
+  .container { padding-left: 20px; padding-right: 20px; }
+  .topbar-inner { padding: 7px 20px; }
+  .topbar-socials { display: none; }
+  .navbar-inner { padding: 0 20px; }
+  .navbar-logo img { height: 40px; }
+  .hero { min-height: 580px !important; height: calc(100svh - 37px) !important; }
+  .hero-content { padding-bottom: 54px; }
+  .hero-title { max-width: none; }
+  .hero-dots { bottom: 26px !important; }
+  .page-header { padding: 106px 0 56px !important; }
+  .page-header p { font-size: 1rem !important; }
+  .footer { padding-top: 58px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 38px; padding-bottom: 42px; }
+  .footer-bottom-inner { display: block; }
+  .cta-card { padding: 36px 26px !important; }
+  .map-section { height: 360px !important; }
+}
