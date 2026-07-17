@@ -116,15 +116,26 @@ export default function Home() {
             </motion.p>
             <AnimatePresence mode="wait">
               <motion.h1
-                key={activeSlide.title}
-                className="hero-title"
-                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -18 }}
-                transition={{ duration: shouldReduceMotion ? 0.2 : 0.68, ease: [0.22, 1, 0.36, 1] }}
-              >
-                {activeSlide.title}
-              </motion.h1>
+  key={activeSlide.title}
+  className="hero-title"
+  initial={
+    shouldReduceMotion
+      ? { opacity: 1 }
+      : { opacity: 0, y: 20 }
+  }
+  animate={{ opacity: 1, y: 0 }}
+  exit={
+    shouldReduceMotion
+      ? { opacity: 0 }
+      : { opacity: 0, y: -15 }
+  }
+  transition={{
+    duration: shouldReduceMotion ? 0.2 : 0.5,
+    ease: [0.22, 1, 0.36, 1]
+  }}
+>
+  {activeSlide.title}
+</motion.h1>
             </AnimatePresence>
             <motion.div variants={heroCopy} transition={{ duration: 0.6, delay: shouldReduceMotion ? 0 : 0.1 }}>
               <motion.div whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }}>
