@@ -4,7 +4,7 @@ export default function ScrollReveal({
   children,
   variant = 'fade-up',
   delay = 0,
-  duration = 4.5,
+  duration = 0.6,
   className = '',
   viewportOnce = true,
   amount = 0.15
