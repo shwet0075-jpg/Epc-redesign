@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import ScrollToTop from './components/ScrollToTop';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -15,15 +15,16 @@ import './App.css';
 
 function AppRoutes() {
   const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <AnimatePresence mode="wait">
       <motion.div
         key={location.pathname}
-        initial={{ opacity: 0, y: 12 }}
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
+        exit={shouldReduceMotion ? undefined : { opacity: 0, y: -8 }}
+        transition={{ duration: shouldReduceMotion ? 0 : 0.34, ease: [0.22, 1, 0.36, 1] }}
       >
         <Routes location={location}>
           <Route path="/" element={<Home />} />

@@ -1,14 +1,16 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 export default function ScrollReveal({
   children,
   variant = 'fade-up',
   delay = 0,
-  duration = 0.6,
+  duration = 4.5,
   className = '',
   viewportOnce = true,
   amount = 0.15
 }) {
+  const shouldReduceMotion = useReducedMotion();
+
   const getVariants = () => {
     switch (variant) {
       case 'fade-up':
@@ -52,8 +54,8 @@ export default function ScrollReveal({
   return (
     <motion.div
       className={className}
-      initial="hidden"
-      whileInView="visible"
+      initial={shouldReduceMotion ? false : 'hidden'}
+      whileInView={shouldReduceMotion ? undefined : 'visible'}
       viewport={{ once: viewportOnce, amount }}
       transition={{
         duration: duration,

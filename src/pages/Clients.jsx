@@ -145,6 +145,7 @@ export default function Clients() {
             {categories.map((cat) => (
               <button
                 key={cat.id}
+                className="filter-button"
                 onClick={() => setActiveFilter(cat.id)}
                 style={{
                   padding: '10px 24px',

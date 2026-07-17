@@ -1,0 +1,471 @@
+/*
+   Shared premium treatment
+   ------------------------
+   This file deliberately works with the existing page components so their
+   original copy and image references remain untouched.  The visual language is
+   architectural: restrained grids, measured spacing and brand-led details.
+*/
+
+:root {
+  --surface-subtle: #f7faf8;
+  --surface-warm: #fcfbf8;
+  --line-soft: rgba(0, 96, 48, 0.1);
+  --line-strong: rgba(0, 96, 48, 0.2);
+}
+
+main {
+  overflow: clip;
+}
+
+/* Accessible, consistent keyboard feedback across links and controls. */
+:where(a, button, input, textarea):focus-visible {
+  outline: 3px solid rgba(240, 128, 32, 0.5);
+  outline-offset: 3px;
+}
+
+/* Engineering-inspired page banner shared by every inner route. */
+.page-header {
+  isolation: isolate;
+  min-height: 294px;
+  display: flex;
+  align-items: end;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.page-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(115deg, transparent 0 45%, rgba(240, 128, 32, 0.14) 45.1% 45.4%, transparent 45.5% 100%);
+  background-size: 44px 44px, 44px 44px, 100% 100%;
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.95), transparent 88%);
+}
+
+.page-header .container {
+  padding-bottom: 4px;
+}
+
+.page-header h1 {
+  max-width: 19ch;
+  text-wrap: balance;
+  letter-spacing: -0.035em;
+}
+
+.page-header p {
+  text-wrap: pretty;
+}
+
+/* Page sections get a quieter architectural rhythm without altering content. */
+.section {
+  background-image: radial-gradient(circle at 100% 0, rgba(0, 96, 48, 0.035), transparent 28rem);
+}
+
+.section:has(.timeline-line),
+.section:has(.gallery-grid),
+.section:has(.solutions-overview-grid) {
+  background-image:
+    linear-gradient(rgba(0, 96, 48, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 96, 48, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 0% 100%, rgba(240, 128, 32, 0.08), transparent 30rem);
+  background-size: 42px 42px, 42px 42px, auto;
+}
+
+.section-title-wrap {
+  position: relative;
+}
+
+.section-title-wrap .section-main-title {
+  max-width: 18ch;
+  text-wrap: balance;
+}
+
+.section-title-wrap.text-center .section-main-title {
+  margin-inline: auto;
+}
+
+.section-title-wrap .section-subtitle {
+  text-wrap: pretty;
+}
+
+/* Home page: an engineered stage rather than a generic slideshow. */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.52;
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.075) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.075) 1px, transparent 1px);
+  background-size: 88px 88px;
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.78), transparent 76%);
+}
+
+.hero-content > div {
+  position: relative;
+  padding-left: clamp(20px, 3vw, 46px);
+}
+
+.hero-content > div::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 2px;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(var(--color-secondary), rgba(240, 128, 32, 0));
+}
+
+.hero .eyebrow {
+  letter-spacing: 0.18em;
+}
+
+.hero-title {
+  text-wrap: balance;
+}
+
+.hero-dots::before,
+.hero-dots::after {
+  content: '';
+  display: block;
+  width: clamp(36px, 5vw, 80px);
+  height: 1px;
+  align-self: center;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Shared content cards. */
+.feature-card,
+.benefit-card,
+.dept-card,
+.timeline-content,
+.contact-card-link,
+.solution-card-item,
+.service-panel,
+.solution-feature,
+.cert-card,
+.cta-card {
+  will-change: transform;
+}
+
+.feature-card::before,
+.benefit-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), transparent 46%);
+}
+
+.feature-card > *,
+.benefit-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.benefit-card {
+  overflow: hidden;
+}
+
+.benefit-card::after {
+  content: '';
+  position: absolute;
+  right: -52px;
+  bottom: -52px;
+  width: 128px;
+  height: 128px;
+  border: 1px solid rgba(0, 96, 48, 0.14);
+  border-radius: 50%;
+  transition: transform var(--transition-med), border-color var(--transition-med);
+}
+
+.benefit-card:hover {
+  transform: translateY(-7px);
+  border-color: var(--line-strong) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.benefit-card:hover::after {
+  transform: scale(1.18);
+  border-color: rgba(240, 128, 32, 0.45);
+}
+
+.service-panel {
+  box-shadow: 0 18px 46px -34px rgba(0, 43, 21, 0.32) !important;
+}
+
+.service-panel.reverse {
+  direction: rtl;
+}
+
+.service-panel.reverse > * {
+  direction: ltr;
+}
+
+.service-panel:hover,
+.solution-feature:hover {
+  background: linear-gradient(135deg, #fff, #fbfdfb) !important;
+}
+
+.service-panel-image-wrap::after,
+.solution-feature-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: inherit;
+}
+
+.solution-card-item {
+  border-radius: 20px !important;
+}
+
+.solution-card-item::before {
+  content: '';
+  height: 3px;
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  transform: scaleX(0.18);
+  transform-origin: left;
+  transition: transform var(--transition-med);
+}
+
+.solution-card-item:hover::before {
+  transform: scaleX(1);
+}
+
+.solution-card-image-wrap {
+  background: #f5f8f5;
+}
+
+.solution-card-img {
+  mix-blend-mode: multiply;
+}
+
+.solution-feature {
+  box-shadow: 0 18px 46px -34px rgba(0, 43, 21, 0.32) !important;
+}
+
+.solution-feature-image {
+  position: relative;
+}
+
+.timeline-content {
+  border-color: var(--line-soft) !important;
+}
+
+.timeline-item-wrapper:nth-child(odd) .timeline-content::before,
+.timeline-item-wrapper:nth-child(even) .timeline-content::before {
+  content: '';
+  position: absolute;
+  top: 26px;
+  width: 18px;
+  height: 18px;
+  background: inherit;
+  transform: rotate(45deg);
+  border-style: solid;
+  border-color: var(--line-soft);
+}
+
+.timeline-item-wrapper:nth-child(odd) .timeline-content::before {
+  right: -10px;
+  border-width: 1px 1px 0 0;
+}
+
+.timeline-item-wrapper:nth-child(even) .timeline-content::before {
+  left: -10px;
+  border-width: 0 0 1px 1px;
+}
+
+.stats-section,
+.stats-strip {
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-section::before,
+.stats-strip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(0, 96, 48, 0.06) 1px, transparent 1px);
+  background-size: 72px 100%;
+  opacity: 0.55;
+}
+
+.stats-section .container,
+.stats-strip .container {
+  position: relative;
+}
+
+.filter-button {
+  position: relative;
+  overflow: hidden;
+  min-height: 42px;
+}
+
+.filter-button::after {
+  content: '';
+  position: absolute;
+  inset: auto 20px 7px;
+  height: 2px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.filter-button:hover::after,
+.filter-button:focus-visible::after {
+  opacity: 0.7;
+  transform: scaleX(1);
+}
+
+.gallery-grid {
+  column-gap: 20px !important;
+}
+
+.gallery-item-card {
+  isolation: isolate;
+}
+
+.gallery-item-card::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: calc(var(--radius-md) - 8px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.gallery-item-card:hover::after,
+.gallery-item-card:focus-visible::after {
+  opacity: 1;
+}
+
+.contact-card-link {
+  box-shadow: 0 12px 28px -24px rgba(0, 43, 21, 0.34);
+}
+
+.contact-card-link:hover {
+  background: #fff !important;
+}
+
+.map-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  box-shadow: inset 0 24px 28px -28px rgba(0, 43, 21, 0.8), inset 0 -24px 28px -28px rgba(0, 43, 21, 0.8);
+}
+
+.cta-section {
+  background: var(--surface-warm) !important;
+  position: relative;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.7;
+  background-image:
+    linear-gradient(rgba(0, 96, 48, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 96, 48, 0.04) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+.cta-section .container {
+  position: relative;
+}
+
+.cta-card {
+  border-color: var(--line-soft) !important;
+  box-shadow: 0 24px 58px -42px rgba(0, 43, 21, 0.38) !important;
+}
+
+.footer {
+  background-image:
+    linear-gradient(115deg, transparent 0 58%, rgba(255, 255, 255, 0.035) 58.1% 58.3%, transparent 58.4% 100%),
+    radial-gradient(circle at 85% 0%, rgba(0, 96, 48, 0.24), transparent 27rem);
+}
+
+.footer::after {
+  content: '';
+  position: absolute;
+  right: clamp(20px, 7vw, 120px);
+  top: 42px;
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(240, 128, 32, 0.24);
+  border-radius: 50%;
+  box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.018);
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .page-header {
+    min-height: 260px;
+  }
+
+  .service-panel.reverse {
+    direction: ltr;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header h1 {
+    max-width: 100%;
+  }
+
+  .page-header::after {
+    background-size: 30px 30px, 30px 30px, 100% 100%;
+    mask-image: none;
+    opacity: 0.3;
+  }
+
+  .hero::before {
+    background-size: 56px 56px;
+    opacity: 0.24;
+    mask-image: none;
+  }
+
+  .hero-content > div {
+    padding-left: 22px;
+  }
+
+  .hero-dots::before,
+  .hero-dots::after {
+    width: 32px;
+  }
+
+  .timeline-content::before {
+    display: none;
+  }
+
+  .footer::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee-track {
+    animation-play-state: paused !important;
+  }
+}

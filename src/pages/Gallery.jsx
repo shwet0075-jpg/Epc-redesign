@@ -70,6 +70,7 @@ export default function Gallery() {
             {categories.map((cat) => (
               <button
                 key={cat.id}
+                className="filter-button"
                 onClick={() => setFilter(cat.id)}
                 style={{
                   padding: '10px 24px',
@@ -121,6 +122,15 @@ export default function Gallery() {
                   }}
                   className="gallery-item-card"
                   onClick={() => setLightbox(item)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      setLightbox(item);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View ${item.name} project details`}
                 >
                   <img
                     src={item.logo}
@@ -228,7 +238,7 @@ export default function Gallery() {
                 width: '100%',
                 boxShadow: 'var(--shadow-lg)',
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
               }}
               onClick={(e) => e.stopPropagation()}
             >

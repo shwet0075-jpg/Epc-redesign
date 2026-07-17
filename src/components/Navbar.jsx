@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiMenu, FiX, FiChevronDown, FiPhone, FiMessageCircle } from 'react-icons/fi';
 import { navLinks, contactInfo } from '../data/navigation';
 import '../styles/navbar.css';
+import { FaFacebookF,FaWhatsapp, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 
 
 export default function Navbar() {
@@ -17,19 +19,61 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!mobileOpen) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setMobileOpen(false);
+    };
+
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [mobileOpen]);
+
   return (
     <>
       <div className="topbar">
         <div className="container topbar-inner">
           <div className="topbar-contacts">
-            <a href={contactInfo.whatsappLink}><FiMessageCircle /> {contactInfo.whatsapp}</a>
+            <a href={contactInfo.whatsappLink}><FaWhatsapp/> {contactInfo.whatsapp}</a>
             <a href={contactInfo.phoneLink}><FiPhone /> {contactInfo.phone}</a>
           </div>
           <div className="topbar-socials">
-            <a href={contactInfo.social.facebook} aria-label="Facebook">f</a>
-            <a href={contactInfo.social.twitter} aria-label="Twitter">x</a>
-            <a href={contactInfo.social.instagram} aria-label="Instagram">ig</a>
-            <a href={contactInfo.social.youtube} aria-label="YouTube">yt</a>
+         <a href={contactInfo.social.facebook} aria-label="Facebook"
+         target="_blank"
+  rel="noopener noreferrer"
+>
+  <FaFacebookF />
+</a>
+
+<a href={contactInfo.social.twitter} aria-label="X"
+target="_blank"
+  rel="noopener noreferrer"
+>
+  <FaXTwitter />
+</a>
+
+<a
+ href={contactInfo.social.instagram} aria-label="Instagram"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Instagram"
+>
+  <FaInstagram />
+</a>
+
+<a href={contactInfo.social.youtube} aria-label="YouTube"
+target="_blank"
+  rel="noopener noreferrer"
+>
+  <FaYoutube />
+</a>
           </div>
         </div>
       </div>
@@ -47,8 +91,17 @@ export default function Navbar() {
                 className="nav-item"
                 onMouseEnter={() => link.children && setOpenDropdown(link.path)}
                 onMouseLeave={() => link.children && setOpenDropdown(null)}
+                onFocus={() => link.children && setOpenDropdown(link.path)}
+                onBlur={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget)) setOpenDropdown(null);
+                }}
               >
-                <NavLink to={link.path} className={({ isActive }) => (isActive ? 'active' : '')}>
+                <NavLink
+                  to={link.path}
+                  className={({ isActive }) => (isActive ? 'active' : '')}
+                  aria-haspopup={link.children ? 'true' : undefined}
+                  aria-expanded={link.children ? openDropdown === link.path : undefined}
+                >
                   {link.label}
                   {link.children && <FiChevronDown className="chevron" />}
                 </NavLink>
@@ -73,7 +126,9 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <button className="navbar-toggle" onClick={() => setMobileOpen(true)} aria-label="Open menu" aria-expanded={mobileOpen}>
+
+
+          <button className="navbar-toggle" onClick={() => setMobileOpen(true)} aria-label="Open menu" aria-expanded={mobileOpen} aria-controls="mobile-navigation">
             <FiMenu size={26} />
           </button>
         </div>
@@ -81,33 +136,54 @@ export default function Navbar() {
 
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            className="mobile-menu"
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-          >
-            <button className="mobile-close" onClick={() => setMobileOpen(false)} aria-label="Close menu">
-              <FiX size={28} />
-            </button>
-            <nav>
-              {navLinks.map((link) => (
-                <div key={link.path} className="mobile-nav-item">
-                  <NavLink to={link.path} onClick={() => setMobileOpen(false)}>{link.label}</NavLink>
-                  {link.children && (
-                    <div className="mobile-submenu">
-                      {link.children.map((child) => (
-                        <NavLink key={child.path} to={child.path} onClick={() => setMobileOpen(false)}>
-                          {child.label}
-                        </NavLink>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </nav>
-          </motion.div>
+          <>
+            {/* Dark blur backdrop overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setMobileOpen(false)}
+              style={{
+                position: 'fixed',
+                inset: 0,
+                background: 'rgba(14, 20, 17, 0.5)',
+                backdropFilter: 'blur(5px)',
+                WebkitBackdropFilter: 'blur(5px)',
+                zIndex: 199,
+              }}
+            />
+            <motion.div
+              className="mobile-menu"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              style={{ zIndex: 200 }}
+            >
+              <button className="mobile-close" onClick={() => setMobileOpen(false)} aria-label="Close menu">
+                <FiX size={26} />
+              </button>
+              <nav id="mobile-navigation" style={{ marginTop: '16px' }} aria-label="Mobile navigation">
+                {navLinks.map((link) => (
+                  <div key={link.path} className="mobile-nav-item">
+                    <NavLink to={link.path} className={({ isActive }) => (isActive ? 'active' : '')} onClick={() => setMobileOpen(false)}>
+                      {link.label}
+                    </NavLink>
+                    {link.children && (
+                      <div className="mobile-submenu">
+                        {link.children.map((child) => (
+                          <NavLink key={child.path} to={child.path} className={({ isActive }) => (isActive ? 'active' : '')} onClick={() => setMobileOpen(false)}>
+                            {child.label}
+                          </NavLink>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </nav>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
