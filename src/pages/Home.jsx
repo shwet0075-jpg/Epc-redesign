@@ -116,22 +116,22 @@ export default function Home() {
             </motion.p>
             <AnimatePresence mode="wait">
               <motion.h1
-  key={activeSlide.title}
-  className="hero-title"
-  initial={
-    shouldReduceMotion
-      ? { opacity: 1 }
-      : { opacity: 0, y: 20 }
-  }
-  animate={{ opacity: 1, y: 0 }}
-  exit={
-    shouldReduceMotion
-      ? { opacity: 0 }
-      : { opacity: 0, y: -15 }
-  }
-  transition={{
-    duration: shouldReduceMotion ? 0.2 : 0.5,
-    ease: [0.22, 1, 0.36, 1]
+                key={activeSlide.title}
+                  className="hero-title"
+                  initial={
+                    shouldReduceMotion
+                      ? { opacity: 1 }
+                      : { opacity: 0, y: 20 }
+                  }
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={
+                    shouldReduceMotion
+                      ? { opacity: 0 }
+                      : { opacity: 0, y: -15 }
+                  }
+                  transition={{
+                    duration: shouldReduceMotion ? 0.2 : 0.5,
+                    ease: [0.22, 1, 0.36, 1]
   }}
 >
   {activeSlide.title}

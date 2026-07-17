@@ -36,7 +36,7 @@ export default function Footer() {
 
       <div className="footer-bottom">
         <div className="container footer-bottom-inner">
-          <span>© {new Date().getFullYear()} Prudent EPC Pvt. Ltd. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Prudent EPC Pvt. Ltd. ~Shwet</span>
         </div>
       </div>
     </footer>
