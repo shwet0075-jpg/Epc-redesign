@@ -592,27 +592,163 @@ grid-template-columns:1fr;
 }
 
 @media (max-width: 640px) {
-  .hero--redesigned { height: calc(100svh - 36px); min-height: 580px; }
-  .hero-grid { background-size: 42px 42px; opacity: 0.15; mask-image: none; }
-  .hero-wash { background: linear-gradient(90deg, rgba(0, 41, 22, 0.96), rgba(0, 61, 33, 0.74)), linear-gradient(0deg, rgba(4, 26, 14, 0.72), transparent 40%); }
-  .hero-shell { align-items: center; padding-bottom: 112px; }
-  .hero-copy { width: 100%; padding: 24px 22px; }
-  .hero-title { max-width: 13ch; margin-bottom: 28px; font-size: clamp(2.25rem, 11vw, 3.6rem); }
-  .hero-control { right: 20px; bottom: 61px; width: min(220px, 62vw); gap: 10px; }
-  .hero-scroll { left: 20px; bottom: 28px; }
-  .hero-orbit--one { opacity: 0.45; right: -230px; top: 11%; }
-  .hero-orbit--two { right: 22%; bottom: 28%; }
-  .capabilities-section { padding-block: 78px; background-size: 32px 32px; }
-  .feature-grid { grid-template-columns: 1fr; gap: 14px; }
-  .feature-card-wrapper--1, .feature-card-wrapper--2, .feature-card-wrapper--3, .feature-card-wrapper--4 { grid-column: auto; margin-top: 0; }
-  .feature-card { min-height: 224px; border-radius: 0 !important; }
-  .feature-index { font-size: 2.6rem; }
-  .foundations-section { padding-block: 78px; }
-  .foundations-section::after { background-size: 32px 32px; }
-  .vmv-grid { grid-template-columns: 1fr; }
-  .vmv-card-wrapper--2, .vmv-card-wrapper--3 { grid-column: auto; max-width: none; margin: 0; }
-  .vmv-card { min-height: auto; border-radius: 0 !important; }
-  .vmv-image { height: 220px; }
+
+  .hero--redesigned {
+    height: calc(100svh - 36px);
+    min-height: 580px;
+  }
+
+  .hero-slide{
+    background-position:72% center; /* Adjust to 30%, 50%, or 80% if needed */
+  }
+
+  .hero-grid {
+    background-size: 42px 42px;
+    opacity: 0.15;
+    mask-image: none;
+  }
+
+  .hero-wash {
+    background:
+      linear-gradient(90deg,
+      rgba(0, 41, 22, 0.96),
+      rgba(0, 61, 33, 0.74)),
+      linear-gradient(
+      0deg,
+      rgba(4, 26, 14, 0.72),
+      transparent 40%);
+  }
+
+  .hero-shell {
+    align-items: center;
+    padding-bottom: 112px;
+  }
+
+  .hero-copy {
+    width: 100%;
+    padding: 24px 22px;
+  }
+
+  .hero-title {
+    max-width: 13ch;
+    margin-bottom: 28px;
+    font-size: clamp(2.25rem, 11vw, 3.6rem);
+  }
+
+  .hero-control {
+    right: 20px;
+    bottom: 61px;
+    width: min(220px, 62vw);
+    gap: 10px;
+  }
+
+  .hero-scroll {
+    left: 20px;
+    bottom: 28px;
+  }
+
+  .hero-orbit--one {
+    opacity: 0.45;
+    right: -230px;
+    top: 11%;
+  }
+
+  .hero-orbit--two {
+    right: 22%;
+    bottom: 28%;
+  }
+
+  .capabilities-section {
+    padding-block: 56px;
+    background-size: 32px 32px;
+  }
+
+  /* Premium Service Cards */
+  .epc-service-grid{
+    grid-template-columns:1fr;
+    gap:22px;
+  }
+
+  .epc-service-card{
+    width:100%;
+    max-width:520px;
+    margin:0 auto;
+    border-radius:14px;
+  }
+
+  .epc-service-image{
+    height:210px;
+  }
+
+  .epc-service-content{
+    padding:22px;
+  }
+
+  .epc-service-content h3{
+    font-size:1.25rem;
+  }
+
+  .epc-service-content p{
+    font-size:.95rem;
+    line-height:1.65;
+  }
+
+  .epc-service-icon{
+    width:58px;
+    height:58px;
+    font-size:24px;
+  }
+
+  /* Existing Sections */
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .feature-card-wrapper--1,
+  .feature-card-wrapper--2,
+  .feature-card-wrapper--3,
+  .feature-card-wrapper--4 {
+    grid-column: auto;
+    margin-top: 0;
+  }
+
+  .feature-card {
+    min-height: 224px;
+    border-radius: 0 !important;
+  }
+
+  .feature-index {
+    font-size: 2.6rem;
+  }
+
+  .foundations-section {
+    padding-block: 78px;
+  }
+
+  .foundations-section::after {
+    background-size: 32px 32px;
+  }
+
+  .vmv-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vmv-card-wrapper--2,
+  .vmv-card-wrapper--3 {
+    grid-column: auto;
+    max-width: none;
+    margin: 0;
+  }
+
+  .vmv-card {
+    min-height: auto;
+    border-radius: 0 !important;
+  }
+
+  .vmv-image {
+    height: 220px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
