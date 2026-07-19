@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { FiPhone, FiMail, FiMapPin } from 'react-icons/fi';
 import { navLinks, contactInfo } from '../data/navigation';
+import VisitorCounter from './VisitorCounter';
 
 
 export default function Footer() {
@@ -13,6 +14,7 @@ export default function Footer() {
             Design and build solutions for Fire Detection & Suppression, Security & Surveillance,
             Data Centres, and Integrated Building Management Systems.
           </p>
+          <VisitorCounter />
         </div>
 
         <div className="footer-col">

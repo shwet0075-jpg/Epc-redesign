@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 export default function SectionTitle({
   eyebrow,
@@ -8,6 +8,7 @@ export default function SectionTitle({
   className = ''
 }) {
   const isCenter = align === 'center';
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <div
@@ -23,10 +24,10 @@ export default function SectionTitle({
       {eyebrow && (
         <motion.span
           className="eyebrow"
-          initial={{ opacity: 0, x: -10 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, x: -10 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.42 }}
         >
           {eyebrow}
         </motion.span>
@@ -43,10 +44,10 @@ export default function SectionTitle({
           position: 'relative',
           display: 'inline-block',
         }}
-        initial={{ opacity: 0, y: 20 }}
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.1 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.52, delay: shouldReduceMotion ? 0 : 0.06 }}
       >
         {title}
         <motion.span
@@ -59,11 +60,12 @@ export default function SectionTitle({
             borderRadius: '2px',
             marginLeft: isCenter ? 'auto' : '0',
             marginRight: isCenter ? 'auto' : '0',
+            transformOrigin: isCenter ? 'center' : 'left',
           }}
-          initial={{ width: 0 }}
-          whileInView={{ width: 60 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, scaleX: 0.2 }}
+          whileInView={{ opacity: 1, scaleX: 1 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.38, delay: shouldReduceMotion ? 0 : 0.14 }}
         />
       </motion.h2>
 
@@ -79,10 +81,10 @@ export default function SectionTitle({
             marginLeft: isCenter ? 'auto' : '0',
             marginRight: isCenter ? 'auto' : '0',
           }}
-          initial={{ opacity: 0 }}
+          initial={shouldReduceMotion ? false : { opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.45, delay: shouldReduceMotion ? 0 : 0.12 }}
         >
           {subtitle}
         </motion.p>

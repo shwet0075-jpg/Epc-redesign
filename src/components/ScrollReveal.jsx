@@ -4,10 +4,10 @@ export default function ScrollReveal({
   children,
   variant = 'fade-up',
   delay = 0,
-  duration = 0.45,
+  duration = 0.52,
   className = '',
   viewportOnce = true,
-  amount = 0.15
+  amount = 0.1
 }) {
   const shouldReduceMotion = useReducedMotion();
 
@@ -15,22 +15,22 @@ export default function ScrollReveal({
     switch (variant) {
       case 'fade-up':
         return {
-          hidden: { opacity: 0, y: 40 },
+          hidden: { opacity: 0, y: 24 },
           visible: { opacity: 1, y: 0 }
         };
       case 'fade-down':
         return {
-          hidden: { opacity: 0, y: -40 },
+          hidden: { opacity: 0, y: -24 },
           visible: { opacity: 1, y: 0 }
         };
       case 'fade-left':
         return {
-          hidden: { opacity: 0, x: 40 },
+          hidden: { opacity: 0, x: 24 },
           visible: { opacity: 1, x: 0 }
         };
       case 'fade-right':
         return {
-          hidden: { opacity: 0, x: -40 },
+          hidden: { opacity: 0, x: -24 },
           visible: { opacity: 1, x: 0 }
         };
       case 'scale-in':
@@ -45,7 +45,7 @@ export default function ScrollReveal({
         };
       default:
         return {
-          hidden: { opacity: 0, y: 40 },
+          hidden: { opacity: 0, y: 24 },
           visible: { opacity: 1, y: 0 }
         };
     }

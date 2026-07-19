@@ -143,19 +143,6 @@ main {
 }
 
 /* Shared content cards. */
-.feature-card,
-.benefit-card,
-.dept-card,
-.timeline-content,
-.contact-card-link,
-.solution-card-item,
-.service-panel,
-.solution-feature,
-.cert-card,
-.cta-card {
-  will-change: transform;
-}
-
 .feature-card::before,
 .benefit-card::before {
   content: '';

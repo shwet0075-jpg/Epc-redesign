@@ -40,7 +40,7 @@ export const services = [
   {
     id: 'amc',
     title: 'Annual Maintenance & Operations Contract',
-    image: '/assets/images/Annual Maintenance and Operations Contract.png',
+    image: '/assets/images/annual-maintenance.png',
     text:
       'We offer Annual Maintenance Services to keep every critical system we install running reliably. Having designed and built a wide range of facilities ourselves, our management and field technicians have a thorough, first-hand understanding of data centre facility support infrastructure — putting them in the best position to deliver superior service and operations support.',
     bullets: ['Critical Infrastructure Services 24x7', 'Fire Safety Systems', 'IBMS Maintenance'],

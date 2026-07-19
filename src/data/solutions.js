@@ -3,7 +3,7 @@ export const solutionsOverview = [
   id: 'fire-safety',
   title: 'Fire Safety & Suppression Systems',
   blurb: 'Design and build solutions for Fire Detection & Suppression Systems.',
-  image: '/assets/images/Fire Safety & Suppression Systems.png',
+  image: '/assets/images/fire-safety.png',
   path: '/solutions/fire-safety',
   intro:
     'We handle the full lifecycle of a fire safety system — design, supply, installation and commissioning — as a single, unified package for any building or premises.',
@@ -49,14 +49,14 @@ export const solutionsOverview = [
     id: 'security',
     title: 'Security and Surveillance System',
     blurb: 'Intelligent, IP-based CCTV and premises surveillance over fibre networks.',
-    image: '/assets/images/Security and Surveillance System.jpeg',
+    image: '/assets/images/security-surveillance.jpeg',
     path: '/solutions/security',
     intro:
       'We build open, IP-based video security systems backed by responsive support — from cameras and video management software to displays and accessories.',
     details: [
       {
         title: 'Video Surveillance System',
-        image: '/assets/images/Video Surveillance System.jpg',
+        image: '/assets/images/video-surveillance.jpg',
         text:
           'Our video intelligence software detects, identifies and tracks objects across existing CCTV infrastructure — flagging suspicious activity, distinguishing people/bags/vehicles, and enforcing role-based access, all in real time.',
       },
@@ -72,7 +72,7 @@ export const solutionsOverview = [
   id: 'data-centre',
   title: 'Data Centre Building Services',
   blurb: 'Helping build energy-efficient, world-class data centres.',
-  image: '/assets/images/Data Centre Building Services.png',
+  image: '/assets/images/data-centre.png',
   path: '/solutions/data-centre',
   intro:
     "We undertake services of building data centres with critical power, precision air condition equipment, racks, networking and allied facilities like data centre monitoring systems. We produce a quality, scalable, efficient design based on our client's business expansion plans. Our vendor neutrality — meaning we are not tied to any manufacturer's equipment — gives us the flexibility to select the right design, equipment, and partners for our client's data centre projects by putting their interests first. In the high-stakes game of data centre construction, value has its place but reliability, performance and redundancy pay the bills, so every Prudent EPC data centre is fully warranted and built to the most exacting of standards. Our veteran in-house team takes charge of every aspect of data centre construction from start to finish. Our design-build process guarantees that collaboration and communication are seamless every step of the way.",
@@ -103,7 +103,7 @@ export const solutionsOverview = [
   id: 'ibms',
   title: 'Integrated Building Management System',
   blurb: 'Smart city solutions that keep buildings and cities connected.',
-      image: '/assets/images/Integrated Building Management System.jpg',
+      image: '/assets/images/ibms.jpg',
 
   path: '/solutions/ibms',
 

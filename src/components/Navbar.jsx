@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX, FiChevronDown, FiPhone, FiMessageCircle } from 'react-icons/fi';
+import { FiMenu, FiX, FiChevronDown, FiPhone } from 'react-icons/fi';
 import { navLinks, contactInfo } from '../data/navigation';
 import '../styles/navbar.css';
 import { FaFacebookF,FaWhatsapp, FaInstagram, FaYoutube } from 'react-icons/fa';
@@ -61,9 +61,8 @@ target="_blank"
 
 <a
  href={contactInfo.social.instagram} aria-label="Instagram"
-  target="_blank"
+target="_blank"
   rel="noopener noreferrer"
-  aria-label="Instagram"
 >
   <FaInstagram />
 </a>
