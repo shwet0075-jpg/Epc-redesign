@@ -205,6 +205,10 @@
   gap: 32px;
   box-shadow: var(--shadow-lg);
   border-left: 3px solid var(--color-primary);
+   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+
 }
 
 .mobile-close {
@@ -263,4 +267,4 @@
 .mobile-submenu a.active {
   color: var(--color-secondary);
   padding-left: 4px;
-}
+}
