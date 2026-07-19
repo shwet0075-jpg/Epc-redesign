@@ -246,206 +246,241 @@
   line-height: 1.04;
 }
 
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: minmax(195px, auto);
-  gap: 18px;
+/* ===========================
+   Premium EPC Services
+=========================== */
+
+.epc-service-grid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:28px;
+
+margin-top:30px;
+
 }
 
-.feature-card-wrapper--1 { grid-column: span 7; }
-.feature-card-wrapper--2 { grid-column: span 5; margin-top: 44px; }
-.feature-card-wrapper--3 { grid-column: span 5; margin-top: -8px; }
-.feature-card-wrapper--4 { grid-column: span 7; margin-top: 32px; }
+.epc-service-card{
 
-.feature-card {
-  position: relative;
-  min-height: 100%;
-  padding: clamp(28px, 3vw, 46px);
-  overflow: hidden;
+background:#fff;
 
-  background: rgba(255, 255, 255, 0.92);
+overflow:hidden;
 
-  border: 1px solid rgba(0, 96, 48, 0.14);
+border-radius:16px;
 
-  border-radius: 2px !important;
+border:1px solid rgba(0,96,48,.08);
 
-  box-shadow: 0 22px 50px -42px rgba(0, 43, 21, 0.48) !important;
+box-shadow:0 15px 45px rgba(0,0,0,.08);
 
-  transition:
-    transform 0.45s ease,
-    box-shadow 0.45s ease;
+transition:
+    transform .45s cubic-bezier(.22,1,.36,1),
+    box-shadow .45s,
+    border-color .45s;
+
+display:flex;
+
+flex-direction:column;
+
+height:100%;
+
+position:relative;
+
 }
 
-/* Background Engineering Image */
-.feature-card-bg {
-  position: absolute;
-  inset: 0;
+.epc-service-card::before{
 
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+content:"";
 
-  opacity: 0.35;
+position:absolute;
 
-  transform: scale(1);
+top:0;
 
-  transition: transform .8s ease, opacity .5s ease;
+left:0;
 
-  z-index: 0;
+width:0;
+
+height:4px;
+
+background:#F08020;
+
+transition:.45s;
+
 }
 
-/* White Glass Layer */
-.feature-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+.epc-service-card:hover::before{
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.45),
-      rgba(255,255,255,.25)
-    );
+width:100%;
 
-  z-index: 1;
-  pointer-events: none;
 }
 
-/* Animated Bottom Border */
-.feature-card::after {
-  content: "";
+.epc-service-card:hover{
+    box-shadow:0 30px 70px rgba(0,0,0,.16);
+    border-color:#F08020;
+}
 
-  position: absolute;
+.epc-service-image{
 
-  left: 0;
-  top: 0;
+height:260px;
 
-  width: 100%;
-  height: 4px;
+overflow:hidden;
 
-  background: linear-gradient(
-    90deg,
-    #006030,
-    #F08020,
-    #006030
-  );
+position:relative;
 
-  transform: scaleX(0);
+}
 
-  transform-origin: left;
+.epc-service-image img{
 
-  transition: transform .45s ease;
+width:100%;
 
-  z-index: 5;
+height:100%;
+
+object-fit:cover;
+
+transition:transform .8s;
+
+display:block;
+
+}
+
+.epc-service-card:hover img{
+
+transform:scale(1.08);
+
+}
+
+.epc-service-overlay{
+
+position:absolute;
+
+inset:0;
+
+background:linear-gradient(
+180deg,
+rgba(0,0,0,0),
+rgba(0,0,0,.08),
+rgba(0,0,0,.35)
+);
+
+}
+
+.epc-service-content{
+
+padding:30px;
+
+display:flex;
+
+flex-direction:column;
+
+flex:1;
+
+}
+
+.epc-service-icon{
+
+width:68px;
+
+height:68px;
+
+border-radius:50%;
+
+background:#006030;
+
+color:white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:28px;
+
+margin-bottom:22px;
+
+transition:
+    transform .35s ease,
+    background-color .35s ease,
+    color .35s ease,
+    box-shadow .35s ease;
+
+}
+
+.epc-service-card:hover .epc-service-icon{
+
+background:#F08020;
+
+transform:rotate(8deg) scale(1.08);
+
+}
+
+.epc-service-content h3{
+
+font-size:1.45rem;
+
+margin-bottom:14px;
+
+}
+
+.epc-service-content p{
+
+line-height:1.8;
+
+color:#666;
+
+flex:1;
+
+}
+
+.epc-service-link{
+
+display:inline-flex;
+
+align-items:center;
+
+gap:10px;
+
+margin-top:24px;
+
+font-weight:600;
+
+color:#006030;
+
+text-decoration:none;
+
+transition:
+    color .3s,
+    gap .3s;
+}
+
+.epc-service-link svg{
+    transition:transform .3s ease;
+}
+
+.epc-service-link:hover svg{
+    transform:translateX(6px);
+}
+
+.epc-service-link:hover{
+
+gap:18px;
+
+color:#F08020;
+
+}
+
+@media(max-width:900px){
+
+.epc-service-grid{
+
+grid-template-columns:1fr;
+
+}
+
 }
 
 
-/* Keep content above everything */
-.feature-card-content {
-  position: relative;
-  z-index: 2;
-}
-
-/* Hover Effects */
-.feature-card:hover {
-  transform: translateY(-8px);
-
-  box-shadow: 0 32px 65px -35px rgba(0, 43, 21, .45) !important;
-}
-
-.feature-card:hover .feature-card-bg {
-  transform: scale(1.1);
-  opacity: 0.5;
-}
-
-.feature-card:hover::after {
-  transform: scaleX(1);
-}
-
-.feature-index {
-  position: absolute;
-  top: 12px;
-  right: 18px;
-
-  font-size: clamp(72px, 8vw, 120px);
-  font-weight: 800;
-  line-height: 1;
-
-  color: rgba(0, 96, 48, 0.06);
-
-  letter-spacing: -4px;
-
-  user-select: none;
-  pointer-events: none;
-
-  z-index: 1;
-
-  transition: all 0.45s ease;
-}
-
-.feature-card:hover .feature-index {
-  color: rgba(240, 128, 32, 0.12);
-  transform: scale(1.05);
-}
-
-.feature-icon {
-  position: relative;
-  z-index: 3;
-
-  width: 70px;
-  height: 70px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 28px;
-
-  color: var(--color-primary);
-
-  background: rgba(255,255,255,.95);
-
-  border: 1px solid rgba(0,96,48,.12);
-
-  border-radius: 50%;
-
-  transition: all .4s ease;
-}
-
-.feature-card:hover .feature-icon {
-  transform: rotate(8deg) scale(1.08);
-
-  background: var(--color-primary);
-
-  color: white;
-
-  box-shadow: 0 10px 30px rgba(0,96,48,.25);
-}
-
-.feature-card h3 {
-  max-width: 18ch;
-  margin-bottom: 10px;
-  color: var(--color-text-dark);
-  font-size: clamp(1.2rem, 1.5vw, 1.55rem);
-}
-
-.feature-card p {
-  max-width: 34ch;
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.93rem;
-}
-
-.feature-arrow {
-  position: absolute;
-  right: 28px;
-  bottom: 28px;
-  color: var(--color-secondary);
-  transition: transform var(--transition-fast);
-}
-
-.feature-card:hover .feature-arrow { transform: translateX(6px); }
 
 .foundations-section {
   padding-block: clamp(88px, 10vw, 150px);

@@ -36,27 +36,27 @@ const slides = [
 const capabilities = [
   {
     icon: <FiShield />,
-    label: 'Fire & Life Safety',
-    desc: 'SITC, suppression networks, early warnings & audits.',
-    image: '/assets/images/bg/fire-life-safety.png',
+    label: "Fire & Life Safety",
+    desc: "Complete fire detection, suppression, hydrant, sprinkler and gas suppression solutions for critical infrastructure.",
+    image: "/assets/images/bg/fire-life-safety.png",
   },
   {
     icon: <FiVideo />,
-    label: 'Security & Surveillance',
-    desc: 'IP-based CCTV networks, command grids & biometrics.',
-    image: '/assets/images/bg/security.png',
+    label: "Security & Surveillance",
+    desc: "Advanced IP CCTV, access control, perimeter security and centralized surveillance solutions.",
+    image: "/assets/images/bg/security.png",
   },
   {
     icon: <FiServer />,
-    label: 'Data Centre Infrastructure',
-    desc: 'High-availability power, precision cooling & systems monitoring.',
-    image: '/assets/images/bg/ds-infra.png',
+    label: "Data Centre Infrastructure",
+    desc: "Mission-critical power, cooling, networking and infrastructure solutions for modern data centres.",
+    image: "/assets/images/bg/ds-infra.png",
   },
   {
     icon: <FiCpu />,
-    label: 'Integrated Building Management',
-    desc: 'Intelligent automation & control networks for facility efficiency.',
-    image: '/assets/images/bg/ib.png',
+    label: "Integrated Building Management",
+    desc: "Smart building automation integrating HVAC, lighting, safety and operational intelligence.",
+    image: "/assets/images/bg/ib.png",
   },
 ];
 
@@ -211,47 +211,52 @@ export default function Home() {
             />
           </ScrollReveal>
 
-         <div className="feature-grid" role="list">
-  {capabilities.map((capability, index) => (
+      <div className="epc-service-grid">
+  {capabilities.map((item, index) => (
     <ScrollReveal
-      key={capability.label}
+      key={item.label}
       variant="fade-up"
-      delay={index * 0.1}
-      className={`feature-card-wrapper feature-card-wrapper--${index + 1}`}
+      delay={index * 0.12}
     >
       <motion.article
-        className="feature-card"
-        whileHover={{ y: -10 }}
-        transition={{ type: "spring", stiffness: 280, damping: 22 }}
-        role="listitem"
+        className="epc-service-card"
+        whileHover={{ y: -12 }}
+        transition={{
+          type: "spring",
+          stiffness: 250,
+          damping: 22,
+        }}
       >
-        {/* Background Image */}
-        <div
-          className="feature-card-bg" 
-          style={{
-            backgroundImage: `url(${capability.image})`,
-          }}
-        />
-
-        {/* Content */}
-        <div className="feature-card-content">
-          <div className="feature-index" aria-hidden="true">
-            0{index + 1}
-          </div>
-
-          <div className="feature-icon">
-            {capability.icon}
-          </div>
-
-          <h3>{capability.label}</h3>
-
-          <p>{capability.desc}</p>
-
-          <FiArrowRight
-            className="feature-arrow"
-            aria-hidden="true"
+        <div className="epc-service-image">
+          <img
+            src={item.image}
+            alt={item.label}
           />
+
+          <div className="epc-service-overlay" />
         </div>
+
+        <div className="epc-service-content">
+
+          <div className="epc-service-icon">
+            {item.icon}
+          </div>
+
+          <h3>{item.label}</h3>
+
+          <p>{item.desc}</p>
+
+          <Link
+            to={item.path}
+            className="epc-service-link"
+          >
+            Read More
+
+            <FiArrowRight />
+          </Link>
+
+        </div>
+
       </motion.article>
     </ScrollReveal>
   ))}
