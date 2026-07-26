@@ -78,26 +78,95 @@ export default function About() {
             right: '-10%',
           }}
         />
+        <div
+  style={{
+    position: 'absolute',
+    bottom: '-120px',
+    left: '-120px',
+    width: '320px',
+    height: '320px',
+    borderRadius: '50%',
+   background:
+'linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05))',
+
+boxShadow:
+'0 12px 30px rgba(0,0,0,.12)',
+    pointerEvents: 'none',
+  }}
+/>
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>About Us</span>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}>Our Company</h1>
-          <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '640px', margin: '0' }}>
+          <h1 style={{ fontSize: 'clamp(3rem, 5vw,4.6rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}>Our Company</h1>
+          <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '720px', margin: '0' }}>
             Engineering trust into fire safety, security, and critical infrastructure since 2019.
           </p>
+
+          <div
+  style={{
+  display: 'grid',
+  gap: '28px',
+  marginTop: '48px',
+  maxWidth: '760px',
+}}
+  className="about-hero-stats"
+>
+  {[
+    { value: '22+', label: 'Years Leadership' },
+    { value: '49+', label: 'Projects' },
+    { value: '40+', label: 'Professionals' },
+    { value: 'Pan India', label: 'Presence' },
+  ].map((item) => (
+    <div
+      key={item.label}
+      style={{
+        padding: '22px 18px',
+        borderRadius: '18px',
+        background: 'rgba(255,255,255,.08)',
+        backdropFilter: 'blur(18px)',
+        WebkitBackdropFilter: 'blur(18px)',
+        border: '1px solid rgba(255,255,255,.12)',
+      }}
+    >
+      <div
+        style={{
+          fontSize: item.value === 'Pan India' ? '1.25rem' : '2rem',
+          fontWeight: 800,
+          color: '#fff',
+          lineHeight: 1.1,
+          marginBottom: '8px',
+        }}
+      >
+        {item.value}
+      </div>
+
+      <div
+        style={{
+          fontSize: '.82rem',
+          textTransform: 'uppercase',
+          letterSpacing: '.12em',
+          color: '#d3ded9',
+          fontWeight: 600,
+        }}
+      >
+        {item.label}
+      </div>
+    </div>
+  ))}
+</div>
         </div>
       </section>
 
       {/* INTRODUCTION SECTION */}
       <section className="section" style={{ background: '#ffffff', overflow: 'hidden' }}>
         <div className="container">
-          <div className="about-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '64px', alignItems: 'center' }}>
+          <div className="about-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.8fr', gap: '80px', alignItems: 'center' }}>
             <ScrollReveal variant="fade-right">
               <div className="about-text-content">
                 <SectionTitle
                   eyebrow="Incorporated in 2019"
                   title="A Legacy of Engineering Precision"
                 />
-                <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', lineHeight: 1.7, marginBottom: '24px' }}>
+                <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', lineHeight: 1.9,margin: '0 0 24px',maxWidth: '640px', }}>
                   Prudent EPC Pvt. Ltd. is a wholly owned subsidiary of Prudent Controls Pvt. Ltd.,
                   a technology services company with deep experience in fire safety and security
                   systems for industrial and commercial projects. We provide end-to-end design, supply, installation, commissioning, and maintenance of high-hazard facilities.
@@ -115,22 +184,74 @@ export default function About() {
 
             <ScrollReveal variant="scale-in" className="about-image-wrapper">
               <div
-                style={{
-                  position: 'relative',
-                  borderRadius: 'var(--radius-lg)',
-                  overflow: 'hidden',
-                  boxShadow: 'var(--shadow-lg)',
-                  border: '1px solid var(--color-gray-100)',
-                }}
-              >
+               style={{
+  position: 'relative',
+  borderRadius: '24px',
+  overflow: 'hidden',
+  border: '1px solid rgba(0,96,48,.08)',
+  boxShadow: '0 30px 70px rgba(0,0,0,.12)',
+}}
+
+         >
+
+          <div
+  style={{
+    position: 'absolute',
+    bottom: '24px',
+    right: '24px',
+    background: 'rgba(255,255,255,.95)',
+    backdropFilter: 'blur(12px)',
+    WebkitBackdropFilter: 'blur(12px)',
+    borderRadius: '18px',
+    padding: '18px 22px',
+    boxShadow: '0 15px 40px rgba(0,0,0,.15)',
+    border: '1px solid rgba(255,255,255,.4)',
+  }}
+>
+  <div
+    style={{
+      fontSize: '.75rem',
+      letterSpacing: '.12em',
+      textTransform: 'uppercase',
+      color: '#777',
+      fontWeight: 600,
+    }}
+  >
+    Established
+  </div>
+
+  <div
+    style={{
+      fontSize: '2rem',
+      fontWeight: 800,
+      color: 'var(--color-primary)',
+      lineHeight: 1,
+      margin: '6px 0',
+    }}
+  >
+    2019
+  </div>
+
+  <div
+    style={{
+      fontSize: '.9rem',
+      color: '#555',
+      fontWeight: 600,
+    }}
+  >
+    Engineering Excellence
+  </div>
+</div>
+        
                 <img
                   src="/assets/images/company-img.png"
                   alt="Prudent EPC office and company overview"
                   style={{
                     width: '100%',
-                    height: 'auto',
+                    height: '500px',
+                    objectFit: 'cover',
                     display: 'block',
-                    transition: 'transform var(--transition-med)',
+                     transition: 'transform .6s ease',
                   }}
                   className="about-company-img"
                 />
@@ -149,7 +270,8 @@ export default function About() {
       </section>
 
       {/* STATS STRIP */}
-      <section className="stats-section" style={{ padding: '80px 0', background: 'var(--color-light)', borderTop: '1px solid var(--color-gray-100)', borderBottom: '1px solid var(--color-gray-100)' }}>
+                  <section className="stats-section" style={{ padding: '80px 0', background:'linear-gradient(180deg,#f8fbf9 0%,#ffffff 100%)', borderTop: '1px solid var(--color-gray-100)', borderBottom: '1px solid var(--color-gray-100)' }}>
+
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', textAlign: 'center' }}>
             {[
@@ -159,12 +281,40 @@ export default function About() {
               { icon: <FiTrendingUp size={36} />, label: 'Leadership Experience', value: '22+' },
             ].map((stat, i) => (
               <ScrollReveal key={stat.label} variant="fade-up" delay={i * 0.1}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <div style={{ color: 'var(--color-primary)', marginBottom: '16px' }}>{stat.icon}</div>
-                  <h3 style={{ fontSize: '2.8rem', fontWeight: 800, margin: '0 0 6px', color: 'var(--color-text-dark)', letterSpacing: '-0.02em' }}>
+               <div
+  style={{
+    background: '#fff',
+    borderRadius: '22px',
+    padding: '38px 24px',
+    border: '1px solid rgba(0,96,48,.08)',
+    boxShadow: '0 15px 40px rgba(0,0,0,.08)',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    transition: 'all .35s ease',
+    height: '100%',
+  }}
+  className="about-stat-card"
+>
+                  <div
+  style={{
+    width: '78px',
+    height: '78px',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'rgba(0,96,48,.08)',
+    color: 'var(--color-primary)',
+    marginBottom: '24px',
+  }}
+>
+  {stat.icon}
+</div>
+                  <h3 style={{ fontSize: '3.2rem', fontWeight: 800, margin: '0 0 6px', color: 'var(--color-text-dark)', letterSpacing: '-0.02em' }}>
                     <Counter end={stat.value} />
                   </h3>
-                  <span style={{ fontSize: '0.92rem', color: 'var(--color-text-muted)', fontWeight: 600, uppercase: 'true' }}>{stat.label}</span>
+                  <span style={{ fontSize: '0.82rem', color: '#6b7280', fontWeight: 600, uppercase: 'true',letterSpacing:'.12em',textTransform:'uppercase'}}>{stat.label}</span>
                 </div>
               </ScrollReveal>
             ))}
@@ -192,7 +342,7 @@ export default function About() {
                 width: '4px',
                 background: 'linear-gradient(to bottom, var(--color-primary), var(--color-secondary))',
                 transform: 'translateX(-50%)',
-                opacity: 0.15,
+                opacity: 0.28,
               }}
               className="timeline-line"
             />
@@ -217,31 +367,31 @@ export default function About() {
                     <div
                       style={{
                         width: '45%',
-                        background: '#ffffff',
-                        border: '1px solid var(--color-gray-100)',
-                        boxShadow: 'var(--shadow-sm)',
-                        borderRadius: 'var(--radius-md)',
-                        padding: '30px',
+                        background: '#fff',
+                        border: '1px solid rgba(0,96,48,.08)',
+                        boxShadow:'0 18px 45px rgba(0,0,0,.08)',
+                        borderRadius: '22px',
+                        padding: '36px',
                         position: 'relative',
                         transition: 'transform var(--transition-fast), box-shadow var(--transition-fast)',
                         textAlign: i % 2 === 0 ? 'right' : 'left',
                       }}
                       className="timeline-content"
                     >
-                      <span style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-secondary)', display: 'block', marginBottom: '8px' }}>{item.year}</span>
-                      <h4 style={{ fontSize: '1.15rem', fontWeight: 700, margin: '0 0 10px', color: 'var(--color-text-dark)' }}>{item.title}</h4>
+                      <span style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--color-secondary)', display: 'block', marginBottom: '8px',letterSpacing: '-0.02em'  }}>{item.year}</span>
+                      <h4 style={{ fontSize: '1.3rem', fontWeight: 700, margin: '0 0 10px', color: 'var(--color-text-dark)' }}>{item.title}</h4>
                       <p style={{ color: 'var(--color-text-muted)', fontSize: '0.92rem', margin: 0, lineHeight: 1.6 }}>{item.text}</p>
                     </div>
 
                     {/* Timeline Dot */}
                     <div
                       style={{
-                        width: '24px',
-                        height: '24px',
+                        width: '30px',
+                        height: '30px',
                         borderRadius: '50%',
                         background: '#ffffff',
-                        border: `4px solid ${i % 2 === 0 ? 'var(--color-primary)' : 'var(--color-secondary)'}`,
-                        boxShadow: '0 0 0 8px rgba(0, 96, 48, 0.05)',
+                        border: `5px solid ${i % 2 === 0 ? 'var(--color-primary)' : 'var(--color-secondary)'}`,
+                        boxShadow: '0 0 0 12px rgba(0,96,48,.08)',
                         zIndex: 2,
                         position: 'relative',
                       }}
@@ -260,26 +410,27 @@ export default function About() {
       {/* Mr. Avinash Patil Profile */}
       <section className="section director-section" style={{ background: 'var(--color-light)', overflow: 'hidden' }}>
         <div className="container">
-          <div className="director-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '64px', alignItems: 'center' }}>
+          <div className="director-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '90px', alignItems: 'center' }}>
             <ScrollReveal variant="fade-right">
               <div
-                style={{
-                  position: 'relative',
-                  borderRadius: 'var(--radius-lg)',
-                  overflow: 'hidden',
-                  boxShadow: 'var(--shadow-lg)',
-                  border: '1px solid var(--color-gray-100)',
-                }}
+               style={{
+                        width: '100%',
+                        height: '620px',
+                        objectFit: 'cover',
+                        display: 'block',
+                        transition: 'transform .6s ease',
+                      }}
               >
                 <img
                   src="/assets/images/director.jpg"
                   alt="Mr. Avinash Patil, Director"
                   style={{
-                    width: '100%',
-                    height: 'auto',
-                    display: 'block',
-                    transition: 'transform var(--transition-med)',
-                  }}
+  position: 'relative',
+  borderRadius: '24px',
+  overflow: 'hidden',
+  border: '1px solid rgba(0,96,48,.08)',
+  boxShadow: '0 35px 80px rgba(0,0,0,.14)',
+}}
                   className="director-profile-img"
                 />
                 <div
@@ -296,8 +447,8 @@ export default function About() {
             <ScrollReveal variant="fade-left">
               <div className="director-text">
                 <span className="eyebrow" style={{ color: 'var(--color-primary)' }}>Leadership</span>
-                <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 2.5rem)', fontWeight: 800, margin: '8px 0 4px', color: 'var(--color-text-dark)' }}>Director's Profile</h2>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 600, color: 'var(--color-secondary)', margin: '0 0 24px' }}>Mr. Avinash Patil</h3>
+                <h2 style={{fontSize: 'clamp(2.4rem, 3.8vw, 3rem)', fontWeight: 800, margin: '8px 0 4px', color: 'var(--color-text-dark)' }}>Director's Profile</h2>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--color-secondary)', margin: '0 0 28px' }}>Mr. Avinash Patil</h3>
                 <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.7, marginBottom: '16px' }}>
                   Director of Prudent Controls Pvt. Ltd. and Prudent EPC Pvt. Ltd. With a
                   qualification of BE in Production, MBA (Marketing) and LLB, Mr. Avinash Patil has
@@ -310,6 +461,57 @@ export default function About() {
                   specializes in business development, finance management, and efficient business
                   set-up, with keen interest in contract, business and constitutional law.
                 </p>
+
+                <div
+  style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2,1fr)',
+    gap: '18px',
+    marginTop: '36px',
+  }}
+  className="director-highlights"
+>
+  {[
+    ['22+', 'Years Experience'],
+    ['40+', 'Professionals'],
+    ['60+', 'IBMS Projects'],
+    ['Pan India', 'Operations'],
+  ].map(([value, label]) => (
+    <div
+      key={label}
+      style={{
+        padding: '22px',
+        borderRadius: '18px',
+        background: '#fff',
+        border: '1px solid rgba(0,96,48,.08)',
+        boxShadow: '0 15px 35px rgba(0,0,0,.08)',
+      }}
+    >
+      <div
+        style={{
+          fontSize: value === 'Pan India' ? '1.3rem' : '2rem',
+          fontWeight: 800,
+          color: 'var(--color-primary)',
+          marginBottom: '8px',
+        }}
+      >
+        {value}
+      </div>
+
+      <div
+        style={{
+          fontSize: '.82rem',
+          letterSpacing: '.12em',
+          textTransform: 'uppercase',
+          color: '#6b7280',
+          fontWeight: 600,
+        }}
+      >
+        {label}
+      </div>
+    </div>
+  ))}
+</div>
               </div>
             </ScrollReveal>
           </div>
@@ -320,22 +522,159 @@ export default function About() {
       <section className="section" style={{ background: '#ffffff' }}>
         <div className="container">
           <SectionTitle
-            eyebrow="Our Credentials"
-            title="Recognised for Quality & Trust"
+           eyebrow="Certifications & Recognition"
+            title="Trusted by Government, Enterprise & Critical Infrastructure"
             align="center"
           />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginTop: '48px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '28px', marginTop: '48px' }}>
             {skills.slice(7).map((skill, index) => (
               <ScrollReveal key={skill} variant="fade-up" delay={index * 0.05}>
-                <div style={{ background: '#ffffff', borderRadius: 'var(--radius-md)', padding: '24px', border: '1px solid var(--color-gray-100)', boxShadow: 'var(--shadow-sm)', display: 'flex', gap: '16px', height: '100%' }}>
-                  <FiCheckCircle style={{ color: 'var(--color-primary)', fontSize: '1.25rem', marginTop: '4px', flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.94rem', color: 'var(--color-text-body)', lineHeight: 1.5 }}>{skill}</span>
+                <div style={{ background: '#fff', borderRadius: '22px', padding: '30px',border:'1px solid rgba(0,96,48,.08)',  boxShadow:'0 18px 45px rgba(0,0,0,.08)',  display: 'flex', gap: '16px', height: '100%',position:'relative',overflow:'hidden',}}>
+                <div
+  style={{
+    position:'absolute',
+    top:0,
+    left:0,
+    right:0,
+    height:'4px',
+    background:'linear-gradient(90deg,var(--color-primary),var(--color-secondary))'
+  }}
+/>
+                
+                <div
+                  style={{
+                    minWidth: '58px',
+                    height: '58px',
+                    borderRadius: '16px',
+                    background: 'rgba(0,96,48,.08)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.15rem',
+                    fontWeight: 800,
+                    color: 'var(--color-primary)',
+                    flexShrink: 0,
+                    
+                  }}
+>
+  {String(index + 1).padStart(2, '0')}
+</div>
+                  <span style={{ fontSize: '1rem', color: 'var(--color-text-body)', lineHeight: 1.75}}>{skill}</span>
                 </div>
               </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
+
+      <section
+  style={{
+    position: 'relative',
+    overflow: 'hidden',
+    background:
+      'linear-gradient(135deg,var(--color-primary-dark) 0%,var(--color-primary) 100%)',
+    padding: '110px 0',
+  }}
+>
+  {/* Background Glow */}
+  <div
+    style={{
+      position: 'absolute',
+      top: '-180px',
+      right: '-180px',
+      width: '420px',
+      height: '420px',
+      borderRadius: '50%',
+      background:
+        'radial-gradient(circle, rgba(240,128,32,.15) 0%, transparent 70%)',
+    }}
+  />
+
+  <div
+    style={{
+      position: 'absolute',
+      bottom: '-180px',
+      left: '-180px',
+      width: '380px',
+      height: '380px',
+      borderRadius: '50%',
+      background:
+        'radial-gradient(circle, rgba(255,255,255,.08) 0%, transparent 70%)',
+    }}
+  />
+
+  <div
+    className="container"
+    style={{
+      position: 'relative',
+      zIndex: 2,
+      textAlign: 'center',
+      maxWidth: '900px',
+    }}
+  >
+    <span
+      style={{
+        color: 'var(--color-secondary)',
+        textTransform: 'uppercase',
+        letterSpacing: '.18em',
+        fontWeight: 700,
+      }}
+    >
+      Let's Build Together
+    </span>
+
+    <h2
+      style={{
+        color: '#fff',
+        fontSize: 'clamp(2.8rem,5vw,4.5rem)',
+        fontWeight: 800,
+        margin: '18px 0',
+        lineHeight: 1.1,
+      }}
+    >
+      Engineering Tomorrow's
+      <br />
+      Critical Infrastructure
+    </h2>
+
+    <p
+      style={{
+        color: '#dbe5df',
+        fontSize: '1.15rem',
+        lineHeight: 1.8,
+        maxWidth: '720px',
+        margin: '0 auto 40px',
+      }}
+    >
+      From fire safety systems to intelligent building automation,
+      Prudent EPC delivers end-to-end engineering solutions trusted
+      by industries, government organisations and enterprises across India.
+    </p>
+
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '18px',
+        flexWrap: 'wrap',
+      }}
+    >
+      <a
+        href="/contact"
+        className="btn btn-primary"
+      >
+        Discuss Your Project
+      </a>
+
+      <a
+        href="/projects"
+        className="btn btn-outline-light"
+      >
+        View Our Projects
+      </a>
+    </div>
+  </div>
+</section>
     </>
   );
 }

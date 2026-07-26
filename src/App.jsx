@@ -1,17 +1,25 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import ScrollToTop from './components/ScrollToTop';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import About from './pages/About';
-import Solutions from './pages/Solutions';
-import Services from './pages/Services';
-import Clients from './pages/Clients';
-import Gallery from './pages/Gallery';
-import Career from './pages/Career';
-import Contact from './pages/Contact';
-import './App.css';
+import { useState } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+
+import ScrollToTop from "./components/ScrollToTop";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import BackToTop from "./components/BackToTop";
+
+import PremiumLoader from "./components/Loading/PremiumLoader";
+
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Solutions from "./pages/Solutions";
+import Services from "./pages/Services";
+import Clients from "./pages/Clients";
+import Gallery from "./pages/Gallery";
+import Career from "./pages/Career";
+import Contact from "./pages/Contact";
+
+import "./App.css";
+import "./styles/loader.css";
 
 function AppRoutes() {
   const location = useLocation();
@@ -24,7 +32,10 @@ function AppRoutes() {
         initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         exit={shouldReduceMotion ? undefined : { opacity: 0, y: -8 }}
-        transition={{ duration: shouldReduceMotion ? 0 : 0.34, ease: [0.22, 1, 0.36, 1] }}
+        transition={{
+          duration: shouldReduceMotion ? 0 : 0.34,
+          ease: [0.22, 1, 0.36, 1],
+        }}
       >
         <Routes location={location}>
           <Route path="/" element={<Home />} />
@@ -41,15 +52,34 @@ function AppRoutes() {
   );
 }
 
-export default function App() {
+function Website() {
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTop />
+
       <Navbar />
+
       <main>
         <AppRoutes />
       </main>
+
+      <BackToTop />
+
       <Footer />
+    </>
+  );
+}
+
+export default function App() {
+  const [loading, setLoading] = useState(true);
+
+  return (
+    <BrowserRouter>
+      {loading ? (
+        <PremiumLoader onComplete={() => setLoading(false)} />
+      ) : (
+        <Website />
+      )}
     </BrowserRouter>
   );
 }

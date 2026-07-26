@@ -5,4 +5,6 @@
 @import './styles/responsive.css';
 @import './styles/premium.css';
 
-main { padding-top: var(--header-height); min-height: 60vh; }
+main {
+    min-height: 60vh;
+}

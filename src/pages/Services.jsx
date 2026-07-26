@@ -27,13 +27,60 @@ export default function Services() {
           }}
         />
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-          <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Services</span>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}>Services</h1>
-          <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '640px', margin: '0' }}>
-            Beyond design &amp; build, we support the full lifecycle of your critical
-            infrastructure — from engineering and procurement through to remote monitoring,
-            project execution and annual maintenance.
+          <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Engineering Services</span>
+          <h1 style={{ fontSize:'clamp(3rem,5vw,4.8rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}>Services</h1>
+          <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '760px', margin: '0' }}>
+           Our engineering services extend beyond project delivery, providing complete lifecycle support—from engineering, procurement, commissioning, remote monitoring, modernization, and preventive maintenance to ensure reliable, efficient, and future-ready infrastructure.
           </p>
+          <div
+  className="services-hero-stats"
+  style={{
+    display: 'grid',
+    gap: '24px',
+    marginTop: '44px',
+  }}
+>
+  {[
+    ['EPC', 'Execution'],
+    ['AMC', 'Support'],
+    ['24×7', 'Monitoring'],
+    ['Pan India', 'Service'],
+  ].map(([value, label]) => (
+    <div
+      key={label}
+      style={{
+        padding: '22px',
+        borderRadius: '18px',
+        background:
+          'linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05))',
+        border: '1px solid rgba(255,255,255,.12)',
+        backdropFilter: 'blur(14px)',
+      }}
+    >
+      <div
+        style={{
+          color: '#fff',
+          fontWeight: 800,
+          fontSize: value === 'Pan India' ? '1.3rem' : '2rem',
+        }}
+      >
+        {value}
+      </div>
+
+      <div
+        style={{
+          marginTop: '8px',
+          color: '#dbe5df',
+          fontSize: '.8rem',
+          textTransform: 'uppercase',
+          letterSpacing: '.12em',
+        }}
+      >
+        {label}
+      </div>
+    </div>
+  ))}
+</div>
         </div>
       </section>
 
@@ -51,10 +98,10 @@ export default function Services() {
                 style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                  gap: '64px',
+                  gap: '80px',
                   alignItems: 'center',
                   background: 'var(--color-white)',
-                  padding: '40px',
+                  padding: '48px',
                   borderRadius: 'var(--radius-lg)',
                   boxShadow: 'var(--shadow-sm)',
                   border: '1px solid var(--color-gray-100)',
@@ -81,7 +128,7 @@ export default function Services() {
                     borderRadius: 'var(--radius-md)',
                     overflow: 'hidden',
                     boxShadow: 'var(--shadow-md)',
-                    height: '320px',
+                    height: '380px',
                     position: 'relative',
                   }}
                 >
@@ -110,9 +157,9 @@ export default function Services() {
                 <div className="service-panel-info">
                   <div
                     style={{
-                      width: '64px',
-                      height: '64px',
-                      borderRadius: '16px',
+                      width: '76px',
+                      height: '76px',
+                      borderRadius: '20px',
                       background: 'linear-gradient(135deg, var(--color-primary-glow), rgba(0, 96, 48, 0.03))',
                       color: 'var(--color-primary)',
                       display: 'flex',
@@ -124,11 +171,11 @@ export default function Services() {
                     {iconMap[s.id] || <FiCpu size={32} />}
                   </div>
 
-                  <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '18px', lineHeight: 1.3 }}>
+                  <h3 style={{ fontSize: 'clamp(1.8rem,2vw,2.2rem)', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '18px', lineHeight: 1.3 }}>
                     {s.title}
                   </h3>
 
-                  <p style={{ color: 'var(--color-text-muted)', fontSize: '1.02rem', lineHeight: 1.7, marginBottom: '28px' }}>
+                  <p style={{ color: 'var(--color-text-muted)', fontSize: '1.08rem', lineHeight: 1.7, marginBottom: '28px' }}>
                     {s.text}
                   </p>
 

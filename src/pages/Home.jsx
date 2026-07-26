@@ -5,6 +5,13 @@ import { FiArrowDown, FiArrowRight, FiCpu, FiServer, FiShield, FiVideo } from 'r
 import ScrollReveal from '../components/ScrollReveal';
 import SectionTitle from '../components/SectionTitle';
 import ContactCTA from '../components/ContactCTA';
+import EngineeringBackground from '../components/EngineeringBackground';
+import EngineeringIntelligence from "../components/EngineeringIntelligence";
+import EngineeringImpact from "../components/EngineeringImpact";
+import FeaturedProjects from "../components/FeaturedProjects/FeaturedProjects";
+import OurExpertise from "../components/OurExpertise/OurExpertise";
+import SplitHeading from '../components/animations/SplitHeading';
+import CountUp from "../components/animations/CountUp";
 
 const slides = [
   {
@@ -83,6 +90,19 @@ const heroCopy = {
   visible: { opacity: 1, y: 0 },
 };
 
+const companyInfo = {
+  eyebrow: "SINCE 2009 • ENGINEERING EXCELLENCE",
+  title: "ENGINEERING THE FUTURE OF SMART INFRASTRUCTURE",
+  description:
+    "Delivering intelligent fire protection, security, building automation, data centre and mission-critical engineering solutions across India.",
+};
+
+const heroStats = [
+  { value: "15+", label: "Years Experience" },
+  { value: "250+", label: "Projects Delivered" },
+  { value: "Pan India", label: "Execution Capability" },
+];
+
 export default function Home() {
   const [active, setActive] = useState(0);
   const shouldReduceMotion = useReducedMotion();
@@ -104,7 +124,18 @@ export default function Home() {
 
   return (
     <>
-      <section className="hero hero--redesigned" aria-label={activeSlide.title}>
+     <section
+  className="hero hero--redesigned"
+  aria-label="Prudent EPC Hero Section"
+>
+  <EngineeringBackground variant="hero" />
+
+  <div className="hero-overlay" />
+
+  <div className="container">
+    ...
+  </div>
+
         <div className="hero-media" aria-hidden="true">
           <AnimatePresence mode="wait">
             <motion.div
@@ -143,39 +174,73 @@ export default function Home() {
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: shouldReduceMotion ? 0 : 0.13 } } }}
           >
-            <motion.p className="eyebrow hero-eyebrow" variants={heroCopy} transition={{ duration: 0.45 }}>
-              Prudent EPC Pvt. Ltd.
-            </motion.p>
-            <AnimatePresence mode="wait">
-              <motion.h1
-                key={activeSlide.title}
-                  className="hero-title"
-                  initial={
-                    shouldReduceMotion
-                      ? { opacity: 1 }
-                      : { opacity: 0, y: 20 }
-                  }
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={
-                    shouldReduceMotion
-                      ? { opacity: 0 }
-                      : { opacity: 0, y: -15 }
-                  }
-                  transition={{
-                    duration: shouldReduceMotion ? 0.15 : 0.46,
-                    ease: [0.22, 1, 0.36, 1]
-  }}
+           <motion.p
+  className="eyebrow hero-eyebrow"
+  variants={heroCopy}
+  transition={{ duration: 0.45 }}
 >
-  {activeSlide.title}
-</motion.h1>
-            </AnimatePresence>
-            <motion.div variants={heroCopy} transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : 0.08 }}>
-              <motion.div whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }}>
-                <Link to={activeSlide.path} className="btn btn-primary hero-cta">
-                  {activeSlide.cta} <FiArrowRight aria-hidden="true" />
-                </Link>
-              </motion.div>
-            </motion.div>
+  {companyInfo.eyebrow}
+</motion.p>
+        <h1 className="hero-title">
+  {companyInfo.title}
+</h1>
+
+<motion.p
+  className="hero-description"
+  variants={heroCopy}
+  transition={{ duration: 0.55 }}
+>
+  {companyInfo.description}
+</motion.p>
+
+<motion.div
+  className="hero-featured"
+  variants={heroCopy}
+>
+  <span className="hero-featured-label">
+    FEATURED SOLUTION
+  </span>
+
+  <h3>{activeSlide.title}</h3>
+
+  <Link
+    to={activeSlide.path}
+    className="hero-featured-link"
+  >
+    Explore <FiArrowRight />
+  </Link>
+</motion.div>
+
+            <motion.div
+  className="hero-actions"
+  variants={heroCopy}
+>
+  <Link
+    to="/solutions"
+    className="btn btn-primary hero-cta"
+  >
+    Explore Solutions
+    <FiArrowRight />
+  </Link>
+
+  <Link
+    to="/projects"
+    className="btn btn-outline hero-cta-secondary"
+  >
+    Our Projects
+  </Link>
+</motion.div>
+
+<motion.div
+  className="hero-stats"
+  variants={heroCopy}
+>
+ {heroStats.map((stat) => (
+  <div key={stat.label}>
+    <CountUp end={stat.value} />
+  </div>
+))}
+</motion.div>
           </motion.div>
 
           <div className="hero-control" aria-label="Hero slides">
@@ -196,73 +261,17 @@ export default function Home() {
         </div>
 
         <a className="hero-scroll" href="#capabilities" aria-label="Scroll to capabilities">
-          <span />
-          <FiArrowDown aria-hidden="true" />
+          <span>SCROLL</span>
+
+<FiArrowDown />
+
+<small>Discover More</small>
         </a>
       </section>
 
-      <section id="capabilities" className="section capabilities-section">
-        <div className="container capabilities-layout">
-          <ScrollReveal variant="fade-right" className="capabilities-intro">
-            <SectionTitle
-              eyebrow="Why Choose Prudent EPC"
-              title="Engineering trust into every critical system"
-              subtitle="We deliver fire detection, fire fighting, gas suppression, systems audit and maintenance of fire safety systems for commercial, industrial, hospital and public utility infrastructure. Our expertise spans IP-CCTV, premises surveillance over fibre networks, command & control centres, and building/maintaining critical infrastructure such as data centres, power control rooms and signal rooms."
-            />
-          </ScrollReveal>
 
-      <div className="epc-service-grid">
-  {capabilities.map((item, index) => (
-    <ScrollReveal
-      key={item.label}
-      variant="fade-up"
-      delay={index * 0.12}
-    >
-      <motion.article
-        className="epc-service-card"
-        whileHover={{ y: -12 }}
-        transition={{
-          type: "spring",
-          stiffness: 250,
-          damping: 22,
-        }}
-      >
-        <div className="epc-service-image">
-          <img
-            src={item.image}
-            alt={item.label}
-          />
-
-          <div className="epc-service-overlay" />
-        </div>
-
-        <div className="epc-service-content">
-
-          <div className="epc-service-icon">
-            {item.icon}
-          </div>
-
-          <h3>{item.label}</h3>
-
-          <p>{item.desc}</p>
-
-          <Link
-            to={item.path}
-            className="epc-service-link"
-          >
-            Read More
-
-            <FiArrowRight />
-          </Link>
-
-        </div>
-
-      </motion.article>
-    </ScrollReveal>
-  ))}
-</div>
-        </div>
-      </section>
+              <EngineeringIntelligence />
+     
 
       <section className="section foundations-section">
         <div className="foundations-backdrop" aria-hidden="true" />
@@ -290,7 +299,9 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      
+<OurExpertise />
+<FeaturedProjects />
       <ContactCTA />
     </>
   );

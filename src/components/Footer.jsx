@@ -37,10 +37,19 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <div className="container footer-bottom-inner">
-          <span>© {new Date().getFullYear()} Prudent EPC Pvt. Ltd. ~Shwet</span>
-        </div>
-      </div>
+  <div className="container footer-bottom-inner">
+
+    <span>
+      © {new Date().getFullYear()} Prudent EPC Pvt. Ltd.
+      All Rights Reserved.
+    </span>
+
+    <span className="footer-credit">
+      Crafted by <strong>~Shwet</strong>
+    </span>
+
+  </div>
+</div>
     </footer>
   );
 }

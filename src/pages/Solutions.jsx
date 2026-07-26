@@ -23,12 +23,63 @@ function SolutionsOverview() {
         />
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Solutions</span>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}>What We Do</h1>
-          <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '640px', margin: '0' }}>
+          <h1 style={{fontSize:'clamp(3rem,5vw,4.8rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}>What We Do</h1>
+          <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '760px', margin: '0' }}>
             Our services cover the full spectrum — from conceptualization to testing &amp;
             commissioning — across Building Automation, Fire Detection &amp; Alarm, Public
             Address, and Security &amp; Surveillance Systems.
           </p>
+          <div
+  className="solutions-hero-stats"
+  style={{
+    display: 'grid',
+    gap: '24px',
+    marginTop: '46px',
+    maxWidth: '760px',
+  }}
+>
+  {[
+    ['22+', 'Years'],
+    ['49+', 'Projects'],
+    ['Pan India', 'Presence'],
+    ['24×7', 'Support'],
+  ].map(([value, label]) => (
+    <div
+      key={label}
+      style={{
+        padding: '22px',
+        borderRadius: '18px',
+        background:
+          'linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05))',
+        border: '1px solid rgba(255,255,255,.12)',
+        backdropFilter: 'blur(16px)',
+      }}
+    >
+      <div
+        style={{
+          fontSize: value === 'Pan India' ? '1.3rem' : '2rem',
+          fontWeight: 800,
+          color: '#fff',
+        }}
+      >
+        {value}
+      </div>
+
+      <div
+        style={{
+          marginTop: '8px',
+          fontSize: '.8rem',
+          textTransform: 'uppercase',
+          letterSpacing: '.12em',
+          color: '#dbe5df',
+          fontWeight: 600,
+        }}
+      >
+        {label}
+      </div>
+    </div>
+  ))}
+</div>
         </div>
       </section>
 

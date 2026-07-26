@@ -117,9 +117,26 @@
     font-size: 1.05rem !important;
   }
   
-  .footer {
-    padding-top: 60px !important;
-  }
+ .footer{
+
+    background:
+        linear-gradient(
+            180deg,
+            #082c1b 0%,
+            #051c11 100%
+        );
+
+    color:var(--color-gray-500);
+
+    padding:100px 0 0;
+
+    border-top:4px solid #F08020;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
   .footer-grid {
     grid-template-columns: 1fr !important;
     gap: 40px !important;
@@ -272,4 +289,97 @@
   .section-main-title {
     font-size: 1.45rem !important;
   }
+}
+
+/* ==============================
+   About Hero Responsive
+============================== */
+
+@media (max-width: 768px) {
+  .about-hero-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+    margin-top: 36px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero-stats {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width:768px){
+
+.timeline-line{
+    display:none;
+}
+
+.timeline-item{
+    flex-direction:column !important;
+    gap:24px;
+}
+
+.timeline-content{
+    width:100% !important;
+    text-align:left !important;
+}
+
+.timeline-spacer{
+    display:none;
+}
+
+}
+
+@media (max-width:768px){
+
+.director-highlights{
+    grid-template-columns:1fr !important;
+}
+
+}
+
+@media (max-width:768px){
+
+.btn-outline-light,
+.btn-primary{
+    width:100%;
+    justify-content:center;
+}
+
+}
+
+@media(max-width:768px){
+
+.solutions-hero-stats{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media(max-width:480px){
+
+.solutions-hero-stats{
+grid-template-columns:1fr;
+}
+
+@media (max-width:900px){
+
+.ei-grid{
+
+    grid-template-columns:1fr;
+}
+
+.ei-card{
+
+    padding:34px;
+}
+
+.ei-header{
+
+    margin-bottom:54px;
+}
+
+}
+
 }

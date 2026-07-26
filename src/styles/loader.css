@@ -1,0 +1,589 @@
+/* ==========================================================================
+   Prudent EPC — Pre-loader Stylesheet
+   Full-screen engineering-grade loading overlay.
+
+   Design intent:
+   - Enterprise / industrial precision, not "tech startup neon"
+   - Dark engineering-drawing backdrop with a single restrained glow
+   - Motion reads as calibration/measurement, not decoration
+   - All selectors namespaced under .loader- to avoid collisions
+     with the rest of the site.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design tokens
+   -------------------------------------------------------------------------- */
+.loader-bg {
+  --loader-primary: #006030;
+  --loader-primary-rgb: 0, 96, 48;
+  --loader-dark: #004522;
+  --loader-dark-rgb: 0, 69, 34;
+  --loader-accent: #f08020;
+  --loader-accent-rgb: 240, 128, 32;
+  --loader-bg: #03130a;
+  --loader-bg-rgb: 3, 19, 10;
+  --loader-text: #ffffff;
+  --loader-text-dim: rgba(255, 255, 255, 0.56);
+  --loader-text-faint: rgba(255, 255, 255, 0.32);
+
+  --loader-line: rgba(255, 255, 255, 0.07);
+  --loader-line-strong: rgba(255, 255, 255, 0.14);
+
+  --loader-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --loader-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --loader-radius-sm: 6px;
+  --loader-radius-md: 12px;
+  --loader-radius-lg: 20px;
+
+  --loader-space-1: 8px;
+  --loader-space-2: 12px;
+  --loader-space-3: 20px;
+  --loader-space-4: 32px;
+  --loader-space-5: 48px;
+
+  --loader-font-display: "Neue Haas Grotesk Display", "Inter", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --loader-font-mono: "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
+}
+
+/* --------------------------------------------------------------------------
+   2. Full-viewport overlay shell
+   -------------------------------------------------------------------------- */
+.loader-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+      120% 120% at 50% 12%,
+      rgba(var(--loader-primary-rgb), 0.14) 0%,
+      rgba(var(--loader-bg-rgb), 0) 55%
+    ),
+    linear-gradient(180deg, #03130a 0%, #020e07 55%, #010805 100%);
+
+  color: var(--loader-text);
+  font-family: var(--loader-font-display);
+
+  /* GPU acceleration */
+  will-change: opacity, transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Exit transition — toggled via JS by adding .loader-bg--exit */
+.loader-bg.loader-bg--exit {
+  animation: loaderFadeOut 0.7s var(--loader-ease) forwards;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. Engineering grid backdrop
+   -------------------------------------------------------------------------- */
+.loader-grid {
+  position: absolute;
+  inset: -2px;
+  z-index: 1;
+
+  background-image: linear-gradient(
+      var(--loader-line) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, var(--loader-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center;
+
+  -webkit-mask-image: radial-gradient(
+    80% 80% at 50% 45%,
+    #000 40%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(80% 80% at 50% 45%, #000 40%, transparent 100%);
+
+  opacity: 0.6;
+  animation: gridPulse 8s ease-in-out infinite;
+  will-change: opacity;
+}
+
+/* Fine sub-grid for added technical density */
+.loader-grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 12px 12px;
+  background-position: center;
+}
+
+/* --------------------------------------------------------------------------
+   4. Film grain / noise overlay (adds material quality, kills flatness)
+   -------------------------------------------------------------------------- */
+.loader-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
+}
+
+/* --------------------------------------------------------------------------
+   5. SVG engineering lines (technical drawing accents)
+   -------------------------------------------------------------------------- */
+.loader-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.loader-lines path,
+.loader-lines line {
+  stroke: rgba(var(--loader-primary-rgb), 0.55);
+  stroke-width: 1;
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 6 10;
+  animation: linePulse 5.5s var(--loader-ease) infinite;
+}
+
+.loader-lines circle {
+  fill: var(--loader-accent);
+  opacity: 0;
+  animation: nodePulse 5.5s var(--loader-ease) infinite;
+}
+
+.loader-lines path:nth-of-type(2),
+.loader-lines line:nth-of-type(2) {
+  animation-delay: 0.4s;
+}
+.loader-lines path:nth-of-type(3),
+.loader-lines line:nth-of-type(3) {
+  animation-delay: 0.8s;
+}
+.loader-lines circle:nth-of-type(2) {
+  animation-delay: 0.6s;
+}
+.loader-lines circle:nth-of-type(3) {
+  animation-delay: 1.2s;
+}
+
+/* --------------------------------------------------------------------------
+   6. Ambient glows
+   -------------------------------------------------------------------------- */
+.loader-glow {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.loader-glow-green {
+  top: 50%;
+  left: 50%;
+  width: 720px;
+  height: 720px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(var(--loader-primary-rgb), 0.35) 0%,
+    rgba(var(--loader-dark-rgb), 0.12) 45%,
+    transparent 72%
+  );
+  animation: glowFloat 9s var(--loader-ease) infinite;
+}
+
+.loader-glow-orange {
+  top: 38%;
+  left: 62%;
+  width: 180px;
+  height: 180px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(var(--loader-accent-rgb), 0.28) 0%,
+    rgba(var(--loader-accent-rgb), 0.08) 55%,
+    transparent 75%
+  );
+  animation: glowFloat 7s var(--loader-ease) infinite reverse;
+}
+
+/* --------------------------------------------------------------------------
+   7. Content stack
+   -------------------------------------------------------------------------- */
+.loader-content {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--loader-space-4);
+  width: 100%;
+  max-width: 420px;
+  padding: var(--loader-space-4) var(--loader-space-3);
+  text-align: center;
+
+  /* Frosted glass panel */
+   background: linear-gradient(
+        145deg,
+        #fff 0%,
+        #fff 100%
+    );
+   border:1px solid rgba(255,255,255,.12);
+  border-radius: var(--loader-radius-lg);
+ backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+      box-shadow:
+        0 20px 70px rgba(240,128,32,.28);
+  overflow:hidden;
+}
+
+.loader-brand{
+    gap:24px;
+    
+}
+/* --------------------------------------------------------------------------
+   8. Logo mark
+   -------------------------------------------------------------------------- */
+.loader-logo-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width:120px;
+height:120px;
+}
+
+.loader-logo-wrapper{
+    width:190px;
+    height:190px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:transparent;
+    border:none;
+    box-shadow:none;
+}
+
+.loader-logo-glow {
+  position: absolute;
+  inset: -18px;
+  z-index: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(var(--loader-primary-rgb), 0.45) 0%,
+    transparent 70%
+  );
+  filter: blur(18px);
+  animation: logoGlow 3.2s var(--loader-ease) infinite;
+  will-change: opacity, transform;
+}
+
+.loader-logo {
+  position: relative;
+  z-index: 2;
+  width: 200px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+
+.loader-segment.active{
+
+    box-shadow:
+        0 0 12px rgba(240,128,32,.35);
+}
+
+/* --------------------------------------------------------------------------
+   9. Typography
+   -------------------------------------------------------------------------- */
+.loader-title {
+  margin: 0;
+  font-size: clamp(1.35rem, 1.1rem + 1.1vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  color:#F08020;
+}   
+
+.loader-subtitle{
+    font-size:15px;
+    letter-spacing:0.28em;
+    text-align:center;
+    color:#006030;
+}
+
+/* --------------------------------------------------------------------------
+   10. Status line
+   -------------------------------------------------------------------------- */
+.loader-status-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 20px; /* reserves space -> prevents layout shift on text swap */
+}
+
+.loader-status{
+    color:#4A4A4A;
+    font-size:15px;
+    font-weight:500;
+}
+
+/* --------------------------------------------------------------------------
+   11. Segmented progress bar
+   -------------------------------------------------------------------------- */
+.loader-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--loader-space-2);
+  width: 100%;
+     margin-top:20px;
+}
+
+.loader-progress-track {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  height: 6px;
+}
+
+.loader-segment {
+  position: relative;
+  flex: 1 1 0;
+  height: 100%;
+  border-radius: 999px;
+  background:#006030;
+  overflow: hidden;
+  will-change: transform, background;
+}
+
+.loader-segment::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    var(--loader-primary) 0%,
+    var(--loader-accent) 100%
+  );
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s var(--loader-ease);
+}
+
+.loader-segment.active::after {
+  transform: scaleX(1);
+  animation: progressGlow 1.4s var(--loader-ease) infinite;
+}
+
+.loader-percent {
+  font-family: var(--loader-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+   color:#006030;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   12. Keyframes
+   -------------------------------------------------------------------------- */
+
+/* Grid: slow ambient breathing so the backdrop never feels static */
+@keyframes gridPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Glow: a controlled drift, never a bounce */
+@keyframes glowFloat {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(-50%, -52%) scale(1.08);
+    opacity: 1;
+  }
+}
+
+/* Technical lines: dash offset creates a "tracing" measurement effect */
+@keyframes linePulse {
+  0% {
+    stroke-dashoffset: 32;
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.65;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.15;
+  }
+}
+
+/* Node markers: appear like measurement points being logged */
+@keyframes nodePulse {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* Logo halo: soft enterprise "standby" pulse */
+@keyframes logoGlow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.04);
+  }
+}
+
+/* Active progress segment: gentle internal shimmer, not a flashy glare */
+@keyframes progressGlow {
+  0%,
+  100% {
+    filter: brightness(1) saturate(1);
+  }
+  50% {
+    filter: brightness(1.35) saturate(1.15);
+  }
+}
+
+/* Status text: crossfade cadence for rotating status copy */
+@keyframes statusFade {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Whole-overlay exit: fade + slight scale-up, Apple-style dismissal */
+@keyframes loaderFadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.02);
+    filter: blur(6px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   13. Responsive adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .loader-content {
+    max-width: 320px;
+    gap: var(--loader-space-3);
+    padding: var(--loader-space-3) var(--loader-space-2);
+  }
+
+  .loader-logo-container {
+    width: 76px;
+    height: 76px;
+  }
+
+  .loader-logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .loader-title {
+    font-size: 1.25rem;
+  }
+
+  .loader-subtitle {
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+  }
+
+  .loader-glow-green {
+    width: 420px;
+    height: 420px;
+  }
+
+  .loader-glow-orange {
+    width: 160px;
+    height: 160px;
+  }
+
+  .loader-grid {
+    background-size: 32px 32px;
+  }
+}
+
+@media (max-width: 380px) {
+  .loader-progress-track {
+    gap: 3px;
+  }
+
+  .loader-status {
+    font-size: 0.6875rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   14. Accessibility — respect reduced motion preference
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .loader-grid,
+  .loader-glow-green,
+  .loader-glow-orange,
+  .loader-lines path,
+  .loader-lines line,
+  .loader-lines circle,
+  .loader-logo-glow,
+  .loader-status,
+  .loader-segment.active::after {
+    animation: none !important;
+  }
+
+  .loader-bg.loader-bg--exit {
+    animation: none !important;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+  }
+}

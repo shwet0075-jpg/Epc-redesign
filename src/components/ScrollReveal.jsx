@@ -1,68 +1,106 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from "framer-motion";
 
 export default function ScrollReveal({
   children,
-  variant = 'fade-up',
+  variant = "fade-up",
   delay = 0,
-  duration = 0.52,
-  className = '',
+  duration = 0.7,
+  className = "",
   viewportOnce = true,
-  amount = 0.1
+  amount = 0.15,
 }) {
   const shouldReduceMotion = useReducedMotion();
 
-  const getVariants = () => {
-    switch (variant) {
-      case 'fade-up':
-        return {
-          hidden: { opacity: 0, y: 24 },
-          visible: { opacity: 1, y: 0 }
-        };
-      case 'fade-down':
-        return {
-          hidden: { opacity: 0, y: -24 },
-          visible: { opacity: 1, y: 0 }
-        };
-      case 'fade-left':
-        return {
-          hidden: { opacity: 0, x: 24 },
-          visible: { opacity: 1, x: 0 }
-        };
-      case 'fade-right':
-        return {
-          hidden: { opacity: 0, x: -24 },
-          visible: { opacity: 1, x: 0 }
-        };
-      case 'scale-in':
-        return {
-          hidden: { opacity: 0, scale: 0.92 },
-          visible: { opacity: 1, scale: 1 }
-        };
-      case 'zoom-out':
-        return {
-          hidden: { opacity: 0, scale: 1.08 },
-          visible: { opacity: 1, scale: 1 }
-        };
-      default:
-        return {
-          hidden: { opacity: 0, y: 24 },
-          visible: { opacity: 1, y: 0 }
-        };
-    }
+  const variants = {
+    "fade-up": {
+      hidden: {
+        opacity: 0,
+        y: 36,
+        filter: "blur(8px)",
+      },
+      visible: {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+      },
+    },
+
+    "fade-down": {
+      hidden: {
+        opacity: 0,
+        y: -36,
+        filter: "blur(8px)",
+      },
+      visible: {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+      },
+    },
+
+    "fade-left": {
+      hidden: {
+        opacity: 0,
+        x: 36,
+      },
+      visible: {
+        opacity: 1,
+        x: 0,
+      },
+    },
+
+    "fade-right": {
+      hidden: {
+        opacity: 0,
+        x: -36,
+      },
+      visible: {
+        opacity: 1,
+        x: 0,
+      },
+    },
+
+    "scale-in": {
+      hidden: {
+        opacity: 0,
+        scale: 0.95,
+      },
+      visible: {
+        opacity: 1,
+        scale: 1,
+      },
+    },
+
+    "zoom-out": {
+      hidden: {
+        opacity: 0,
+        scale: 1.05,
+      },
+      visible: {
+        opacity: 1,
+        scale: 1,
+      },
+    },
   };
 
   return (
     <motion.div
       className={className}
-      initial={shouldReduceMotion ? false : 'hidden'}
-      whileInView={shouldReduceMotion ? undefined : 'visible'}
-      viewport={{ once: viewportOnce, amount }}
-      transition={{
-        duration: duration,
-        delay: delay,
-        ease: [0.25, 1, 0.5, 1] // Custom cubic-bezier for smooth deceleration
+      style={{
+        willChange: "transform, opacity",
       }}
-      variants={getVariants()}
+      initial={shouldReduceMotion ? false : "hidden"}
+      whileInView={shouldReduceMotion ? undefined : "visible"}
+      viewport={{
+        once: viewportOnce,
+        amount,
+      }}
+      transition={{
+        duration,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      variants={variants[variant] || variants["fade-up"]}
     >
       {children}
     </motion.div>

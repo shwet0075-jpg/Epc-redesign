@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { FiArrowRight, FiMail } from 'react-icons/fi';
 import ScrollReveal from './ScrollReveal';
+import SplitHeading from "./animations/SplitHeading";
 
 export default function ContactCTA() {
   return (

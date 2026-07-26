@@ -2,11 +2,10 @@ export const solutionsOverview = [
 {
   id: 'fire-safety',
   title: 'Fire Safety & Suppression Systems',
-  blurb: 'Design and build solutions for Fire Detection & Suppression Systems.',
+  blurb: 'Comprehensive fire detection, suppression, life safety, and compliance solutions engineered to safeguard people, assets, and critical infrastructure.',
   image: '/assets/images/fire-safety.png',
   path: '/solutions/fire-safety',
-  intro:
-    'We handle the full lifecycle of a fire safety system — design, supply, installation and commissioning — as a single, unified package for any building or premises.',
+ intro:'Prudent EPC delivers end-to-end fire protection solutions covering system design, engineering, supply, installation, testing, commissioning, and long-term maintenance. Every solution is developed in compliance with the National Building Code (NBC), Maharashtra Fire Services regulations, and relevant international standards to ensure maximum safety, reliability, and regulatory compliance for commercial, industrial, healthcare, institutional, and mission-critical facilities.',
   details: [
     {
       title: 'Fire Fighting System',
@@ -47,12 +46,12 @@ export const solutionsOverview = [
 },
   {
     id: 'security',
-    title: 'Security and Surveillance System',
-    blurb: 'Intelligent, IP-based CCTV and premises surveillance over fibre networks.',
+    title: 'Security & Surveillance System',
+    blurb:'Advanced IP-based video surveillance, access control, and integrated security solutions for modern enterprises and critical facilities.',
     image: '/assets/images/security-surveillance.jpeg',
     path: '/solutions/security',
     intro:
-      'We build open, IP-based video security systems backed by responsive support — from cameras and video management software to displays and accessories.',
+'Our integrated security solutions combine intelligent video surveillance, access control, centralized monitoring, and analytics to provide complete situational awareness. Designed for commercial buildings, industrial facilities, campuses, transportation infrastructure, and government organizations, our systems enhance security while remaining scalable for future expansion.',
     details: [
       {
         title: 'Video Surveillance System',
@@ -75,7 +74,7 @@ export const solutionsOverview = [
   image: '/assets/images/data-centre.png',
   path: '/solutions/data-centre',
   intro:
-    "We undertake services of building data centres with critical power, precision air condition equipment, racks, networking and allied facilities like data centre monitoring systems. We produce a quality, scalable, efficient design based on our client's business expansion plans. Our vendor neutrality — meaning we are not tied to any manufacturer's equipment — gives us the flexibility to select the right design, equipment, and partners for our client's data centre projects by putting their interests first. In the high-stakes game of data centre construction, value has its place but reliability, performance and redundancy pay the bills, so every Prudent EPC data centre is fully warranted and built to the most exacting of standards. Our veteran in-house team takes charge of every aspect of data centre construction from start to finish. Our design-build process guarantees that collaboration and communication are seamless every step of the way.",
+'Prudent EPC delivers complete design-build solutions for modern data centres, integrating critical power systems, precision cooling, structured cabling, server racks, fire protection, surveillance, networking, and intelligent monitoring. Our vendor-neutral approach enables us to select the most suitable technologies for each project, ensuring high availability, scalability, energy efficiency, and long-term operational reliability while supporting future business growth.',
   bulletGroups: [
     {
       heading: 'Significant Cost Savings',
@@ -102,18 +101,14 @@ export const solutionsOverview = [
   {
   id: 'ibms',
   title: 'Integrated Building Management System',
-  blurb: 'Smart city solutions that keep buildings and cities connected.',
+  blurb:
+'Integrated Building Management Systems that unify building automation, energy management, security, and safety into a single intelligent platform.',
       image: '/assets/images/ibms.jpg',
 
   path: '/solutions/ibms',
 
-  intro: `IBMS from Prudent EPC offers a multitude of benefits. We help you plan operations and assess performance, simplify building operations, improve occupant comfort, enhance safety, increase operational efficiency, save energy, and protect your assets.
-
-The term Building Management System (BMS) encompasses a wide variety of technologies, including energy management systems and building automation controls.
-
-Its primary function is to control, monitor, and optimize building services such as heating, ventilation, air conditioning (HVAC), lighting, alarm systems, access control, and electrical equipment.
-
-Building Management Systems cater to both small and large installations, ranging from 50 to over 100,000 analog and digital points. It enables integrated building management and remote monitoring of anywhere from a single building to thousands of facilities. Your investment remains protected because the system is fully backward-compatible, modular, and easily extensible.`,
+  intro:
+'Prudent EPC designs and implements Integrated Building Management Systems (IBMS) that centralize HVAC, lighting, electrical systems, fire safety, access control, surveillance, and energy management into a unified intelligent platform. Our scalable architecture enables real-time monitoring, predictive maintenance, improved occupant comfort, reduced operating costs, and optimized energy performance for buildings of every scale.',
 
   bulletGroups: [
     {

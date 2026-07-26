@@ -21,12 +21,17 @@ export default function SolutionCard({ title, blurb, image, path, index }) {
       <div className="solution-card-image-wrap">
         <img src={image} alt={title} className="solution-card-img" />
         <div className="solution-card-overlay" aria-hidden="true" />
+        <div className="solution-card-glow" aria-hidden="true" />
         <span className="solution-card-number" aria-hidden="true">{number}</span>
       </div>
 
       <div className="solution-card-content">
         <div className="solution-card-heading">
-          <span className="solution-card-icon" aria-hidden="true"><Icon /></span>
+          <div className="solution-card-icon-wrap">
+  <span className="solution-card-icon" aria-hidden="true">
+    <Icon />
+  </span>
+</div>
           <span className="solution-card-kicker">Solution {number}</span>
         </div>
         <h3 className="solution-card-title">{title}</h3>
