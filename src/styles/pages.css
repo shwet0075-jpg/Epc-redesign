@@ -390,6 +390,10 @@
   color: var(--color-gray-500);
 }
 
+.footer-socials { display: flex; gap: 10px; margin-top: 25px; }
+.footer-socials a { display: grid; width: 34px; height: 34px; place-items: center; color: #d9e7de; border: 1px solid rgba(255,255,255,.14); border-radius: 50%; transition: transform .25s ease, background .25s ease, color .25s ease; }
+.footer-socials a:hover { color: #1b190f; background: var(--color-secondary); border-color: var(--color-secondary); transform: translateY(-3px); padding-left: 0; }
+
 .footer-logo {
     height: 72px;
     width: auto;

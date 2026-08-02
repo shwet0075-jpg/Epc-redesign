@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { FiPhone, FiMail, FiMapPin } from 'react-icons/fi';
+import { FaFacebookF, FaInstagram, FaYoutube, FaWhatsapp } from 'react-icons/fa';
 import { navLinks, contactInfo } from '../data/navigation';
 import VisitorCounter from './VisitorCounter';
 
@@ -14,6 +15,12 @@ export default function Footer() {
             Design and build solutions for Fire Detection & Suppression, Security & Surveillance,
             Data Centres, and Integrated Building Management Systems.
           </p>
+          <div className="footer-socials" aria-label="Follow Prudent EPC">
+            <a href={contactInfo.social.facebook} aria-label="Facebook" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
+            <a href={contactInfo.social.instagram} aria-label="Instagram" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+            <a href={contactInfo.social.youtube} aria-label="YouTube" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
+            <a href={contactInfo.whatsappLink} aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><FaWhatsapp /></a>
+          </div>
           <VisitorCounter />
         </div>
 

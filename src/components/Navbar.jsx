@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX, FiChevronDown, FiPhone } from 'react-icons/fi';
+import { FiMenu, FiX, FiChevronDown, FiPhone, FiActivity, FiCamera, FiCpu, FiSliders, FiArrowUpRight } from 'react-icons/fi';
 import { navLinks, contactInfo } from '../data/navigation';
 import '../styles/navbar.css';
 import { FaFacebookF,FaWhatsapp, FaInstagram, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
+
+const solutionIcons = [FiActivity, FiCamera, FiCpu, FiSliders];
 
 
 export default function Navbar() {
@@ -118,9 +120,17 @@ target="_blank"
     damping: 22
 }}
                       >
-                        {link.children.map((child) => (
-                          <NavLink key={child.path} to={child.path}>{child.label}</NavLink>
-                        ))}
+                        <span className="mega-menu__eyebrow">Integrated building systems</span>
+                        <div className="mega-menu__grid">
+                          {link.children.map((child, index) => {
+                            const Icon = solutionIcons[index];
+                            return <NavLink className="mega-menu__item" key={child.path} to={child.path}>
+                              <span className="mega-menu__icon"><Icon /></span>
+                              <span>{child.label}<small>Explore solution <FiArrowUpRight /></small></span>
+                            </NavLink>;
+                          })}
+                        </div>
+                        <NavLink className="mega-menu__all" to="/solutions">Explore all Prudent EPC solutions <FiArrowUpRight /></NavLink>
                       </motion.div>
                     )}
                   </AnimatePresence>

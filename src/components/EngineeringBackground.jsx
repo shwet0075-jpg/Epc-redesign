@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useScroll, useTransform } from "framer-motion";
 import { useEffect } from "react";
 
 const variants = {
@@ -68,44 +68,68 @@ export default function EngineeringBackground({
   const config = variants[variant] || variants.hero;
 
   const mouseX = useMotionValue(0);
-const mouseY = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-const x = useSpring(mouseX, {
-  stiffness: 45,
-  damping: 18,
-});
+  // Smoothed translate drift (unchanged behaviour from before).
+  const x = useSpring(mouseX, {
+    stiffness: 45,
+    damping: 18,
+  });
 
-const y = useSpring(mouseY, {
-  stiffness: 45,
-  damping: 18,
-});
+  const y = useSpring(mouseY, {
+    stiffness: 45,
+    damping: 18,
+  });
 
-useEffect(() => {
-  const handleMove = (e) => {
-    const offsetX = (e.clientX / window.innerWidth - 0.5) * 24;
-    const offsetY = (e.clientY / window.innerHeight - 0.5) * 24;
+  // Same mouse signal, also driving a subtle 3D tilt (rotateX/rotateY)
+  // so the whole network reads as a plane floating in depth rather
+  // than a flat layer sliding around.
+  const rotateX = useSpring(useTransform(mouseY, (v) => v * -0.18), {
+    stiffness: 40,
+    damping: 20,
+  });
+  const rotateY = useSpring(useTransform(mouseX, (v) => v * 0.18), {
+    stiffness: 40,
+    damping: 20,
+  });
 
-    mouseX.set(offsetX);
-    mouseY.set(offsetY);
-  };
+  // Scroll-linked parallax: the whole background drifts and scales
+  // slightly as the section scrolls past, adding depth beyond the
+  // mouse-tilt alone.
+  const { scrollYProgress } = useScroll();
+  const scrollY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const scrollScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
 
-  window.addEventListener("mousemove", handleMove);
+  useEffect(() => {
+    const handleMove = (e) => {
+      const offsetX = (e.clientX / window.innerWidth - 0.5) * 24;
+      const offsetY = (e.clientY / window.innerHeight - 0.5) * 24;
 
-  return () => {
-    window.removeEventListener("mousemove", handleMove);
-  };
-}, [mouseX, mouseY]);
+      mouseX.set(offsetX);
+      mouseY.set(offsetY);
+    };
+
+    window.addEventListener("mousemove", handleMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+    };
+  }, [mouseX, mouseY]);
 
   return (
-   <motion.div
-  className={`engineering-bg engineering-bg--${variant}`}
-  aria-hidden="true"
-  style={{
-    x,
-    y,
-  }}
->
-    
+    <motion.div
+      className={`engineering-bg engineering-bg--${variant}`}
+      aria-hidden="true"
+      style={{
+        x,
+        y: scrollY,
+        rotateX,
+        rotateY,
+        scale: scrollScale,
+        transformPerspective: 1200,
+      }}
+    >
+
       {/* Base Grid */}
       <div className="engineering-grid" />
 

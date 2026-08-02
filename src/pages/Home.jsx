@@ -7,11 +7,13 @@ import SectionTitle from '../components/SectionTitle';
 import ContactCTA from '../components/ContactCTA';
 import EngineeringBackground from '../components/EngineeringBackground';
 import EngineeringIntelligence from "../components/EngineeringIntelligence";
-import EngineeringImpact from "../components/EngineeringImpact";
 import FeaturedProjects from "../components/FeaturedProjects/FeaturedProjects";
-import OurExpertise from "../components/OurExpertise/OurExpertise";
-import SplitHeading from '../components/animations/SplitHeading';
 import CountUp from "../components/animations/CountUp";
+import NextHome from '../components/NextHome';
+
+// motion(Link) so the primary CTA gets a real spring/tap interaction
+// instead of relying on CSS :hover alone.
+const MotionLink = motion(Link);
 
 const slides = [
   {
@@ -40,6 +42,8 @@ const slides = [
   },
 ];
 
+// Not currently rendered by any Home section (kept — ready to wire
+// into an "Our Expertise" style grid later rather than deleted).
 const capabilities = [
   {
     icon: <FiShield />,
@@ -103,7 +107,9 @@ const heroStats = [
   { value: "Pan India", label: "Execution Capability" },
 ];
 
-export default function Home() {
+const revealVariant = (index) => (index === 1 ? 'fade-up' : index === 0 ? 'fade-right' : 'fade-left');
+
+export function LegacyHome() {
   const [active, setActive] = useState(0);
   const shouldReduceMotion = useReducedMotion();
 
@@ -124,17 +130,8 @@ export default function Home() {
 
   return (
     <>
-     <section
-  className="hero hero--redesigned"
-  aria-label="Prudent EPC Hero Section"
->
-  <EngineeringBackground variant="hero" />
-
-  <div className="hero-overlay" />
-
-  <div className="container">
-    ...
-  </div>
+      <section className="hero hero--redesigned" aria-label="Prudent EPC Hero Section">
+        <EngineeringBackground variant="hero" />
 
         <div className="hero-media" aria-hidden="true">
           <AnimatePresence mode="wait">
@@ -145,12 +142,12 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1 }}
               exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.012 }}
               transition={{ duration: shouldReduceMotion ? 0.15 : 0.58, ease: [0.22, 1, 0.36, 1] }}
-             style={{
-  backgroundImage: `url(${activeSlide.image})`,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
-}}
+              style={{
+                backgroundImage: `url(${activeSlide.image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
             />
           </AnimatePresence>
           <div className="hero-wash" />
@@ -174,73 +171,56 @@ export default function Home() {
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: shouldReduceMotion ? 0 : 0.13 } } }}
           >
-           <motion.p
-  className="eyebrow hero-eyebrow"
-  variants={heroCopy}
-  transition={{ duration: 0.45 }}
->
-  {companyInfo.eyebrow}
-</motion.p>
-        <h1 className="hero-title">
-  {companyInfo.title}
-</h1>
+            <motion.p className="eyebrow hero-eyebrow" variants={heroCopy} transition={{ duration: 0.45 }}>
+              {companyInfo.eyebrow}
+            </motion.p>
 
-<motion.p
-  className="hero-description"
-  variants={heroCopy}
-  transition={{ duration: 0.55 }}
->
-  {companyInfo.description}
-</motion.p>
+            <h1 className="hero-title">{companyInfo.title}</h1>
 
-<motion.div
-  className="hero-featured"
-  variants={heroCopy}
->
-  <span className="hero-featured-label">
-    FEATURED SOLUTION
-  </span>
-
-  <h3>{activeSlide.title}</h3>
-
-  <Link
-    to={activeSlide.path}
-    className="hero-featured-link"
-  >
-    Explore <FiArrowRight />
-  </Link>
-</motion.div>
+            <motion.p className="hero-description" variants={heroCopy} transition={{ duration: 0.55 }}>
+              {companyInfo.description}
+            </motion.p>
 
             <motion.div
-  className="hero-actions"
-  variants={heroCopy}
->
-  <Link
-    to="/solutions"
-    className="btn btn-primary hero-cta"
-  >
-    Explore Solutions
-    <FiArrowRight />
-  </Link>
+              className="hero-featured"
+              variants={heroCopy}
+              style={{ transformPerspective: 800 }}
+              whileHover={shouldReduceMotion ? undefined : { y: -4, rotateX: 3 }}
+            >
+              <span className="hero-featured-label">FEATURED SOLUTION</span>
+              <h3>{activeSlide.title}</h3>
+              <Link to={activeSlide.path} className="hero-featured-link">
+                Explore <FiArrowRight />
+              </Link>
+            </motion.div>
 
-  <Link
-    to="/projects"
-    className="btn btn-outline hero-cta-secondary"
-  >
-    Our Projects
-  </Link>
-</motion.div>
+            <motion.div className="hero-actions" variants={heroCopy}>
+              <MotionLink
+                to="/solutions"
+                className="btn btn-primary hero-cta"
+                whileHover={shouldReduceMotion ? undefined : { y: -3, scale: 1.02 }}
+                whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
+                transition={{ type: 'spring', stiffness: 320, damping: 20 }}
+              >
+                Explore Solutions
+                <FiArrowRight />
+              </MotionLink>
 
-<motion.div
-  className="hero-stats"
-  variants={heroCopy}
->
- {heroStats.map((stat) => (
-  <div key={stat.label}>
-    <CountUp end={stat.value} />
-  </div>
-))}
-</motion.div>
+              <Link to="/projects" className="btn btn-outline hero-cta-secondary">
+                Our Projects
+              </Link>
+            </motion.div>
+
+            <motion.div className="hero-stats" variants={heroCopy}>
+              {heroStats.map((stat) => (
+                <div key={stat.label} className="hero-stat">
+                  <h3>
+                    <CountUp end={stat.value} />
+                  </h3>
+                  <p>{stat.label}</p>
+                </div>
+              ))}
+            </motion.div>
           </motion.div>
 
           <div className="hero-control" aria-label="Hero slides">
@@ -249,6 +229,7 @@ export default function Home() {
               {slides.map((slide, index) => (
                 <button
                   key={slide.path}
+                  type="button"
                   className={index === active ? 'is-active' : ''}
                   onClick={() => setActive(index)}
                   aria-label={`Slide ${index + 1}`}
@@ -262,28 +243,40 @@ export default function Home() {
 
         <a className="hero-scroll" href="#capabilities" aria-label="Scroll to capabilities">
           <span>SCROLL</span>
-
-<FiArrowDown />
-
-<small>Discover More</small>
+          <FiArrowDown />
+          <small>Discover More</small>
         </a>
       </section>
 
-
-              <EngineeringIntelligence />
-     
+      <EngineeringIntelligence />
+      <FeaturedProjects />
 
       <section className="section foundations-section">
         <div className="foundations-backdrop" aria-hidden="true" />
         <div className="container">
           <ScrollReveal variant="fade-up">
-            <SectionTitle eyebrow="Our Core Foundations" title="The pillars of our operations" align="center" className="foundations-heading" />
+            <SectionTitle
+              eyebrow="Our Core Foundations"
+              title="The pillars of our operations"
+              align="center"
+              className="foundations-heading"
+            />
           </ScrollReveal>
 
           <div className="vmv-grid">
             {foundations.map((foundation, index) => (
-              <ScrollReveal key={foundation.title} variant={index === 1 ? 'fade-up' : index === 0 ? 'fade-right' : 'fade-left'} delay={index * 0.08} className={`vmv-card-wrapper vmv-card-wrapper--${index + 1}`}>
-                <motion.article className="vmv-card" whileHover={{ y: -9 }} transition={{ type: 'spring', stiffness: 260, damping: 24 }}>
+              <ScrollReveal
+                key={foundation.title}
+                variant={revealVariant(index)}
+                delay={index * 0.08}
+                className={`vmv-card-wrapper vmv-card-wrapper--${index + 1}`}
+              >
+                <motion.article
+                  className="vmv-card"
+                  style={{ transformPerspective: 1000 }}
+                  whileHover={{ y: -9, rotateX: -3, scale: 1.012 }}
+                  transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+                >
                   <div className="vmv-image" style={{ backgroundImage: `url(${foundation.img})` }}>
                     <span className="vmv-number" aria-hidden="true">0{index + 1}</span>
                   </div>
@@ -299,10 +292,10 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
-<OurExpertise />
-<FeaturedProjects />
+
       <ContactCTA />
     </>
   );
 }
+
+export default NextHome;

@@ -177,7 +177,7 @@ Not Just Installing Systems.`}
 <motion.article
     className="ei-card ei-left"
    whileHover={{
-  y: -20,
+  y: -8,
   rotate: -2,
   transition: { duration: 0.3 }
 }}
@@ -237,7 +237,7 @@ Not Just Installing Systems.`}
 <motion.article
     className="ei-card ei-bottom"
     whileHover={{
-  x: -20,
+  x: -8,
   rotate: -2,
   transition: { duration: 0.3 }
 }}
