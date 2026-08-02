@@ -1,6 +1,9 @@
-import { motion } from "framer-motion";
-import CountUp from "react-countup";
-import { useInView } from "react-intersection-observer";
+import { motion, useReducedMotion } from "framer-motion";
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
   {
@@ -36,14 +39,29 @@ const stats = [
 ];
 
 export default function EngineeringImpact() {
+  const sectionRef = useRef(null);
+  const valueRefs = useRef([]);
+  const shouldReduceMotion = useReducedMotion();
 
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.35
-  });
+  useLayoutEffect(() => {
+    if (shouldReduceMotion || window.matchMedia('(max-width: 760px)').matches) return undefined;
+    const context = gsap.context(() => {
+      const counters = valueRefs.current.map(() => ({ value: 0 }));
+      const timeline = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 62%', end: '+=62%', scrub: .55, pin: '.impact-grid', anticipatePin: 1 },
+      });
+      timeline.fromTo('.impact-card', { rotateX: 16, y: 48, opacity: .18 }, { rotateX: 0, y: 0, opacity: 1, stagger: .08, duration: .34, ease: 'none' }, 0);
+      counters.forEach((counter, index) => {
+        timeline.to(counter, { value: stats[index].number, duration: .5, ease: 'none', onUpdate: () => {
+          if (valueRefs.current[index]) valueRefs.current[index].textContent = Math.round(counter.value).toLocaleString();
+        } }, .12 + index * .07);
+      });
+    }, sectionRef);
+    return () => context.revert();
+  }, [shouldReduceMotion]);
 
   return (
-    <section className="engineering-impact" ref={ref}>
+    <section className="engineering-impact" ref={sectionRef}>
 
       <div className="container">
 
@@ -94,12 +112,7 @@ export default function EngineeringImpact() {
 
               <div className="impact-number">
 
-                {inView && (
-                  <CountUp
-                    end={item.number}
-                    duration={2}
-                  />
-                )}
+                <span ref={(element) => { valueRefs.current[index] = element; }}>{item.number}</span>
 
                 {item.suffix}
 

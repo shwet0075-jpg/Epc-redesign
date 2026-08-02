@@ -1,6 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
 
 :root {
+  /* Cinematic motion system — slow enough to feel engineered, not playful. */
+  --perspective-stage: 1200px;
+  --motion-weighted: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-precision: cubic-bezier(0.65, 0, 0.35, 1);
+  /* Cinematic motion system — slow enough to feel engineered, not playful. */
+  --perspective-stage: 1200px;
+  --motion-weighted: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-precision: cubic-bezier(0.65, 0, 0.35, 1);
   /* Brand palette */
   --color-primary: #006030;         /* Primary Green */
   --color-primary-dark: #004522;

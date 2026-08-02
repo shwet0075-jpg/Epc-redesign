@@ -9,7 +9,7 @@ import EngineeringBackground from '../components/EngineeringBackground';
 import EngineeringIntelligence from "../components/EngineeringIntelligence";
 import FeaturedProjects from "../components/FeaturedProjects/FeaturedProjects";
 import CountUp from "../components/animations/CountUp";
-import NextHome from '../components/NextHome';
+import CinematicHome from '../components/CinematicHome';
 
 // motion(Link) so the primary CTA gets a real spring/tap interaction
 // instead of relying on CSS :hover alone.
@@ -298,4 +298,4 @@ export function LegacyHome() {
   );
 }
 
-export default NextHome;
+export default CinematicHome;

@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import {
   motion,
   AnimatePresence,
   LayoutGroup,
 } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FiArrowRight, FiMapPin } from "react-icons/fi";
 import "./FeaturedProjects.css";
 import { projects } from "./projects";
@@ -33,15 +36,29 @@ const itemVariants = {
   },
 };
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function FeaturedProjects() {
   const featuredProjects = projects.filter((project) => project.featured);
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const sectionRef = useRef(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const activeProject = featuredProjects[activeIndex];
 
+  useLayoutEffect(() => {
+    if (shouldReduceMotion || window.matchMedia('(max-width: 900px)').matches) return undefined;
+    const context = gsap.context(() => {
+      gsap.timeline({ scrollTrigger: { trigger: sectionRef.current, start: 'top 18%', end: '+=70%', scrub: .7, pin: '.fp-grid', anticipatePin: 1 } })
+        .fromTo('.fp-sidebar', { x: -48, opacity: .25 }, { x: 0, opacity: 1, ease: 'none', duration: .45 }, 0)
+        .fromTo('.fp-preview', { xPercent: 14, scale: .93, opacity: .25 }, { xPercent: 0, scale: 1, opacity: 1, ease: 'none', duration: .6 }, 0);
+    }, sectionRef);
+    return () => context.revert();
+  }, [shouldReduceMotion]);
+
   return (
-    <section className="featured-projects section">
+    <section ref={sectionRef} className="featured-projects section">
       <div className="container">
         {/* ================= HEADER ================= */}
 

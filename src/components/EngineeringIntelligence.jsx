@@ -1,13 +1,40 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FiCpu, FiShield, FiActivity, FiDatabase } from "react-icons/fi";
 import { GiProcessor } from "react-icons/gi";
 import SplitHeading from "./animations/SplitHeading";
 
+gsap.registerPlugin(ScrollTrigger);
 
 
 export default function EngineeringIntelligence() {
+  const sectionRef = useRef(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  useLayoutEffect(() => {
+    if (shouldReduceMotion || window.matchMedia('(max-width: 760px)').matches) return undefined;
+    const context = gsap.context(() => {
+      const paths = gsap.utils.toArray('.ei-path');
+      gsap.set(paths, { strokeDasharray: 520, strokeDashoffset: 520 });
+      gsap.set('.ei-card, .ei-hub', { autoAlpha: 0 });
+      const timeline = gsap.timeline({
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 68%', end: 'center 45%', scrub: .7 },
+      });
+      timeline
+        .to('.ei-hub', { autoAlpha: 1, scale: 1, duration: .24 }, 0)
+        .to(paths, { strokeDashoffset: 0, stagger: .13, duration: .28, ease: 'none' }, .05)
+        .to('.ei-top', { autoAlpha: 1, y: 0, duration: .2 }, .22)
+        .to('.ei-left', { autoAlpha: 1, x: 0, duration: .2 }, .38)
+        .to('.ei-right', { autoAlpha: 1, x: 0, duration: .2 }, .54)
+        .to('.ei-bottom', { autoAlpha: 1, y: 0, duration: .2 }, .7);
+    }, sectionRef);
+    return () => context.revert();
+  }, [shouldReduceMotion]);
+
   return (
-    <section className="engineering-intelligence">
+    <section ref={sectionRef} className="engineering-intelligence">
       <div className="container">
 
         <motion.div

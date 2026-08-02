@@ -1,9 +1,17 @@
-import { useState } from 'react';
+import { lazy, Suspense, useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { FiActivity, FiArrowRight, FiCheck, FiCpu, FiCrosshair, FiLayers, FiMonitor, FiShield, FiSliders, FiUsers, FiZap } from 'react-icons/fi';
 import CountUp from './animations/CountUp';
 import { clients } from '../data/clients';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import EngineeringIntelligence from './EngineeringIntelligence';
+import EngineeringImpact from './EngineeringImpact';
+import FeaturedProjects from './FeaturedProjects/FeaturedProjects';
+
+const HeroInfrastructureScene = lazy(() => import('./HeroInfrastructureScene'));
+gsap.registerPlugin(ScrollTrigger);
 
 const solutions = [
   { number: '01', title: 'Fire Safety', label: 'DETECTION & SUPPRESSION', copy: 'Early detection, clean-agent suppression and life-safety systems engineered around your building.', icon: FiActivity, path: '/solutions/fire-safety', tone: 'fire' },

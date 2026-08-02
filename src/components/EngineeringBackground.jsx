@@ -62,6 +62,14 @@ const variants = {
   },
 };
 
+const particles = Array.from({ length: 18 }, (_, index) => ({
+  id: index,
+  left: `${(index * 37 + 11) % 100}%`,
+  top: `${(index * 53 + 17) % 100}%`,
+  duration: 6 + (index % 5),
+  delay: (index % 6) * .45,
+}));
+
 export default function EngineeringBackground({
   variant = "hero",
 }) {
@@ -72,11 +80,6 @@ export default function EngineeringBackground({
 
   // Smoothed translate drift (unchanged behaviour from before).
   const x = useSpring(mouseX, {
-    stiffness: 45,
-    damping: 18,
-  });
-
-  const y = useSpring(mouseY, {
     stiffness: 45,
     damping: 18,
   });
@@ -206,23 +209,23 @@ export default function EngineeringBackground({
 ))}
 
     {/* Floating Particles */}
-{Array.from({ length: 18 }).map((_, i) => (
+{particles.map((particle) => (
   <motion.span
-    key={`particle-${i}`}
+    key={`particle-${particle.id}`}
     className="engineering-particle"
     style={{
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
+      left: particle.left,
+      top: particle.top,
     }}
     animate={{
       y: [-10, 10, -10],
       opacity: [0.15, 0.5, 0.15],
     }}
     transition={{
-      duration: 6 + Math.random() * 4,
+      duration: particle.duration,
       repeat: Infinity,
       ease: "easeInOut",
-      delay: Math.random() * 5,
+      delay: particle.delay,
     }}
   />
 ))}

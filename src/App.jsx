@@ -6,6 +6,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import BackToTop from "./components/BackToTop";
+import SmoothScroll from "./components/SmoothScroll";
 
 import PremiumLoader from "./components/Loading/PremiumLoader";
 
@@ -54,7 +55,7 @@ function AppRoutes() {
 
 function Website() {
   return (
-    <>
+    <SmoothScroll>
       <ScrollToTop />
 
       <Navbar />
@@ -66,7 +67,7 @@ function Website() {
       <BackToTop />
 
       <Footer />
-    </>
+    </SmoothScroll>
   );
 }
 
