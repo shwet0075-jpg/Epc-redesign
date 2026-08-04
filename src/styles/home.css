@@ -1447,3 +1447,417 @@
   inset: 0;
   opacity: 0;
 }
+/* ==========================================================
+   HOME PAGE REDESIGN V3
+   New hero / marquee / capabilities-list / foundations layout
+   for Home.jsx. Scoped with unique class names so it doesn't
+   touch any rule above.
+========================================================== */
+
+.epc-hero-v2 {
+  position: relative;
+  overflow: hidden;
+  padding: 150px 0 70px;
+  background: #fbfcfa;
+}
+
+.epc-hero-watermark {
+  position: absolute;
+  top: -40px;
+  left: -10px;
+  font-size: clamp(6rem, 16vw, 13rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: rgba(0, 40, 20, 0.045);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+  line-height: 1;
+}
+
+.epc-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 22px;
+}
+
+.epc-hero-eyebrow::before {
+  content: '';
+  width: 26px;
+  height: 2px;
+  background: var(--color-secondary);
+  display: inline-block;
+}
+
+.epc-hero-title-v2 {
+  font-size: clamp(2.8rem, 5.6vw, 5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--color-text-dark);
+  margin: 0 0 26px;
+  max-width: 780px;
+}
+
+/* Each ScrollText call renders as its own block line now, since the
+   heading is built from JS-cased text + per-word reveal instead of a
+   single text node the old lowercase/::first-letter trick relied on. */
+.epc-hero-title-line {
+  display: block;
+}
+.epc-cap-icon-wrap {
+  display: inline-flex;
+}
+
+.epc-hero-title-v2 .accent {
+  color: var(--color-secondary);
+}
+
+.epc-hero-desc-v2 {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  max-width: 520px;
+  margin: 0 0 36px;
+}
+
+.epc-hero-actions-v2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 56px;
+}
+
+.epc-btn-primary-v2,
+.epc-btn-outline-v2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 28px;
+  border-radius: var(--radius-pill);
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: transform var(--dur-fast) var(--ease-out-soft), box-shadow var(--dur-fast);
+}
+
+.epc-btn-primary-v2 {
+  background: var(--color-primary-dark);
+  color: #fff;
+  box-shadow: var(--elev-brand);
+}
+
+.epc-btn-primary-v2:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--elev-3);
+}
+
+.epc-btn-outline-v2 {
+  background: transparent;
+  color: var(--color-text-dark);
+  border: 1px solid var(--color-gray-300);
+}
+
+.epc-btn-outline-v2:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-primary);
+}
+
+.epc-hero-stats-v2 {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding-top: 34px;
+  border-top: 1px solid var(--color-gray-200);
+  max-width: 620px;
+}
+
+.epc-hero-stat-v2 {
+  position: relative;
+  padding-right: 40px;
+}
+
+.epc-hero-stat-v2:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: var(--color-gray-200);
+}
+
+.epc-hero-stat-v2 h3 {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--color-text-dark);
+  margin: 0 0 6px;
+}
+
+.epc-hero-stat-v2 p {
+  font-size: .74rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0;
+  font-weight: 600;
+}
+
+.epc-scroll-link-v2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 34px;
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.epc-featured-card-v2 {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, .7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 96, 48, .1);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  max-width: 340px;
+  margin-left: auto;
+  box-shadow: var(--elev-3);
+}
+
+.epc-featured-ring {
+  position: absolute;
+  top: -90px;
+  right: -70px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0, 96, 48, .18);
+  animation: ringRotateSlowV2 70s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.epc-featured-ring::before {
+  content: '';
+  position: absolute;
+  inset: 34px;
+  border-radius: 50%;
+  border: 1px dashed rgba(240, 128, 32, .22);
+}
+
+.epc-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-secondary);
+  display: inline-block;
+  animation: blinkDotV2 1.6s ease-in-out infinite;
+}
+
+.epc-marquee-strip {
+  background: var(--color-primary-dark);
+  color: rgba(255, 255, 255, .85);
+  overflow: hidden;
+  padding: 16px 0;
+  white-space: nowrap;
+}
+
+.epc-marquee-track {
+  display: inline-flex;
+  animation: marqueeScrollV2 28s linear infinite;
+}
+
+.epc-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 0 22px;
+}
+
+.epc-marquee-item::after {
+  content: '•';
+  margin-left: 22px;
+  color: var(--color-secondary);
+}
+
+.epc-cap-header-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 40px;
+  align-items: end;
+  margin-bottom: 48px;
+}
+
+.epc-cap-header-row h2 {
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-weight: 800;
+  color: var(--color-text-dark);
+  margin: 10px 0 0;
+  line-height: 1.15;
+}
+
+.epc-cap-side-note {
+  font-size: .8rem;
+  line-height: 1.8;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-align: right;
+}
+
+.epc-cap-list {
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.epc-cap-row {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 26px 8px;
+  border-bottom: 1px solid var(--color-gray-200);
+  transition: background .3s ease, padding-left .3s ease;
+}
+
+.epc-cap-row:hover {
+  background: rgba(0, 96, 48, .03);
+  padding-left: 18px;
+}
+
+.epc-cap-num {
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  letter-spacing: .08em;
+  width: 30px;
+  flex-shrink: 0;
+}
+
+.epc-cap-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(0, 96, 48, .08);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.epc-cap-row h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin: 0;
+}
+
+.epc-cap-row p {
+  font-size: .88rem;
+  color: var(--color-text-muted);
+  margin: 4px 0 0;
+  max-width: 560px;
+  line-height: 1.5;
+}
+
+.epc-cap-arrow {
+  margin-left: auto;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  transition: transform .3s ease, color .3s ease;
+}
+
+.epc-cap-row:hover .epc-cap-arrow {
+  transform: translate(4px, -4px);
+  color: var(--color-secondary);
+}
+
+.epc-foundations-v2 {
+  background: var(--color-light);
+  padding: 100px 0;
+}
+
+.epc-foundation-col {
+  position: relative;
+  padding-top: 10px;
+}
+
+.epc-foundation-ghost {
+  position: absolute;
+  top: -46px;
+  left: -6px;
+  font-size: 6rem;
+  font-weight: 800;
+  color: rgba(0, 96, 48, .06);
+  line-height: 1;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.epc-foundation-col h3 {
+  position: relative;
+  z-index: 1;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-text-dark);
+  margin: 0 0 14px;
+}
+
+.epc-foundation-col p {
+  position: relative;
+  z-index: 1;
+  font-size: .95rem;
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  margin: 0;
+  max-width: 340px;
+}
+
+@keyframes marqueeScrollV2 {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes blinkDotV2 {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes ringRotateSlowV2 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 900px) {
+  .epc-cap-header-row { grid-template-columns: 1fr; }
+  .epc-cap-side-note { text-align: left; }
+  .epc-featured-card-v2 { margin: 0; max-width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .epc-marquee-track,
+  .epc-featured-ring,
+  .epc-live-dot {
+    animation: none !important;
+  }
+}

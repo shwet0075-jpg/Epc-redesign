@@ -1,10 +1,15 @@
 import { useEffect } from 'react';
 import { useReducedMotion } from 'framer-motion';
+import gsap from 'gsap';
 import Lenis from 'lenis';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+// Registered here, once, at the same place Lenis is wired up — was being
+// used (ScrollTrigger.update()) without ever being registered with GSAP.
+gsap.registerPlugin(ScrollTrigger);
+
 /**
- * Keeps the site’s scroll response deliberate while allowing every section to
+ * Keeps the site's scroll response deliberate while allowing every section to
  * fall back to native scrolling for reduced-motion users and narrow screens.
  */
 export default function SmoothScroll({ children }) {

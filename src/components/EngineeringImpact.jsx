@@ -48,7 +48,7 @@ export default function EngineeringImpact() {
     const context = gsap.context(() => {
       const counters = valueRefs.current.map(() => ({ value: 0 }));
       const timeline = gsap.timeline({
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 62%', end: '+=62%', scrub: .55, pin: '.impact-grid', anticipatePin: 1 },
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 72%', end: 'bottom 42%', scrub: .55 },
       });
       timeline.fromTo('.impact-card', { rotateX: 16, y: 48, opacity: .18 }, { rotateX: 0, y: 0, opacity: 1, stagger: .08, duration: .34, ease: 'none' }, 0);
       counters.forEach((counter, index) => {

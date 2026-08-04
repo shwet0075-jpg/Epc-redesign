@@ -5,9 +5,97 @@ import ScrollReveal from '../components/ScrollReveal';
 import SolutionCard from '../components/SolutionCard';
 import ContactCTA from '../components/ContactCTA';
 
+/* ------------------------------------------------------------------ */
+/*  Local styles — scoped to this page, no new dependencies. Same     */
+/*  elevation/hover language already used on home.css / Services.jsx  */
+/*  (layered shadows, gradient accent bar, subtle 3D lift on hover).  */
+/* ------------------------------------------------------------------ */
+function SolutionsStyles() {
+  return (
+    <style>{`
+      .solution-stat-tile {
+        transition: transform .35s cubic-bezier(.22,1,.36,1), border-color .35s ease, box-shadow .35s ease;
+      }
+      .solution-stat-tile:hover {
+        transform: translateY(-4px);
+        border-color: rgba(240, 128, 32, .45) !important;
+        box-shadow: 0 16px 34px rgba(0, 0, 0, .18);
+      }
+
+      .solution-feature-card {
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform .45s cubic-bezier(.22,1,.36,1),
+          box-shadow .45s ease,
+          border-color .45s ease;
+      }
+      .solution-feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+        transition: width .45s ease;
+        z-index: 1;
+      }
+      .solution-feature-card:hover::before {
+        width: 100%;
+      }
+      .solution-feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 26px 60px rgba(0, 0, 0, .12);
+        border-color: rgba(0, 96, 48, .18) !important;
+      }
+      .solution-feature-image-frame {
+        overflow: hidden;
+      }
+      .solution-feature-image-frame img {
+        transition: transform .7s cubic-bezier(.22,1,.36,1);
+      }
+      .solution-feature-card:hover .solution-feature-image-frame img {
+        transform: scale(1.06);
+      }
+
+      .cert-card-pro {
+        transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease, border-color .4s ease;
+      }
+      .cert-card-pro:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 55px rgba(0, 0, 0, .14);
+        border-color: rgba(0, 96, 48, .25) !important;
+      }
+      .cert-card-pro:hover .cert-hover-overlay {
+        opacity: 1;
+      }
+      .cert-card-pro .cert-card-image img {
+        transition: transform .5s ease;
+      }
+      .cert-card-pro:hover .cert-card-image img {
+        transform: scale(1.05);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .solution-stat-tile,
+        .solution-feature-card,
+        .solution-feature-card::before,
+        .solution-feature-image-frame img,
+        .cert-card-pro,
+        .cert-card-pro .cert-card-image img {
+          transition: none !important;
+        }
+      }
+    `}</style>
+  );
+}
+
 function SolutionsOverview() {
   return (
     <>
+      <SolutionsStyles />
+
       {/* PAGE HEADER */}
       <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: '140px 0 80px', color: '#fff', position: 'relative', overflow: 'hidden' }}>
         <div
@@ -46,6 +134,7 @@ function SolutionsOverview() {
   ].map(([value, label]) => (
     <div
       key={label}
+      className="solution-stat-tile"
       style={{
         padding: '22px',
         borderRadius: '18px',
@@ -112,6 +201,8 @@ function SolutionDetail() {
 
   return (
     <>
+      <SolutionsStyles />
+
       {/* PAGE HEADER */}
       <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: '140px 0 80px', color: '#fff', position: 'relative', overflow: 'hidden' }}>
         <div
@@ -211,11 +302,11 @@ function SolutionDetail() {
             {sol.details.map((d, i) => (
               <ScrollReveal
                 key={d.title}
-                variant={i % 2 === 0 ? 'fade-right' : 'fade-left'}
+                variant={i % 2 === 0 ? 'swing-right-3d' : 'swing-left-3d'}
                 className="solution-feature-reveal"
               >
                 <div
-                  className={`solution-feature ${i % 2 === 1 ? 'reverse' : ''}`}
+                  className={`solution-feature solution-feature-card ${i % 2 === 1 ? 'reverse' : ''}`}
                   style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
@@ -229,7 +320,7 @@ function SolutionDetail() {
                   }}
                 >
                   <div
-                    className="solution-feature-image"
+                    className="solution-feature-image solution-feature-image-frame"
                     style={{
                       borderRadius: 'var(--radius-md)',
                       overflow: 'hidden',
@@ -254,77 +345,6 @@ function SolutionDetail() {
                 </div>
               </ScrollReveal>
             ))}
-          </div>
-        )}
-
-        {/* Certificate Card */}
-        {sol.certificate && (
-          <div className="container" style={{ marginTop: '64px' }}>
-            <ScrollReveal variant="scale-in">
-              <div
-                className="cert-card"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '40px',
-                  margin: '0 auto',
-                  padding: '32px',
-                  maxWidth: '780px',
-                  background: '#ffffff',
-                  border: '1px solid var(--color-gray-300)',
-                  borderRadius: 'var(--radius-lg)',
-                  boxShadow: 'var(--shadow-md)',
-                }}
-              >
-                <div
-                  className="cert-card-image"
-                  style={{
-                    flexShrink: 0,
-                    width: '180px',
-                    height: '240px',
-                    borderRadius: 'var(--radius-sm)',
-                    overflow: 'hidden',
-                    border: '1px solid var(--color-gray-300)',
-                    position: 'relative',
-                  }}
-                >
-                  <a href={sol.certificate.image} target="_blank" rel="noopener noreferrer" style={{ display: 'block', height: '100%' }}>
-                    <img
-                      src={sol.certificate.image}
-                      alt={sol.certificate.label}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                      }}
-                    />
-                    <div
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background: 'rgba(0, 96, 48, 0.75)',
-                        color: '#fff',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '0.85rem',
-                        fontWeight: 600,
-                        opacity: 0,
-                        transition: 'opacity var(--transition-fast)',
-                      }}
-                      className="cert-hover-overlay"
-                    >
-                      View Certificate
-                    </div>
-                  </a>
-                </div>
-                <div className="cert-card-body">
-                  <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Certified Licensee</span>
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '10px' }}>{sol.certificate.label}</h3>
-                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: 1.6, margin: 0 }}>{sol.certificate.caption}</p>
-                </div>
-              </div>
-            </ScrollReveal>
           </div>
         )}
       </section>

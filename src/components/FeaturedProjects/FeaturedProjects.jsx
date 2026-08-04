@@ -50,7 +50,7 @@ export default function FeaturedProjects() {
   useLayoutEffect(() => {
     if (shouldReduceMotion || window.matchMedia('(max-width: 900px)').matches) return undefined;
     const context = gsap.context(() => {
-      gsap.timeline({ scrollTrigger: { trigger: sectionRef.current, start: 'top 18%', end: '+=70%', scrub: .7, pin: '.fp-grid', anticipatePin: 1 } })
+      gsap.timeline({ scrollTrigger: { trigger: sectionRef.current, start: 'top 66%', end: 'center 38%', scrub: .7 } })
         .fromTo('.fp-sidebar', { x: -48, opacity: .25 }, { x: 0, opacity: 1, ease: 'none', duration: .45 }, 0)
         .fromTo('.fp-preview', { xPercent: 14, scale: .93, opacity: .25 }, { xPercent: 0, scale: 1, opacity: 1, ease: 'none', duration: .6 }, 0);
     }, sectionRef);

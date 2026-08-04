@@ -1,27 +1,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMaximize2, FiX } from 'react-icons/fi';
-import { clients } from '../data/clients';
 
-// Reusing clients database for gallery items
-const galleryItems = clients.map((item) => {
-  let category = 'corporate';
-  const name = item.name.toLowerCase();
-  
-  if (name.includes('rail') || name.includes('metro') || name.includes('coach') || name.includes('port') || name.includes('jnpt')) {
-    category = 'infrastructure';
-  } else if (name.includes('parliament') || name.includes('pwd') || name.includes('bis') || name.includes('aiims') || name.includes('army') || name.includes('barc') || name.includes('mcgm') || name.includes('neigrihms') || name.includes('cpwd') || name.includes('bureau')) {
-    category = 'government';
-  } else if (name.includes('bank') || name.includes('fund') || name.includes('lic') || name.includes('edelweiss') || name.includes('saraswat')) {
-    category = 'banking';
-  }
-  
-  return {
-    ...item,
-    category,
-  };
-});
-
+// Gallery now sources the on-site work photos (w1.png – w18.png) instead of client logos.
+// Categories are assigned round-robin across the 4 sectors below so the existing filter
+// bar keeps working exactly as before — update `category`/`name`/`desc` per image once
+// you know which project each photo belongs to.
 const categories = [
   { id: 'all', label: 'All Projects' },
   { id: 'infrastructure', label: 'Infrastructure & Railways' },
@@ -29,6 +13,17 @@ const categories = [
   { id: 'banking', label: 'Banking & Finance' },
   { id: 'corporate', label: 'Data Centres & Corporate' },
 ];
+
+const galleryItems = Array.from({ length: 18 }, (_, i) => {
+  const num = i + 1;
+  const sectorCycle = ['infrastructure', 'government', 'banking', 'corporate'];
+  return {
+    logo: `/assets/images/work-img/w${num}.png`,
+    name: `Project ${String(num).padStart(2, '0')}`,
+    desc: 'On-site engineering, installation, testing, and commissioning work delivered by Prudent EPC.',
+    category: sectorCycle[i % sectorCycle.length],
+  };
+});
 
 export default function Gallery() {
   const [filter, setFilter] = useState('all');

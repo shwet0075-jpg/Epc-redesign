@@ -1,8 +1,6 @@
-import { lazy, Suspense, useLayoutEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'framer-motion';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { FiActivity, FiArrowRight, FiCheck, FiCpu, FiCrosshair, FiLayers, FiMonitor, FiShield, FiSliders, FiUsers, FiZap } from 'react-icons/fi';
 import CountUp from './animations/CountUp';
 import EngineeringIntelligence from './EngineeringIntelligence';
@@ -11,7 +9,6 @@ import FeaturedProjects from './FeaturedProjects/FeaturedProjects';
 import { clients } from '../data/clients';
 
 const HeroInfrastructureScene = lazy(() => import('./HeroInfrastructureScene'));
-gsap.registerPlugin(ScrollTrigger);
 
 const solutions = [
   { number: '01', title: 'Fire Safety', label: 'DETECTION & SUPPRESSION', copy: 'Early detection, clean-agent suppression and life-safety systems engineered around your building.', icon: FiActivity, path: '/solutions/fire-safety', tone: 'fire' },
@@ -39,38 +36,24 @@ export default function CinematicHome() {
   const [principle, setPrinciple] = useState(0);
   const shouldReduceMotion = useReducedMotion();
   const heroRef = useRef(null);
-  const servicesRef = useRef(null);
-
-  useLayoutEffect(() => {
-    if (shouldReduceMotion || window.matchMedia('(max-width: 760px)').matches) return undefined;
-    const context = gsap.context(() => {
-      gsap.timeline({ scrollTrigger: { trigger: heroRef.current, start: 'top top', end: '+=115%', scrub: .8, pin: true, anticipatePin: 1 } })
-        .to('.next-hero__copy', { yPercent: -16, opacity: .24, ease: 'none' }, 0)
-        .to('.next-hero__visual', { yPercent: 8, scale: 1.1, rotate: -2, ease: 'none' }, 0)
-        .to('.hero-status', { opacity: 0, y: 18, ease: 'none' }, .35);
-
-      gsap.utils.toArray('.solution-next-card').forEach((card, index) => {
-        gsap.fromTo(card, { rotateX: 10, y: 58, opacity: .2 }, {
-          rotateX: 0, y: 0, opacity: 1, ease: 'none',
-          scrollTrigger: { trigger: servicesRef.current, start: `top+=${index * 80} 76%`, end: `top+=${370 + index * 80} 50%`, scrub: .65 },
-        });
-      });
-    });
-    return () => context.revert();
-  }, [shouldReduceMotion]);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const copyOpacity = useTransform(scrollYProgress, [0, .72], [1, 0]);
+  const visualY = useTransform(scrollYProgress, [0, 1], [0, 56]);
+  const visualScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
 
   return <>
     <section ref={heroRef} className="hero hero--next" aria-label="Prudent EPC smart infrastructure">
       <div className="hero-noise" aria-hidden="true" />
       <div className="container next-hero__grid">
-        <motion.div className="next-hero__copy" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8 }}>
+        <motion.div className="next-hero__copy" style={shouldReduceMotion ? undefined : { y: copyY, opacity: copyOpacity }} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8 }}>
           <p className="signal-label"><span /> SAFETY SYSTEMS, ENGINEERED AS ONE</p>
           <h1>Protection that <em>thinks</em> ahead.</h1>
           <p className="next-hero__lede">Prudent EPC designs the safety, security and intelligence layers that keep India’s most critical buildings protected, connected and ready.</p>
           <div className="next-hero__actions"><Link to="/contact" className="next-cta">Get a Free Consultation <FiArrowRight /></Link><Link to="/solutions" className="text-cta">Explore our expertise <FiArrowRight /></Link></div>
           <div className="hero-proof"><FiCheck /> <span>Single-point accountability from design to deployment.</span></div>
         </motion.div>
-        <motion.div className="next-hero__visual" initial={{ opacity: 0, scale: .92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: .1 }}>
+        <motion.div className="next-hero__visual" style={shouldReduceMotion ? undefined : { y: visualY, scale: visualScale }} initial={{ opacity: 0, scale: .92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: .1 }}>
           <div className="hero-r3f-layer"><Suspense fallback={<CssBuildingFallback />}><HeroInfrastructureScene /></Suspense></div>
           <div className="hero-css-fallback"><CssBuildingFallback /></div>
         </motion.div>
@@ -80,7 +63,7 @@ export default function CinematicHome() {
 
     <section className="intro-section section"><div className="container intro-layout"><div><p className="section-kicker">ENGINEERING CONFIDENCE</p><h2>Critical systems demand more than a contractor.</h2></div><p className="intro-copy">We unite specialist engineering disciplines into a coordinated building ecosystem—so protection, insight and operations work together from day one.</p></div><div className="container differentiator-grid">{differentiators.map((item, index) => { const Icon = item.icon; return <motion.article className="differentiator-card" key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .25 }} transition={{ delay: index * .08 }} whileHover={shouldReduceMotion ? undefined : { y: -8, rotateX: 3 }}><div className="card-icon"><Icon /></div><span>0{index + 1}</span><h3>{item.title}</h3><p>{item.text}</p></motion.article>; })}</div></section>
 
-    <section ref={servicesRef} className="solutions-next section" id="solutions"><div className="container solutions-heading"><div><p className="section-kicker section-kicker--light">FOUR SYSTEMS. ONE STANDARD.</p><h2>Every layer of the building, in sync.</h2></div><Link className="text-cta text-cta--light" to="/solutions">View all solutions <FiArrowRight /></Link></div><div className="container solutions-next__grid">{solutions.map((solution) => { const Icon = solution.icon; return <Link key={solution.title} className={`solution-next-card solution-next-card--${solution.tone}`} to={solution.path}><span className="solution-next__number">{solution.number}</span><div className="solution-next__icon"><Icon /></div><div className="solution-next__content"><p>{solution.label}</p><h3>{solution.title}</h3><span>{solution.copy}</span></div><FiArrowRight className="solution-next__arrow" /></Link>; })}</div></section>
+    <section className="solutions-next section" id="solutions"><div className="container solutions-heading"><div><p className="section-kicker section-kicker--light">FOUR SYSTEMS. ONE STANDARD.</p><h2>Every layer of the building, in sync.</h2></div><Link className="text-cta text-cta--light" to="/solutions">View all solutions <FiArrowRight /></Link></div><div className="container solutions-next__grid">{solutions.map((solution, index) => { const Icon = solution.icon; return <motion.div key={solution.title} initial={{ opacity: 0, y: 42 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .18 }} transition={{ delay: index * .08, duration: .55 }}><Link className={`solution-next-card solution-next-card--${solution.tone}`} to={solution.path}><span className="solution-next__number">{solution.number}</span><div className="solution-next__icon"><Icon /></div><div className="solution-next__content"><p>{solution.label}</p><h3>{solution.title}</h3><span>{solution.copy}</span></div><FiArrowRight className="solution-next__arrow" /></Link></motion.div>; })}</div></section>
 
     <EngineeringIntelligence />
     <section className="proof-band"><div className="container proof-grid"><div className="proof-intro"><p className="section-kicker">TRUST, BUILT IN</p><h2>Measured in the environments we protect.</h2></div><div className="proof-stat"><strong><CountUp end={15} suffix="+" /></strong><span>years of engineering experience</span></div><div className="proof-stat"><strong><CountUp end={250} suffix="+" /></strong><span>critical projects delivered</span></div><div className="proof-stat"><strong>Pan India</strong><span>execution & lifecycle support</span></div></div></section>

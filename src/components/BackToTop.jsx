@@ -4,10 +4,13 @@ import { FiArrowUp } from "react-icons/fi";
 
 export default function BackToTop() {
   const [visible, setVisible] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const onScroll = () => {
       setVisible(window.scrollY > 400);
+      const maximum = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(maximum > 0 ? Math.min(100, (window.scrollY / maximum) * 100) : 0);
     };
 
     window.addEventListener("scroll", onScroll);
@@ -27,6 +30,7 @@ export default function BackToTop() {
         <motion.button
           className="back-to-top"
           onClick={scrollTop}
+          style={{ '--scroll-progress': `${progress * 3.6}deg` }}
           initial={{ opacity: 0, scale: 0.7, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.7, y: 30 }}

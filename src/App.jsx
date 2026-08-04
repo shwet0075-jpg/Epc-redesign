@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import BackToTop from "./components/BackToTop";
 import SmoothScroll from "./components/SmoothScroll";
+import ContinuityThread from "./components/ContinuityThread";
 
 import PremiumLoader from "./components/Loading/PremiumLoader";
 
@@ -30,9 +31,9 @@ function AppRoutes() {
     <AnimatePresence mode="wait">
       <motion.div
         key={location.pathname}
-        initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={shouldReduceMotion ? undefined : { opacity: 0, y: -8 }}
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 18, clipPath: 'inset(0 0 7% 0)' }}
+        animate={{ opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)' }}
+        exit={shouldReduceMotion ? undefined : { opacity: 0, y: -10, clipPath: 'inset(7% 0 0 0)' }}
         transition={{
           duration: shouldReduceMotion ? 0 : 0.34,
           ease: [0.22, 1, 0.36, 1],
@@ -59,6 +60,7 @@ function Website() {
       <ScrollToTop />
 
       <Navbar />
+      <ContinuityThread />
 
       <main>
         <AppRoutes />
