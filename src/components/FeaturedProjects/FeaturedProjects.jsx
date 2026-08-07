@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   motion,
   AnimatePresence,
@@ -11,6 +12,8 @@ import { FiArrowRight, FiMapPin } from "react-icons/fi";
 import "./FeaturedProjects.css";
 import { projects } from "./projects";
 import SplitHeading from "../animations/SplitHeading";
+
+const MotionLink = motion(Link);
 
 const containerVariants = {
   hidden: {},
@@ -196,24 +199,25 @@ export default function FeaturedProjects() {
                 >
                   {activeProject.services.map((service, index) => (
                     <motion.span
-  key={service}
-  variants={itemVariants}
-  transition={{
-    delay: index * 0.06,
-  }}
->
+                      key={service}
+                      variants={itemVariants}
+                      transition={{
+                        delay: index * 0.06,
+                      }}
+                    >
                       {service}
                     </motion.span>
                   ))}
                 </motion.div>
 
-                <motion.button
+                <MotionLink
+                  to="/gallery"
                   className="fp-button"
                   variants={itemVariants}
                 >
                   Explore Project
                   <FiArrowRight />
-                </motion.button>
+                </MotionLink>
               </motion.div>
             </motion.div>
           </AnimatePresence>

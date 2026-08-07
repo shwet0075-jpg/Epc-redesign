@@ -81,13 +81,13 @@
     top: 0;
   }
   .navbar {
-    top: 36px; /* Sits perfectly below topbar */
+    top: 44px; /* Sits perfectly below topbar */
   }
   .navbar-scrolled {
     top: 0;
   }
   .topbar-inner {
-    padding: 6px 20px !important;
+    padding: 0 !important;
   }
   .topbar-socials {
     display: none !important;

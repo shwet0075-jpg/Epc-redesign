@@ -49,24 +49,28 @@ const capabilities = [
     label: "Fire & Life Safety",
     desc: "Complete fire detection, suppression, hydrant, sprinkler and gas suppression solutions for critical infrastructure.",
     image: "/assets/images/bg/fire-life-safety.png",
+    path: "/solutions/fire-safety",
   },
   {
     icon: <FiVideo />,
     label: "Security & Surveillance",
     desc: "Advanced IP CCTV, access control, perimeter security and centralized surveillance solutions.",
     image: "/assets/images/bg/security.png",
+    path: "/solutions/security",
   },
   {
     icon: <FiServer />,
     label: "Data Centre Infrastructure",
     desc: "Mission-critical power, cooling, networking and infrastructure solutions for modern data centres.",
     image: "/assets/images/bg/ds-infra.png",
+    path: "/solutions/data-centre",
   },
   {
     icon: <FiCpu />,
     label: "Integrated Building Management",
     desc: "Smart building automation integrating HVAC, lighting, safety and operational intelligence.",
     image: "/assets/images/bg/ib.png",
+    path: "/solutions/ibms",
   },
 ];
 
@@ -112,7 +116,7 @@ const heroLine2 = 'smart infrastructure.';
 const heroStats = [
   { value: "15+", label: "Years Experience" },
   { value: "250+", label: "Projects Delivered" },
-  { value: "Pan India", label: "Execution Capability" },
+  { value: "Pan India", label: "Clients Served" },
 ];
 
 // Marquee strip content — built from existing capability labels plus
@@ -210,7 +214,7 @@ export default function Home() {
                   Explore Solutions
                   <FiArrowRight />
                 </MotionLink>
-                <Link to="/projects" className="epc-btn-outline-v2">
+                <Link to="/gallery" className="epc-btn-outline-v2">
                   Our Projects
                 </Link>
               </motion.div>
@@ -350,7 +354,7 @@ export default function Home() {
                 variant={index % 2 === 0 ? 'swing-right-3d' : 'swing-left-3d'}
                 delay={index * 0.05}
               >
-                <div className="epc-cap-row">
+                <Link to={cap.path} className="epc-cap-row">
                   <span className="epc-cap-num">{String(index + 1).padStart(2, '0')}</span>
                   <ScrollReveal
                     variant="rise-blur-3d"
@@ -364,7 +368,7 @@ export default function Home() {
                     <p>{cap.desc}</p>
                   </div>
                   <FiArrowRight className="epc-cap-arrow" size={20} aria-hidden="true" />
-                </div>
+                </Link>
               </ScrollReveal>
             ))}
           </div>
