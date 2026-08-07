@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMaximize2, FiX } from 'react-icons/fi';
+import ScrollReveal from '../components/ScrollReveal';
+import ScrollText from '../components/ScrollText';
 
 // Gallery now sources the on-site work photos (w1.png – w18.png) instead of client logos.
 // Categories are assigned round-robin across the 4 sectors below so the existing filter
@@ -50,7 +52,12 @@ export default function Gallery() {
         />
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Project Gallery</span>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}>Our Work in Action</h1>
+          <ScrollText
+            as="h1"
+            text="Our Work in Action"
+            style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}
+            amount={0}
+          />
           <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '640px', margin: '0' }}>
             Explore site images of high-stakes fire fighting, security grids, building automation, and data centres successfully delivered across India.
           </p>
@@ -61,31 +68,37 @@ export default function Gallery() {
       <section className="section" style={{ background: '#ffffff' }}>
         <div className="container">
           {/* Sector Filters */}
-          <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '48px' }}>
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                className="filter-button"
-                onClick={() => setFilter(cat.id)}
-                style={{
-                  padding: '10px 24px',
-                  borderRadius: '999px',
-                  fontSize: '0.9rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  border: 'none',
-                  background: filter === cat.id ? 'var(--color-primary)' : 'var(--color-gray-100)',
-                  color: filter === cat.id ? 'var(--color-white)' : 'var(--color-text-muted)',
-                  transition: 'all 0.3s ease',
-                  boxShadow: filter === cat.id ? '0 4px 12px rgba(0, 96, 48, 0.15)' : 'none',
-                }}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
+          <ScrollReveal variant="fade-up">
+            <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '48px' }}>
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  className="filter-button"
+                  onClick={() => setFilter(cat.id)}
+                  style={{
+                    padding: '10px 24px',
+                    borderRadius: '999px',
+                    fontSize: '0.9rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    border: 'none',
+                    background: filter === cat.id ? 'var(--color-primary)' : 'var(--color-gray-100)',
+                    color: filter === cat.id ? 'var(--color-white)' : 'var(--color-text-muted)',
+                    transition: 'all 0.3s ease',
+                    boxShadow: filter === cat.id ? '0 4px 12px rgba(0, 96, 48, 0.15)' : 'none',
+                  }}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </ScrollReveal>
 
-          {/* Masonry Layout Grid */}
+          {/* Masonry Layout Grid — kept on plain AnimatePresence/layout, not
+              wrapped in ScrollStagger/ScrollReveal, since it already
+              animates on filter change; stacking scroll-triggered variants
+              on top of filter-driven layout animation causes flicker on
+              re-filter. */}
           <motion.div 
             layout
             className="gallery-grid"
@@ -175,7 +188,8 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* LIGHTBOX POPUP MODAL */}
+      {/* LIGHTBOX POPUP MODAL — unchanged, its own AnimatePresence transition
+          is already the right tool here */}
       <AnimatePresence>
         {lightbox && (
           <motion.div

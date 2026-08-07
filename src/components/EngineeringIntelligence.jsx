@@ -264,7 +264,7 @@ Not Just Installing Systems.`}
 <motion.article
     className="ei-card ei-bottom"
     whileHover={{
-  x: -8,
+  y: -8,
   rotate: -2,
   transition: { duration: 0.3 }
 }}

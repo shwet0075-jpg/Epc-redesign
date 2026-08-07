@@ -3,6 +3,8 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { FiCheckCircle, FiAward, FiUsers, FiCpu, FiTrendingUp, FiMapPin } from 'react-icons/fi';
 import { solutionsOverview } from '../data/solutions';
 import ScrollReveal from '../components/ScrollReveal';
+import ScrollStagger from '../components/ScrollStagger';
+import ScrollText from '../components/ScrollText';
 import SectionTitle from '../components/SectionTitle';
 
 const skills = [
@@ -124,6 +126,14 @@ function AboutStyles() {
       }
       .cert-card-pro:hover .cert-card-image img {
         transform: scale(1.05);
+      }
+      .cert-cards-row {
+        grid-template-columns: 1fr 1fr;
+      }
+      @media (max-width: 760px) {
+        .cert-cards-row {
+          grid-template-columns: 1fr !important;
+        }
       }
       @media (prefers-reduced-motion: reduce) {
         .about-blueprint-bg, .about-shimmer-badge, .about-dot-active, .director-ring-motif { animation: none !important; }
@@ -496,31 +506,30 @@ export default function About() {
           <div className="about-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.8fr', gap: '80px', alignItems: 'center' }}>
             <ScrollReveal variant="fade-right">
               <div className="about-text-content">
-                <SectionTitle
-                  eyebrow="Incorporated in 2019"
-                  title="A Legacy of Engineering Precision"
+                <span className="eyebrow" style={{ color: 'var(--color-primary)' }}>Incorporated in 2019</span>
+                <ScrollText
+                  as="h2"
+                  text="A Legacy of Engineering Precision"
+                  style={{ fontSize: 'clamp(1.9rem, 3.2vw, 2.6rem)', fontWeight: 800, color: 'var(--color-text-dark)', margin: '8px 0 20px' }}
+                  amount={0.4}
                 />
                 <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', lineHeight: 1.9, margin: '0 0 24px', maxWidth: '640px' }}>
                   Prudent EPC Pvt. Ltd. is a wholly owned subsidiary of Prudent Controls Pvt. Ltd.,
                   a technology services company with deep experience in fire safety and security
                   systems for industrial and commercial projects. We provide end-to-end design, supply, installation, commissioning, and maintenance of high-hazard facilities.
                 </p>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
-                  {skills.slice(0, 7).map((skill, i) => (
-                    <motion.div
-                      key={skill}
-                      initial={{ opacity: 0, x: -12 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: i * 0.05 }}
-                      whileHover={{ x: 4 }}
-                      style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}
-                    >
+                <ScrollStagger
+                  variant="fade-right"
+                  stagger={0.06}
+                  style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}
+                >
+                  {skills.slice(0, 7).map((skill) => (
+                    <div key={skill} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                       <FiCheckCircle style={{ color: 'var(--color-primary)', fontSize: '1.25rem', marginTop: '4px', flexShrink: 0 }} />
                       <span style={{ fontSize: '0.98rem', color: 'var(--color-text-body)' }}>{skill}</span>
-                    </motion.div>
+                    </div>
                   ))}
-                </div>
+                </ScrollStagger>
               </div>
             </ScrollReveal>
 
@@ -614,66 +623,71 @@ export default function About() {
       {/* STATS STRIP */}
       <section className="stats-section" style={{ padding: '80px 0', background: 'linear-gradient(180deg,#f8fbf9 0%,#ffffff 100%)', borderTop: '1px solid var(--color-gray-100)', borderBottom: '1px solid var(--color-gray-100)' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', textAlign: 'center' }}>
+          <ScrollStagger
+            variant="rise-blur-3d"
+            stagger={0.1}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', textAlign: 'center' }}
+          >
             {[
               { icon: <FiAward size={36} />, label: 'Projects Completed', value: '49+' },
               { icon: <FiUsers size={36} />, label: 'Direct Employees', value: '40+' },
               { icon: <FiCpu size={36} />, label: 'IBMS Installations', value: '60+' },
               { icon: <FiTrendingUp size={36} />, label: 'Leadership Experience', value: '22+' },
-            ].map((stat, i) => (
-              <ScrollReveal key={stat.label} variant="fade-up" delay={i * 0.1}>
-                <TiltCard
+            ].map((stat) => (
+              <TiltCard
+                key={stat.label}
+                style={{
+                  background: '#fff',
+                  borderRadius: '22px',
+                  padding: '38px 24px',
+                  border: '1px solid rgba(0,96,48,.08)',
+                  boxShadow: '0 15px 40px rgba(0,0,0,.08)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  height: '100%',
+                }}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.08, rotate: 4 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
                   style={{
-                    background: '#fff',
-                    borderRadius: '22px',
-                    padding: '38px 24px',
-                    border: '1px solid rgba(0,96,48,.08)',
-                    boxShadow: '0 15px 40px rgba(0,0,0,.08)',
+                    width: '78px',
+                    height: '78px',
+                    borderRadius: '50%',
                     display: 'flex',
-                    flexDirection: 'column',
                     alignItems: 'center',
-                    height: '100%',
+                    justifyContent: 'center',
+                    background: 'rgba(0,96,48,.08)',
+                    color: 'var(--color-primary)',
+                    marginBottom: '24px',
                   }}
                 >
-                  <motion.div
-                    whileHover={{ scale: 1.08, rotate: 4 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                    style={{
-                      width: '78px',
-                      height: '78px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      background: 'rgba(0,96,48,.08)',
-                      color: 'var(--color-primary)',
-                      marginBottom: '24px',
-                    }}
-                  >
-                    {stat.icon}
-                  </motion.div>
-                  <h3 style={{ fontSize: '3.2rem', fontWeight: 800, margin: '0 0 6px', color: 'var(--color-text-dark)', letterSpacing: '-0.02em' }}>
-                    <Counter end={stat.value} />
-                  </h3>
-                  <span style={{ fontSize: '0.82rem', color: '#6b7280', fontWeight: 600, letterSpacing: '.12em', textTransform: 'uppercase' }}>{stat.label}</span>
-                </TiltCard>
-              </ScrollReveal>
+                  {stat.icon}
+                </motion.div>
+                <h3 style={{ fontSize: '3.2rem', fontWeight: 800, margin: '0 0 6px', color: 'var(--color-text-dark)', letterSpacing: '-0.02em' }}>
+                  <Counter end={stat.value} />
+                </h3>
+                <span style={{ fontSize: '0.82rem', color: '#6b7280', fontWeight: 600, letterSpacing: '.12em', textTransform: 'uppercase' }}>{stat.label}</span>
+              </TiltCard>
             ))}
-          </div>
+          </ScrollStagger>
         </div>
       </section>
 
       {/* TIMELINE SECTION — a self-drawing engineering schematic line,
-          now built from the modular <TimelineItem> component above so
+          built from the modular <TimelineItem> component above so
           each milestone carries an icon and index tag instead of a
           bare card. */}
       <section className="section timeline-section" style={{ background: '#ffffff', overflow: 'hidden' }}>
         <div className="container">
-          <SectionTitle
-            eyebrow="Milestones"
-            title="Our Growth Journey"
-            align="center"
-          />
+          <ScrollReveal variant="fade-up">
+            <SectionTitle
+              eyebrow="Milestones"
+              title="Our Growth Journey"
+              align="center"
+            />
+          </ScrollReveal>
 
           <div ref={timelineRef} style={{ position: 'relative', maxWidth: '1000px', margin: '60px auto 0' }}>
             {/* Track (faint, always visible) */}
@@ -839,7 +853,12 @@ export default function About() {
             <ScrollReveal variant="fade-left">
               <div className="director-text">
                 <span className="eyebrow" style={{ color: 'var(--color-primary)' }}>Leadership</span>
-                <h2 style={{ fontSize: 'clamp(2.4rem, 3.8vw, 3rem)', fontWeight: 800, margin: '8px 0 4px', color: 'var(--color-text-dark)' }}>Director's Profile</h2>
+                <ScrollText
+                  as="h2"
+                  text="Director's Profile"
+                  style={{ fontSize: 'clamp(2.4rem, 3.8vw, 3rem)', fontWeight: 800, margin: '8px 0 4px', color: 'var(--color-text-dark)' }}
+                  amount={0.4}
+                />
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--color-secondary)', margin: '0 0 18px' }}>Mr. Avinash Patil</h3>
 
                 {/* Credential chips — same qualifications, now scannable at a glance */}
@@ -878,7 +897,9 @@ export default function About() {
                   set-up, with keen interest in contract, business and constitutional law.
                 </p>
 
-                <div
+                <ScrollStagger
+                  variant="rise-blur-3d"
+                  stagger={0.1}
                   style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(2,1fr)',
@@ -891,16 +912,18 @@ export default function About() {
                   <HighlightTile icon={<FiUsers size={20} />} value="40+" label="Professionals" />
                   <HighlightTile icon={<FiCpu size={20} />} value="60+" label="IBMS Projects" />
                   <HighlightTile icon={<FiMapPin size={20} />} value="Pan India" label="Operations" />
-                </div>
+                </ScrollStagger>
               </div>
             </ScrollReveal>
           </div>
 
-        {/* Certificate Cards — Certified Licensee (moved from Solutions.jsx)
+          {/* Certificate Cards — Certified Licensee (moved from Solutions.jsx)
               + Certificate of Registration, side by side below the
               Director's Profile grid */}
           {(certSolution?.certificate || true) && (
-            <div
+            <ScrollStagger
+              variant="scale-in"
+              stagger={0.15}
               style={{
                 marginTop: '64px',
                 display: 'grid',
@@ -912,76 +935,6 @@ export default function About() {
             >
               {/* Certified Licensee */}
               {certSolution?.certificate && (
-                <ScrollReveal variant="scale-in">
-                  <div
-                    className="cert-card cert-card-pro"
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '28px',
-                      padding: '28px',
-                      height: '100%',
-                      background: '#ffffff',
-                      border: '1px solid var(--color-gray-300)',
-                      borderRadius: 'var(--radius-lg)',
-                      boxShadow: 'var(--shadow-md)',
-                    }}
-                  >
-                    <div
-                      className="cert-card-image"
-                      style={{
-                        flexShrink: 0,
-                        width: '150px',
-                        height: '200px',
-                        borderRadius: 'var(--radius-sm)',
-                        overflow: 'hidden',
-                        border: '1px solid var(--color-gray-300)',
-                        position: 'relative',
-                      }}
-                    >
-                      <a href={certSolution.certificate.image} target="_blank" rel="noopener noreferrer" style={{ display: 'block', height: '100%' }}>
-                        <img
-                          src={certSolution.certificate.image}
-                          alt={certSolution.certificate.label}
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                          }}
-                        />
-                        <div
-                          style={{
-                            position: 'absolute',
-                            inset: 0,
-                            background: 'rgba(0, 96, 48, 0.75)',
-                            color: '#fff',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '0.8rem',
-                            fontWeight: 600,
-                            opacity: 0,
-                            transition: 'opacity var(--transition-fast)',
-                            textAlign: 'center',
-                            padding: '0 10px',
-                          }}
-                          className="cert-hover-overlay"
-                        >
-                          View Certificate
-                        </div>
-                      </a>
-                    </div>
-                    <div className="cert-card-body">
-                      <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Certified Licensee</span>
-                      <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '8px' }}>{certSolution.certificate.label}</h3>
-                      <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', lineHeight: 1.6, margin: 0 }}>{certSolution.certificate.caption}</p>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              )}
-
-              {/* Certificate of Registration */}
-              <ScrollReveal variant="scale-in">
                 <div
                   className="cert-card cert-card-pro"
                   style={{
@@ -1008,10 +961,10 @@ export default function About() {
                       position: 'relative',
                     }}
                   >
-                    <a href="/assets/images/registration-img.png" target="_blank" rel="noopener noreferrer" style={{ display: 'block', height: '100%' }}>
+                    <a href={certSolution.certificate.image} target="_blank" rel="noopener noreferrer" style={{ display: 'block', height: '100%' }}>
                       <img
-                        src="/assets/images/registration-img.png"
-                        alt="Certificate of Registration"
+                        src={certSolution.certificate.image}
+                        alt={certSolution.certificate.label}
                         style={{
                           width: '100%',
                           height: '100%',
@@ -1041,80 +994,149 @@ export default function About() {
                     </a>
                   </div>
                   <div className="cert-card-body">
-                    <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Registered Entity</span>
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '8px' }}>Certificate of Registration</h3>
-                    <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', lineHeight: 1.6, margin: 0 }}>
-                      Officially registered entity, recognized for compliance with statutory and regulatory requirements.
-                    </p>
+                    <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Certified Licensee</span>
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '8px' }}>{certSolution.certificate.label}</h3>
+                    <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', lineHeight: 1.6, margin: 0 }}>{certSolution.certificate.caption}</p>
                   </div>
                 </div>
-              </ScrollReveal>
-            </div>
-          )}
+              )}
 
-          
+              {/* Certificate of Registration */}
+              <div
+                className="cert-card cert-card-pro"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '28px',
+                  padding: '28px',
+                  height: '100%',
+                  background: '#ffffff',
+                  border: '1px solid var(--color-gray-300)',
+                  borderRadius: 'var(--radius-lg)',
+                  boxShadow: 'var(--shadow-md)',
+                }}
+              >
+                <div
+                  className="cert-card-image"
+                  style={{
+                    flexShrink: 0,
+                    width: '150px',
+                    height: '200px',
+                    borderRadius: 'var(--radius-sm)',
+                    overflow: 'hidden',
+                    border: '1px solid var(--color-gray-300)',
+                    position: 'relative',
+                  }}
+                >
+                  <a href="/assets/images/registration-img.png" target="_blank" rel="noopener noreferrer" style={{ display: 'block', height: '100%' }}>
+                    <img
+                      src="/assets/images/registration-img.png"
+                      alt="Certificate of Registration"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'rgba(0, 96, 48, 0.75)',
+                        color: '#fff',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        opacity: 0,
+                        transition: 'opacity var(--transition-fast)',
+                        textAlign: 'center',
+                        padding: '0 10px',
+                      }}
+                      className="cert-hover-overlay"
+                    >
+                      View Certificate
+                    </div>
+                  </a>
+                </div>
+                <div className="cert-card-body">
+                  <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Registered Entity</span>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '8px' }}>Certificate of Registration</h3>
+                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', lineHeight: 1.6, margin: 0 }}>
+                    Officially registered entity, recognized for compliance with statutory and regulatory requirements.
+                  </p>
+                </div>
+              </div>
+            </ScrollStagger>
+          )}
         </div>
       </section>
 
       {/* ADDITIONAL SKILLS & CREDENTIALS DETAILS */}
       <section className="section" style={{ background: '#ffffff' }}>
         <div className="container">
-          <SectionTitle
-            eyebrow="Certifications & Recognition"
-            title="Trusted by Government, Enterprise & Critical Infrastructure"
-            align="center"
-          />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '28px', marginTop: '48px' }}>
+          <ScrollReveal variant="fade-up">
+            <SectionTitle
+              eyebrow="Certifications & Recognition"
+              title="Trusted by Government, Enterprise & Critical Infrastructure"
+              align="center"
+            />
+          </ScrollReveal>
+          <ScrollStagger
+            variant="rise-blur-3d"
+            stagger={0.06}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '28px', marginTop: '48px' }}
+          >
             {skills.slice(7).map((skill, index) => (
-              <ScrollReveal key={skill} variant="fade-up" delay={index * 0.05}>
-                <TiltCard
-                  maxTilt={5}
+              <TiltCard
+                key={skill}
+                maxTilt={5}
+                style={{
+                  background: '#fff',
+                  borderRadius: '22px',
+                  padding: '30px',
+                  border: '1px solid rgba(0,96,48,.08)',
+                  boxShadow: '0 18px 45px rgba(0,0,0,.08)',
+                  display: 'flex',
+                  gap: '16px',
+                  height: '100%',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                <div
                   style={{
-                    background: '#fff',
-                    borderRadius: '22px',
-                    padding: '30px',
-                    border: '1px solid rgba(0,96,48,.08)',
-                    boxShadow: '0 18px 45px rgba(0,0,0,.08)',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '4px',
+                    background: 'linear-gradient(90deg,var(--color-primary),var(--color-secondary))',
+                  }}
+                />
+
+                <div
+                  style={{
+                    minWidth: '58px',
+                    height: '58px',
+                    borderRadius: '16px',
+                    background: 'rgba(0,96,48,.08)',
                     display: 'flex',
-                    gap: '16px',
-                    height: '100%',
-                    position: 'relative',
-                    overflow: 'hidden',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.15rem',
+                    fontWeight: 800,
+                    color: 'var(--color-primary)',
+                    flexShrink: 0,
                   }}
                 >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: '4px',
-                      background: 'linear-gradient(90deg,var(--color-primary),var(--color-secondary))',
-                    }}
-                  />
-
-                  <div
-                    style={{
-                      minWidth: '58px',
-                      height: '58px',
-                      borderRadius: '16px',
-                      background: 'rgba(0,96,48,.08)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '1.15rem',
-                      fontWeight: 800,
-                      color: 'var(--color-primary)',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {String(index + 1).padStart(2, '0')}
-                  </div>
-                  <span style={{ fontSize: '1rem', color: 'var(--color-text-body)', lineHeight: 1.75 }}>{skill}</span>
-                </TiltCard>
-              </ScrollReveal>
+                  {String(index + 1).padStart(2, '0')}
+                </div>
+                <span style={{ fontSize: '1rem', color: 'var(--color-text-body)', lineHeight: 1.75 }}>{skill}</span>
+              </TiltCard>
             ))}
-          </div>
+          </ScrollStagger>
         </div>
       </section>
 

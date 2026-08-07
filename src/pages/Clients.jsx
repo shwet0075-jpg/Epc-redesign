@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { clients } from '../data/clients';
+import ScrollReveal from '../components/ScrollReveal';
+import ScrollStagger from '../components/ScrollStagger';
+import ScrollText from '../components/ScrollText';
 
 // Dynamic categorization helper
 const getCategory = (client) => {
@@ -85,7 +88,12 @@ export default function Clients() {
         />
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Our Clients</span>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}>Trusted by Industry Leaders</h1>
+          <ScrollText
+            as="h1"
+            text="Trusted by Industry Leaders"
+            style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}
+            amount={0}
+          />
           <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '640px', margin: '0' }}>
             From national railways and defence establishments to banks and data-driven
             enterprises — 49+ projects delivered across India.
@@ -119,7 +127,11 @@ export default function Clients() {
       {/* STATS STRIP */}
       <section className="section stats-strip" style={{ background: 'var(--color-light)', padding: '60px 0', borderBottom: '1px solid var(--color-gray-100)' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '32px', textAlign: 'center' }}>
+          <ScrollStagger
+            variant="rise-blur-3d"
+            stagger={0.1}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '32px', textAlign: 'center' }}
+          >
             {[
               { label: 'Total Projects', value: '49+' },
               { label: 'Railways Divisions', value: '8+' },
@@ -133,7 +145,7 @@ export default function Clients() {
                 <span style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>{stat.label}</span>
               </div>
             ))}
-          </div>
+          </ScrollStagger>
         </div>
       </section>
 
@@ -141,31 +153,36 @@ export default function Clients() {
       <section className="section" style={{ background: '#ffffff' }}>
         <div className="container">
           {/* Sector Filters */}
-          <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '48px' }}>
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                className="filter-button"
-                onClick={() => setActiveFilter(cat.id)}
-                style={{
-                  padding: '10px 24px',
-                  borderRadius: '999px',
-                  fontSize: '0.9rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  border: 'none',
-                  background: activeFilter === cat.id ? 'var(--color-primary)' : 'var(--color-gray-100)',
-                  color: activeFilter === cat.id ? 'var(--color-white)' : 'var(--color-text-muted)',
-                  transition: 'all 0.3s ease',
-                  boxShadow: activeFilter === cat.id ? '0 4px 12px rgba(0, 96, 48, 0.15)' : 'none',
-                }}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
+          <ScrollReveal variant="fade-up">
+            <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '48px' }}>
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  className="filter-button"
+                  onClick={() => setActiveFilter(cat.id)}
+                  style={{
+                    padding: '10px 24px',
+                    borderRadius: '999px',
+                    fontSize: '0.9rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    border: 'none',
+                    background: activeFilter === cat.id ? 'var(--color-primary)' : 'var(--color-gray-100)',
+                    color: activeFilter === cat.id ? 'var(--color-white)' : 'var(--color-text-muted)',
+                    transition: 'all 0.3s ease',
+                    boxShadow: activeFilter === cat.id ? '0 4px 12px rgba(0, 96, 48, 0.15)' : 'none',
+                  }}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </ScrollReveal>
 
-          {/* Client Grid */}
+          {/* Client Grid — kept on plain AnimatePresence/layout, not wrapped
+              in ScrollStagger/ScrollReveal, since it already animates on
+              filter change; stacking scroll-triggered variants on top of
+              filter-driven layout animation causes flicker on re-filter. */}
           <motion.div 
             layout
             className="client-grid" 

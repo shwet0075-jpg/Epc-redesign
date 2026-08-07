@@ -2,6 +2,8 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { FiCheck } from 'react-icons/fi';
 import { solutionsOverview } from '../data/solutions';
 import ScrollReveal from '../components/ScrollReveal';
+import ScrollStagger from '../components/ScrollStagger';
+import ScrollText from '../components/ScrollText';
 import SolutionCard from '../components/SolutionCard';
 import ContactCTA from '../components/ContactCTA';
 
@@ -111,64 +113,71 @@ function SolutionsOverview() {
         />
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Solutions</span>
-          <h1 style={{fontSize:'clamp(3rem,5vw,4.8rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}>What We Do</h1>
+          <ScrollText
+            as="h1"
+            text="What We Do"
+            style={{ fontSize: 'clamp(3rem,5vw,4.8rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}
+            amount={0}
+          />
           <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '760px', margin: '0' }}>
             Our services cover the full spectrum — from conceptualization to testing &amp;
             commissioning — across Building Automation, Fire Detection &amp; Alarm, Public
             Address, and Security &amp; Surveillance Systems.
           </p>
-          <div
-  className="solutions-hero-stats"
-  style={{
-    display: 'grid',
-    gap: '24px',
-    marginTop: '46px',
-    maxWidth: '760px',
-  }}
->
-  {[
-    ['22+', 'Years'],
-    ['49+', 'Projects'],
-    ['Pan India', 'Presence'],
-    ['24×7', 'Support'],
-  ].map(([value, label]) => (
-    <div
-      key={label}
-      className="solution-stat-tile"
-      style={{
-        padding: '22px',
-        borderRadius: '18px',
-        background:
-          'linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05))',
-        border: '1px solid rgba(255,255,255,.12)',
-        backdropFilter: 'blur(16px)',
-      }}
-    >
-      <div
-        style={{
-          fontSize: value === 'Pan India' ? '1.3rem' : '2rem',
-          fontWeight: 800,
-          color: '#fff',
-        }}
-      >
-        {value}
-      </div>
+          <ScrollStagger
+            variant="rise-blur-3d"
+            stagger={0.08}
+            className="solutions-hero-stats"
+            style={{
+              display: 'grid',
+              gap: '24px',
+              marginTop: '46px',
+              maxWidth: '760px',
+            }}
+          >
+            {[
+              ['22+', 'Years'],
+              ['49+', 'Projects'],
+              ['Pan India', 'Presence'],
+              ['24×7', 'Support'],
+            ].map(([value, label]) => (
+              <div
+                key={label}
+                className="solution-stat-tile"
+                style={{
+                  padding: '22px',
+                  borderRadius: '18px',
+                  background:
+                    'linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05))',
+                  border: '1px solid rgba(255,255,255,.12)',
+                  backdropFilter: 'blur(16px)',
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: value === 'Pan India' ? '1.3rem' : '2rem',
+                    fontWeight: 800,
+                    color: '#fff',
+                  }}
+                >
+                  {value}
+                </div>
 
-      <div
-        style={{
-          marginTop: '8px',
-          fontSize: '.8rem',
-          textTransform: 'uppercase',
-          letterSpacing: '.12em',
-          color: '#dbe5df',
-          fontWeight: 600,
-        }}
-      >
-        {label}
-      </div>
-    </div>
-  ))}
-</div>
+                <div
+                  style={{
+                    marginTop: '8px',
+                    fontSize: '.8rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '.12em',
+                    color: '#dbe5df',
+                    fontWeight: 600,
+                  }}
+                >
+                  {label}
+                </div>
+              </div>
+            ))}
+          </ScrollStagger>
         </div>
       </section>
 
@@ -218,7 +227,12 @@ function SolutionDetail() {
         />
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Solutions</span>
-          <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.4rem)', fontWeight: 800, margin: '8px 0 0', color: '#fff' }}>{sol.title}</h1>
+          <ScrollText
+            as="h1"
+            text={sol.title}
+            style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.4rem)', fontWeight: 800, margin: '8px 0 0', color: '#fff' }}
+            amount={0}
+          />
         </div>
       </section>
 
@@ -269,7 +283,7 @@ function SolutionDetail() {
                   />
                 </div>
               </ScrollReveal>
-              
+
               <ScrollReveal variant="fade-left">
                 <div className="dc-bullets" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
                   {sol.bulletGroups.map((group) => (
@@ -278,16 +292,20 @@ function SolutionDetail() {
                         <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-secondary)' }}></span>
                         {group.heading}
                       </h3>
-                      <ul style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      <ScrollStagger
+                        variant="fade-left"
+                        stagger={0.05}
+                        style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
+                      >
                         {group.items.map((item) => (
-                          <li key={item} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                          <div key={item} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                             <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: 'var(--color-primary-glow)', display: 'flex', alignItems: 'center', justify: 'center', flexShrink: 0, marginTop: '2px' }}>
                               <FiCheck style={{ color: 'var(--color-primary)', fontSize: '0.8rem' }} />
                             </div>
                             <span style={{ fontSize: '0.96rem', color: 'var(--color-text-body)' }}>{item}</span>
-                          </li>
+                          </div>
                         ))}
-                      </ul>
+                      </ScrollStagger>
                     </div>
                   ))}
                 </div>
@@ -319,15 +337,7 @@ function SolutionDetail() {
                     border: '1px solid var(--color-gray-100)',
                   }}
                 >
-                  <div
-                    className="solution-feature-image solution-feature-image-frame"
-                    style={{
-                      borderRadius: 'var(--radius-md)',
-                      overflow: 'hidden',
-                      boxShadow: 'var(--shadow-md)',
-                      height: '280px',
-                    }}
-                  >
+                  <ScrollReveal variant="rise-blur-3d" delay={0.1} className="solution-feature-image solution-feature-image-frame" style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-md)', height: '280px' }}>
                     <img
                       src={d.image}
                       alt={d.title}
@@ -337,7 +347,7 @@ function SolutionDetail() {
                         objectFit: 'cover',
                       }}
                     />
-                  </div>
+                  </ScrollReveal>
                   <div className="solution-feature-text">
                     <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-primary)', marginBottom: '14px' }}>{d.title}</h3>
                     <p style={{ color: 'var(--color-text-muted)', fontSize: '0.98rem', lineHeight: 1.6, margin: 0 }}>{d.text}</p>

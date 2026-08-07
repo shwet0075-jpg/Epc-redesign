@@ -1283,8 +1283,7 @@
     left:50%;
     bottom:-10px;           /* Move downward */
     transform:translateX(-50%);
-     margin-left:-100px;
-}
+    }
 
 /* ==========================================================
    ENGINEERING IMPACT
