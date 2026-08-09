@@ -1,52 +1,23 @@
 /* ==========================================================================
-   Prudent EPC — Pre-loader Stylesheet (v2 — deeper 3D + richer palette)
+   Prudent EPC — Pre-loader Stylesheet (Classic Piece Assembly)
    ========================================================================== */
 
-/* --------------------------------------------------------------------------
-   1. Design tokens
-   -------------------------------------------------------------------------- */
 .loader-bg {
   --loader-primary: #006030;
   --loader-primary-rgb: 0, 96, 48;
-  --loader-dark: #004522;
-  --loader-dark-rgb: 0, 69, 34;
   --loader-accent: #f08020;
   --loader-accent-rgb: 240, 128, 32;
-  --loader-teal: #14b8a6;
-  --loader-teal-rgb: 20, 184, 166;
-  --loader-gold: #ffd166;
-  --loader-gold-rgb: 255, 209, 102;
-  --loader-bg: #03130a;
-  --loader-bg-rgb: 3, 19, 10;
-  --loader-text: #ffffff;
-  --loader-text-dim: rgba(255, 255, 255, 0.56);
-  --loader-text-faint: rgba(255, 255, 255, 0.32);
-
-  --loader-line: rgba(255, 255, 255, 0.07);
-  --loader-line-strong: rgba(255, 255, 255, 0.14);
-
-  --loader-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --loader-bg: #ffffff;
+  --loader-bg-subtle: #f8faf9;
+  --loader-text: #006030;
+  --loader-ease: cubic-bezier(0.16, 1, 0.3, 1);
   --loader-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
-
-  --loader-radius-sm: 6px;
-  --loader-radius-md: 12px;
-  --loader-radius-lg: 24px;
-
-  --loader-space-1: 8px;
-  --loader-space-2: 12px;
-  --loader-space-3: 20px;
-  --loader-space-4: 32px;
-  --loader-space-5: 48px;
-
+  
   --loader-font-display: "Neue Haas Grotesk Display", "Inter", -apple-system,
     BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --loader-font-mono: "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
 }
 
-/* --------------------------------------------------------------------------
-   2. Full-viewport overlay shell — richer multi-hue mesh instead of a
-   single green radial, so the whole scene has more color depth.
-   -------------------------------------------------------------------------- */
+/* Overlay Shell */
 .loader-bg {
   position: fixed;
   inset: 0;
@@ -59,660 +30,202 @@
 
   width: 100vw;
   height: 100vh;
-  background:
-    radial-gradient(60% 50% at 18% 8%, rgba(var(--loader-teal-rgb), 0.16) 0%, transparent 60%),
-    radial-gradient(55% 55% at 85% 12%, rgba(var(--loader-accent-rgb), 0.14) 0%, transparent 62%),
-    radial-gradient(120% 120% at 50% 100%, rgba(var(--loader-primary-rgb), 0.18) 0%, transparent 58%),
-    linear-gradient(180deg, #03130a 0%, #020e07 50%, #010805 100%);
-
+  background: radial-gradient(80% 80% at 50% 50%, #ffffff 0%, #f4f7f5 100%);
   color: var(--loader-text);
   font-family: var(--loader-font-display);
-  perspective: 1800px;
 
-  will-change: opacity, transform;
+  will-change: opacity;
   transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 .loader-bg.loader-bg--exit {
-  animation: loaderFadeOut 0.7s var(--loader-ease) forwards;
   pointer-events: none;
 }
 
-/* --------------------------------------------------------------------------
-   3. Engineering grid backdrop
-   -------------------------------------------------------------------------- */
+/* Engineering Backdrop Grid */
 .loader-grid {
   position: absolute;
-  inset: -2px;
+  inset: 0;
   z-index: 1;
 
-  background-image: linear-gradient(var(--loader-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--loader-line) 1px, transparent 1px);
-  background-size: 48px 48px;
+  background-image: 
+    linear-gradient(rgba(0, 96, 48, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 96, 48, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
   background-position: center;
 
-  -webkit-mask-image: radial-gradient(80% 80% at 50% 45%, #000 40%, transparent 100%);
-  mask-image: radial-gradient(80% 80% at 50% 45%, #000 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(75% 75% at 50% 50%, #000 50%, transparent 100%);
+  mask-image: radial-gradient(75% 75% at 50% 50%, #000 50%, transparent 100%);
 
-  opacity: 0.6;
-  animation: gridPulse 8s ease-in-out infinite;
-  will-change: opacity;
+  opacity: 0.9;
 }
 
-.loader-grid::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 12px 12px;
-  background-position: center;
-}
-
-/* --------------------------------------------------------------------------
-   4. Film grain / noise overlay
-   -------------------------------------------------------------------------- */
-.loader-noise {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  pointer-events: none;
-  opacity: 0.045;
-  mix-blend-mode: overlay;
-
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  background-size: 160px 160px;
-}
-
-/* --------------------------------------------------------------------------
-   5. SVG engineering lines
-   -------------------------------------------------------------------------- */
-.loader-lines {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.loader-lines path,
-.loader-lines line {
-  stroke: rgba(var(--loader-teal-rgb), 0.5);
-  stroke-width: 1;
-  fill: none;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 6 10;
-  animation: linePulse 5.5s var(--loader-ease) infinite;
-}
-
-.loader-lines circle {
-  fill: var(--loader-accent);
-  opacity: 0;
-  animation: nodePulse 5.5s var(--loader-ease) infinite;
-}
-
-.loader-lines path:nth-of-type(2),
-.loader-lines line:nth-of-type(2) {
-  animation-delay: 0.4s;
-}
-.loader-lines path:nth-of-type(3),
-.loader-lines line:nth-of-type(3) {
-  animation-delay: 0.8s;
-}
-.loader-lines circle:nth-of-type(2) {
-  animation-delay: 0.6s;
-}
-.loader-lines circle:nth-of-type(3) {
-  animation-delay: 1.2s;
-}
-
-/* --------------------------------------------------------------------------
-   6. Ambient glows — third teal glow added for a fuller color mix
-   -------------------------------------------------------------------------- */
+/* Ambient Brand Glows */
 .loader-glow {
   position: absolute;
   z-index: 1;
   border-radius: 50%;
-  filter: blur(60px);
+  filter: blur(70px);
   pointer-events: none;
-  will-change: transform, opacity;
 }
 
 .loader-glow-green {
-  top: 50%;
-  left: 50%;
-  width: 760px;
-  height: 760px;
+  top: 45%;
+  left: 45%;
+  width: 520px;
+  height: 520px;
   transform: translate(-50%, -50%);
   background: radial-gradient(
     circle,
-    rgba(var(--loader-primary-rgb), 0.38) 0%,
-    rgba(var(--loader-dark-rgb), 0.14) 45%,
-    transparent 72%
+    rgba(var(--loader-primary-rgb), 0.08) 0%,
+    transparent 70%
   );
-  animation: glowFloat 9s var(--loader-ease) infinite;
 }
 
 .loader-glow-orange {
-  top: 34%;
-  left: 66%;
-  width: 220px;
-  height: 220px;
+  top: 55%;
+  left: 55%;
+  width: 440px;
+  height: 440px;
   transform: translate(-50%, -50%);
   background: radial-gradient(
     circle,
-    rgba(var(--loader-accent-rgb), 0.32) 0%,
-    rgba(var(--loader-accent-rgb), 0.1) 55%,
-    transparent 75%
-  );
-  animation: glowFloat 7s var(--loader-ease) infinite reverse;
-}
-
-/* Extra teal glow — pure CSS, no JSX change needed since it's just
-   another absolutely-positioned layer painted behind the grid mask */
-.loader-bg::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: 66%;
-  left: 24%;
-  width: 340px;
-  height: 340px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  filter: blur(70px);
-  background: radial-gradient(
-    circle,
-    rgba(var(--loader-teal-rgb), 0.24) 0%,
+    rgba(var(--loader-accent-rgb), 0.08) 0%,
     transparent 70%
   );
-  animation: glowFloat 11s var(--loader-ease) infinite;
-  pointer-events: none;
 }
 
-/* --------------------------------------------------------------------------
-   7. Content stack — deep 3D glass slab with layered elevation shadows
-   (soft contact shadow + ambient + colored bounce light) instead of a
-   single flat drop-shadow, plus a stronger perspective tilt loop.
-   -------------------------------------------------------------------------- */
+/* Content Container */
 .loader-content {
   position: relative;
   z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--loader-space-4);
-  width: 100%;
-  max-width: 440px;
-  padding: var(--loader-space-5) var(--loader-space-4);
+  width: 90%;
+  max-width: 420px;
+  padding: 44px 36px;
   text-align: center;
-  transform-style: preserve-3d;
 
-  background: linear-gradient(
-    155deg,
-    rgba(255, 255, 255, 0.09) 0%,
-    rgba(var(--loader-primary-rgb), 0.07) 45%,
-    rgba(var(--loader-teal-rgb), 0.05) 75%,
-    rgba(255, 255, 255, 0.02) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: var(--loader-radius-lg);
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 96, 48, 0.09);
+  border-radius: 24px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 
   box-shadow:
-    /* contact shadow, tight */
-    0 8px 20px rgba(0, 0, 0, 0.35),
-    /* ambient shadow, wide */
-    0 40px 100px rgba(0, 0, 0, 0.55),
-    /* inner top highlight = glass edge catching light */
-    0 1px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-    /* colored bounce light, orange */
-    0 25px 80px rgba(var(--loader-accent-rgb), 0.18),
-    /* colored bounce light, teal */
-    -20px -10px 60px rgba(var(--loader-teal-rgb), 0.1);
-
-  overflow: hidden;
-  animation: panelFloat3D 7s var(--loader-ease) infinite;
+    0 24px 60px rgba(0, 30, 15, 0.06),
+    0 4px 16px rgba(0, 0, 0, 0.02),
+    0 1px 0 rgba(255, 255, 255, 0.9) inset;
 }
 
-.loader-content::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  padding: 1.5px;
-  background: linear-gradient(
-    125deg,
-    rgba(var(--loader-teal-rgb), 0.6),
-    rgba(255, 255, 255, 0.08) 28%,
-    rgba(var(--loader-accent-rgb), 0.65) 55%,
-    rgba(var(--loader-gold-rgb), 0.4) 72%,
-    rgba(255, 255, 255, 0.08)
-  );
-  background-size: 260% 260%;
-  animation: borderFlow 8s ease infinite;
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.65;
-  pointer-events: none;
-}
-
-.loader-content::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -20%;
-  width: 60%;
-  height: 200%;
-  background: linear-gradient(
-    100deg,
-    transparent,
-    rgba(255, 255, 255, 0.08),
-    transparent
-  );
-  transform: rotate(12deg);
-  animation: panelSheen 6s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.loader-content > * {
-  position: relative;
-  z-index: 1;
-}
-
+/* Brand Section */
 .loader-brand {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 22px;
 }
 
-/* --------------------------------------------------------------------------
-   8. Logo mark — three counter-rotating orbit rings in three different
-   accent hues (green / orange / teal) plus a stronger 3D drift, so the
-   mark reads as sitting inside a small instrument, not just floating.
-   -------------------------------------------------------------------------- */
-.loader-logo-container {
+/* Logo Assembly Container */
+.loader-logo-assembly {
   position: relative;
+  width: 76px;
+  height: 118px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 120px;
-  height: 120px;
 }
 
-.loader-logo-wrapper {
-  position: relative;
-  width: 200px;
-  height: 200px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  transform-style: preserve-3d;
-  animation: logoDrift3D 5.5s var(--loader-ease) infinite;
-}
-
-.loader-logo-wrapper::before,
-.loader-logo-wrapper::after {
-  content: "";
+.loader-symbol-glow {
   position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.loader-logo-wrapper::before {
-  inset: 2px;
-  border: 1px dashed rgba(var(--loader-accent-rgb), 0.45);
-  animation: loaderRingSpin 12s linear infinite;
-}
-
-.loader-logo-wrapper::after {
-  inset: 24px;
-  border: 1px dashed rgba(var(--loader-teal-rgb), 0.5);
-  animation: loaderRingSpin 8.5s linear infinite reverse;
-}
-
-/* Third, innermost ring — added via a wrapping span-less trick using
-   the glow layer's own box, so no extra DOM node is required */
-.loader-logo-container::before {
-  content: "";
-  position: absolute;
-  inset: -14px;
-  border-radius: 50%;
-  border: 1px dashed rgba(var(--loader-primary-rgb), 0.55);
-  animation: loaderRingSpin 15s linear infinite;
-  pointer-events: none;
-}
-
-.loader-logo-glow {
-  position: absolute;
-  inset: -22px;
+  inset: -18px;
   z-index: 1;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(var(--loader-primary-rgb), 0.5) 0%,
-    rgba(var(--loader-accent-rgb), 0.22) 40%,
-    rgba(var(--loader-teal-rgb), 0.14) 65%,
+    rgba(var(--loader-accent-rgb), 0.15) 0%,
+    rgba(var(--loader-primary-rgb), 0.1) 50%,
     transparent 75%
   );
-  filter: blur(22px);
-  animation: logoGlow 3.2s var(--loader-ease) infinite;
-  will-change: opacity, transform;
+  filter: blur(14px);
+  pointer-events: none;
 }
 
-.loader-logo {
-  position: relative;
+/* Orange & Green Piece Images */
+.loader-piece {
+  position: absolute;
+  inset: 0;
   z-index: 2;
-  width: 200px;
-  height: auto;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  filter:
-    drop-shadow(0 10px 24px rgba(0, 0, 0, 0.55))
-    drop-shadow(0 0 20px rgba(var(--loader-accent-rgb), 0.25));
+  filter: drop-shadow(0 6px 12px rgba(0, 40, 20, 0.08));
 }
 
-/* --------------------------------------------------------------------------
-   9. Typography
-   -------------------------------------------------------------------------- */
-.loader-title {
-  margin: 0;
-  font-size: clamp(1.35rem, 1.1rem + 1.1vw, 1.75rem);
-  color: #F08020;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  line-height: 1.2;
-  background: linear-gradient(90deg, #F08020 0%, var(--loader-gold) 50%, #ffb27a 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: titleShimmer 4s linear infinite;
-  text-shadow: 0 0 30px rgba(var(--loader-accent-rgb), 0.25);
+.loader-piece-orange {
+  z-index: 3;
 }
 
-.loader-subtitle {
-  font-size: 15px;
-  letter-spacing: 0.28em;
-  text-align: center;
-  color: #5eead4;
-  text-transform: uppercase;
+.loader-piece-green {
+  z-index: 2;
 }
 
-/* --------------------------------------------------------------------------
-   10. Status line
-   -------------------------------------------------------------------------- */
-.loader-status-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 20px;
-}
-
-.loader-status {
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
-
-/* --------------------------------------------------------------------------
-   11. Segmented progress bar — beveled 3D groove for inactive segments
-   (dark inner shadow + faint highlight edge) and a richer tri-color
-   gradient with a moving glossy highlight on active segments.
-   -------------------------------------------------------------------------- */
-.loader-progress {
+/* Typography Wrapper */
+.loader-text-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--loader-space-2);
-  width: 100%;
-  margin-top: 20px;
+  gap: 6px;
 }
 
-.loader-progress-track {
-  display: flex;
-  gap: 4px;
-  width: 100%;
-  height: 8px;
+.loader-title {
+  margin: 0;
+  font-size: clamp(1.4rem, 1.2rem + 1vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #006030;
+  line-height: 1.2;
 }
 
-.loader-segment {
-  position: relative;
-  flex: 1 1 0;
-  height: 100%;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow:
-    inset 0 2px 3px rgba(0, 0, 0, 0.5),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
-  overflow: hidden;
-  will-change: transform, background;
-}
-
-.loader-segment::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    var(--loader-primary) 0%,
-    var(--loader-teal) 50%,
-    var(--loader-accent) 100%
-  );
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.5s var(--loader-ease);
-}
-
-.loader-segment.active {
-  box-shadow:
-    0 0 14px rgba(var(--loader-accent-rgb), 0.6),
-    0 0 6px rgba(var(--loader-teal-rgb), 0.4);
-}
-
-.loader-segment.active::after {
-  transform: scaleX(1);
-  animation: progressGlow 1.4s var(--loader-ease) infinite;
-}
-
-.loader-percent {
-  font-family: var(--loader-font-mono);
-  font-size: 0.8rem;
+.loader-subtitle {
+  margin: 0;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  background: linear-gradient(90deg, var(--loader-gold), #ffb27a);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.28em;
+  color: #f08020;
+  text-transform: uppercase;
 }
 
-/* --------------------------------------------------------------------------
-   12. Keyframes
-   -------------------------------------------------------------------------- */
-
-@keyframes gridPulse {
-  0%, 100% { opacity: 0.45; }
-  50% { opacity: 0.7; }
-}
-
-@keyframes glowFloat {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.85; }
-  50% { transform: translate(-50%, -52%) scale(1.08); opacity: 1; }
-}
-
-@keyframes linePulse {
-  0% { stroke-dashoffset: 32; opacity: 0.15; }
-  50% { opacity: 0.65; }
-  100% { stroke-dashoffset: 0; opacity: 0.15; }
-}
-
-@keyframes nodePulse {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 0.9; }
-}
-
-@keyframes logoGlow {
-  0%, 100% { opacity: 0.55; transform: scale(0.96); }
-  50% { opacity: 0.95; transform: scale(1.06); }
-}
-
-/* Stronger 3D drift — bigger rotation swing so the tilt is clearly
-   perceptible, not just a subtle wobble */
-@keyframes logoDrift3D {
-  0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg) scale(1); }
-  25% { transform: translateY(-9px) rotateX(7deg) rotateY(-6deg) scale(1.015); }
-  75% { transform: translateY(6px) rotateX(-5deg) rotateY(6deg) scale(0.99); }
-}
-
-@keyframes loaderRingSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Glass panel: deeper 3D tilt loop, plus a slight z-translate so it
-   visibly "lifts" off the page rather than only rotating in place */
-@keyframes panelFloat3D {
-  0%, 100% { transform: translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg); }
-  50% { transform: translateY(-8px) translateZ(24px) rotateX(2deg) rotateY(-1.5deg); }
-}
-
-@keyframes panelSheen {
-  0% { transform: translateX(-40%) rotate(12deg); opacity: 0; }
-  30% { opacity: 0.75; }
-  60% { opacity: 0; }
-  100% { transform: translateX(180%) rotate(12deg); opacity: 0; }
-}
-
-/* Border gradient slowly travels around the panel edge */
-@keyframes borderFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Title text gradient shimmer */
-@keyframes titleShimmer {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-
-@keyframes progressGlow {
-  0%, 100% { filter: brightness(1) saturate(1); }
-  50% { filter: brightness(1.4) saturate(1.25); }
-}
-
-@keyframes statusFade {
-  0%, 100% { opacity: 0.45; }
-  50% { opacity: 1; }
-}
-
-@keyframes loaderFadeOut {
-  0% { opacity: 1; transform: scale(1); filter: blur(0); }
-  100% { opacity: 0; transform: scale(1.02); filter: blur(6px); }
-}
-
-/* --------------------------------------------------------------------------
-   13. Responsive adjustments
-   -------------------------------------------------------------------------- */
+/* Responsive Adjustments */
 @media (max-width: 640px) {
   .loader-content {
     max-width: 320px;
-    gap: var(--loader-space-3);
-    padding: var(--loader-space-4) var(--loader-space-3);
+    padding: 36px 24px;
+    border-radius: 20px;
   }
 
-  .loader-logo-container {
-    width: 76px;
-    height: 76px;
-  }
-
-  .loader-logo-wrapper {
-    width: 140px;
-    height: 140px;
-  }
-
-  .loader-logo {
-    width: 130px;
+  .loader-logo-assembly {
+    width: 60px;
+    height: 93px;
   }
 
   .loader-title {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
+    letter-spacing: 0.1em;
   }
 
   .loader-subtitle {
-    font-size: 0.6875rem;
-    letter-spacing: 0.14em;
-  }
-
-  .loader-glow-green {
-    width: 420px;
-    height: 420px;
-  }
-
-  .loader-glow-orange {
-    width: 160px;
-    height: 160px;
-  }
-
-  .loader-grid {
-    background-size: 32px 32px;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
   }
 }
 
-@media (max-width: 380px) {
-  .loader-progress-track {
-    gap: 3px;
-  }
-
-  .loader-status {
-    font-size: 0.6875rem;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   14. Accessibility — respect reduced motion preference
-   -------------------------------------------------------------------------- */
+/* Accessibility: Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .loader-grid,
   .loader-glow-green,
   .loader-glow-orange,
-  .loader-bg::before,
-  .loader-lines path,
-  .loader-lines line,
-  .loader-lines circle,
-  .loader-logo-glow,
-  .loader-logo-wrapper,
-  .loader-logo-wrapper::before,
-  .loader-logo-wrapper::after,
-  .loader-logo-container::before,
-  .loader-content,
-  .loader-content::after,
-  .loader-content::before,
-  .loader-title,
-  .loader-status,
-  .loader-segment.active::after {
+  .loader-symbol-glow {
     animation: none !important;
-  }
-
-  .loader-bg.loader-bg--exit {
-    animation: none !important;
-    transition: opacity 0.3s ease;
-    opacity: 0;
   }
 }
