@@ -1,12 +1,13 @@
 export default function LoaderBackground() {
   return (
     <>
-      {/* Minimal Corporate Engineering Grid */}
+      {/* Dark Corporate Engineering Grid */}
       <div className="loader-grid" />
 
-      {/* Subtle Brand Accent Glows */}
+      {/* Deep Ambient Brand Glows */}
       <div className="loader-glow loader-glow-green" />
       <div className="loader-glow loader-glow-orange" />
     </>
   );
-}
+}
+
