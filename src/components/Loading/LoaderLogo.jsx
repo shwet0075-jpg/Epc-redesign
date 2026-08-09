@@ -175,18 +175,7 @@ export default function LoaderLogo({ shouldReduceMotion }) {
           </motion.span>
         </h1>
 
-        <motion.p
-          className="loader-subtitle"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={
-            shouldReduceMotion
-              ? { duration: 0.3 }
-              : { delay: 2.85, duration: 0.65, ease: easeOutSoft }
-          }
-        >
-          ENGINEERING INTELLIGENCE
-        </motion.p>
+  
       </div>
     </div>
   );
