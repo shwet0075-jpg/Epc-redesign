@@ -5,3 +5,35 @@
     display: none;
   }
 }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.about-company-img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  display: block;
+  transition: transform .6s ease;
+}
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .about-company-img {
+    height: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-company-img {
+    height: 240px;
+  }
+}

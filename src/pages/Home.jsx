@@ -375,8 +375,7 @@ export default function Home() {
         </div>
       </section>
 
-      <EngineeringIntelligence />
-      <FeaturedProjects />
+    
 
       {/* FOUNDATIONS */}
       <section className="epc-foundations-v2">

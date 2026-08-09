@@ -503,8 +503,8 @@ export default function About() {
       {/* INTRODUCTION SECTION */}
       <section className="section" style={{ background: '#ffffff', overflow: 'hidden' }}>
         <div className="container">
-          <div className="about-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.8fr', gap: '80px', alignItems: 'center' }}>
-            <ScrollReveal variant="fade-right">
+<div className="about-grid">
+              <ScrollReveal variant="fade-right">
               <div className="about-text-content">
                 <span className="eyebrow" style={{ color: 'var(--color-primary)' }}>Incorporated in 2019</span>
                 <ScrollText
@@ -594,18 +594,11 @@ export default function About() {
                   </div>
                 </div>
 
-                <img
-                  src="/assets/images/company-img.png"
-                  alt="Prudent EPC office and company overview"
-                  style={{
-                    width: '100%',
-                    height: '500px',
-                    objectFit: 'cover',
-                    display: 'block',
-                    transition: 'transform .6s ease',
-                  }}
-                  className="about-company-img"
-                />
+             <img
+  src="/assets/images/company-img.png"
+  alt="Prudent EPC office and company overview"
+  className="about-company-img"
+/>
                 <div
                   style={{
                     position: 'absolute',
