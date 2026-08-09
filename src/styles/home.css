@@ -1079,11 +1079,7 @@
   color: var(--color-primary);
 }
 
-@media (max-width: 768px) {
-  .engineering-intelligence {
-    display: none;
-  }
-}
+
 /* ==========================================================
    ENGINEERING ECOSYSTEM V2
    Hub-and-spoke network diagram with a true 3D hub (perspective

@@ -1,2 +1,7 @@
 .engineering-impact{position:relative;overflow:hidden;background:radial-gradient(circle at 80% 15%,rgba(55,141,91,.26),transparent 30rem),linear-gradient(135deg,#0b1d13,#102c1d)!important;color:#f3faf5}.engineering-impact::before,.engineering-impact::after{opacity:.24!important}.impact-header h2{color:#fff!important}.impact-header p{color:#c4d8ca!important}.impact-grid{position:relative;gap:1px!important;padding:1px;background:rgba(170,226,189,.2);border:1px solid rgba(170,226,189,.2)}.impact-card{min-height:260px;border:0!important;border-radius:0!important;background:rgba(12,39,25,.77)!important;backdrop-filter:blur(13px);box-shadow:none!important}.impact-card::before{background:linear-gradient(90deg,#ef9c42,#72c896)!important}.impact-card h3{color:#fff!important}.impact-card p{color:#c1d5c7!important}.impact-number{color:#ffc077!important}.fp-preview,.fp-sidebar .fp-item{border-color:rgba(133,211,161,.22)!important}.fp-sidebar .fp-item{background:rgba(15,49,31,.56)!important;color:#eef8f1!important}.fp-sidebar .fp-item p{color:#bbd5c4!important}.fp-sidebar .fp-item.active{background:linear-gradient(135deg,#1a5b3c,#0d2c1d)!important}.fp-title,.fp-header p{color:#f4faf5!important}.featured-projects{background:linear-gradient(135deg,#0d2117,#0b1711)!important}.fp-header p{color:#bfd6c6!important}
 @media(max-width:760px){.impact-grid{grid-template-columns:1fr!important}.impact-card{min-height:200px!important}}
+@media (max-width: 768px) {
+  .featured-projects {
+    display: none;
+  }
+}
