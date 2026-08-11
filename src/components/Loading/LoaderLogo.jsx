@@ -89,20 +89,23 @@ export default function LoaderLogo({ shouldReduceMotion }) {
         />
 
         {/* Top-Left Orange Piece with Motion Trail Glow */}
-        <motion.div
-          className="loader-piece-wrapper loader-piece-orange-wrapper"
-          initial={
-            shouldReduceMotion
-              ? { opacity: 0, x: 0, y: 0, scale: 1, rotate: 0 }
-              : { opacity: 0, x: "-55vw", y: "-55vh", scale: 1.28, rotate: -12 }
-          }
-          animate={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
-          transition={
-            shouldReduceMotion
-              ? { duration: 0.3 }
-              : { duration: 1.5, delay: 0.3, ease: easeOutSoft }
-          }
-        >
+       <motion.div
+  className="loader-piece-wrapper loader-piece-orange-wrapper"
+  initial={
+    shouldReduceMotion
+      ? { opacity: 0, x: 0, y: 0, scale: 1, rotate: 0, filter: "drop-shadow(0px 0px 0px rgba(240,128,32,0))" }
+      : { opacity: 0, x: "-55vw", y: "-55vh", scale: 1.28, rotate: -12, filter: "drop-shadow(-16px -16px 20px rgba(240,128,32,0.65))" }
+  }
+  animate={{
+    opacity: 1, x: 0, y: 0, scale: 1, rotate: 0,
+    filter: "drop-shadow(0px 0px 0px rgba(240,128,32,0))",
+  }}
+  transition={
+    shouldReduceMotion
+      ? { duration: 0.3 }
+      : { duration: 1.5, delay: 0.3, ease: easeOutSoft }
+  }
+>
           <img
             src="/assets/images/logo-orange.png"
             alt="Prudent EPC Orange Symbol Piece"
@@ -111,20 +114,41 @@ export default function LoaderLogo({ shouldReduceMotion }) {
         </motion.div>
 
         {/* Bottom-Right Green Piece with Motion Trail Glow */}
-        <motion.div
-          className="loader-piece-wrapper loader-piece-green-wrapper"
-          initial={
-            shouldReduceMotion
-              ? { opacity: 0, x: 0, y: 0, scale: 1, rotate: 0 }
-              : { opacity: 0, x: "55vw", y: "55vh", scale: 1.28, rotate: 12 }
-          }
-          animate={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
-          transition={
-            shouldReduceMotion
-              ? { duration: 0.3 }
-              : { duration: 1.5, delay: 0.3, ease: easeOutSoft }
-          }
-        >
+       <motion.div
+
+  className="loader-piece-wrapper loader-piece-green-wrapper"
+
+  initial={
+
+    shouldReduceMotion
+
+      ? { opacity: 0, x: 0, y: 0, scale: 1, rotate: 0, filter: "drop-shadow(0px 0px 0px rgba(0,96,48,0))" }
+
+      : { opacity: 0, x: "55vw", y: "55vh", scale: 1.28, rotate: 12, filter: "drop-shadow(16px 16px 20px rgba(0,96,48,0.65))" }
+
+  }
+
+  animate={{
+
+    opacity: 1, x: 0, y: 0, scale: 1, rotate: 0,
+
+    filter: "drop-shadow(0px 0px 0px rgba(0,96,48,0))",
+
+  }}
+
+  transition={
+
+    shouldReduceMotion
+
+      ? { duration: 0.3 }
+
+      : { duration: 1.5, delay: 0.3, ease: easeOutSoft }
+
+  }
+
+>
+
+  
           <img
             src="/assets/images/logo-green.png"
             alt="Prudent EPC Green Symbol Piece"

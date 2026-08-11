@@ -10,6 +10,7 @@ import SmoothScroll from "./components/SmoothScroll";
 import ContinuityThread from "./components/ContinuityThread";
 
 import PremiumLoader from "./components/Loading/PremiumLoader";
+import CustomCursor from "./components/CustomCursor";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -58,7 +59,7 @@ function Website() {
   return (
     <SmoothScroll>
       <ScrollToTop />
-
+   <CustomCursor />
       <Navbar />
       <ContinuityThread />
 

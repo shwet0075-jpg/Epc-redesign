@@ -7,6 +7,7 @@
 @import './styles/premium.css';
 @import './styles/continuity.css';
 @import './styles/home-overrides.css';
+@import './styles/cursor.css';
 
 main {
     min-height: 60vh;

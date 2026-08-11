@@ -8,28 +8,7 @@ export default function PremiumLoader({ onComplete }) {
   const [closing, setClosing] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
-  const handleSkip = useCallback(() => {
-    setClosing(true);
-    setTimeout(() => {
-      onComplete?.();
-    }, 150);
-  }, [onComplete]);
-
   useEffect(() => {
-    // Keyboard and click listener for immediate skip
-    const onKeyDown = (e) => {
-      if (e.key === "Escape" || e.key === "Enter" || e.key === " " || e.key.length === 1) {
-        handleSkip();
-      }
-    };
-
-    const onClick = () => {
-      handleSkip();
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    window.addEventListener("click", onClick);
-
     // Natural animation timeline (adjusted for slower, cinematic presentation)
     const exitTimer = setTimeout(() => {
       setClosing(true);
@@ -39,15 +18,11 @@ export default function PremiumLoader({ onComplete }) {
       onComplete?.();
     }, 4800);
 
-
-
     return () => {
-      window.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("click", onClick);
       clearTimeout(exitTimer);
       clearTimeout(completeTimer);
     };
-  }, [onComplete, handleSkip]);
+  }, [onComplete]);
 
   return (
     <AnimatePresence mode="wait">
@@ -64,7 +39,6 @@ export default function PremiumLoader({ onComplete }) {
             <LoaderLogo shouldReduceMotion={shouldReduceMotion} />
           </div>
 
-          <div className="loader-skip-hint">Press any key or click to skip</div>
         </motion.div>
       ) : (
         <motion.div
