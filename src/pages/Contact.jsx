@@ -1,56 +1,124 @@
-import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { FiCpu, FiServer, FiAward, FiShield, FiCheck } from 'react-icons/fi';
-import { services } from '../data/services';
+import { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+  FiMapPin, FiPhone, FiMail, FiSend, FiDownload, FiCheck,
+  FiFacebook, FiTwitter, FiInstagram, FiYoutube, FiMessageCircle, FiUser,
+} from 'react-icons/fi';
 import ScrollReveal from '../components/ScrollReveal';
 import ScrollStagger from '../components/ScrollStagger';
 import ScrollText from '../components/ScrollText';
-import ContactCTA from '../components/ContactCTA';
-
-const iconMap = {
-  epc: <FiCpu size={32} />,
-  'remote-monitoring': <FiServer size={32} />,
-  'project-works': <FiAward size={32} />,
-  amc: <FiShield size={32} />,
-};
 
 /* ------------------------------------------------------------------ */
-/*  Local keyframes — scoped to this page, no new dependencies         */
+/*  Real office data — pulled from the live site, not placeholders     */
 /* ------------------------------------------------------------------ */
-function ServicesStyles() {
+const offices = [
+  {
+    id: 'corporate',
+    label: 'Corporate Office',
+    address: '305, Eastern Court, V N Purav Marg, Chembur, Mumbai - 400 071',
+    phones: ['022 3162 0157', '+91 91378 57107'],
+    email: 'ashok.g@prudentepc.com',
+    mapSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.2292934100674!2d72.8900389!3d19.053653699999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c9579a4279d5%3A0xc2e03868ed96a766!2sPrudent%20EPC%20Pvt%20Ltd!5e0!3m2!1sen!2sin!4v1696835856926!5m2!1sen!2sin',
+  },
+  {
+    id: 'service',
+    label: 'Service Office',
+    address: '91/B, S G Barve Marg, Kamgar Nagar, Kurla (East), Mumbai - 400 024',
+    phones: ['+91 85910 75003'],
+    email: 'support.mgr@prudentepc.com',
+    mapSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.029308032762!2d72.88476231469724!3d19.062448987095724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b87ae0039125%3A0xabf58c326cd3a87!2sPrudent%20EPC%20Pvt%20Ltd!5e0!3m2!1sen!2sin!4v1674650221742!5m2!1sen!2sin',
+  },
+  {
+    id: 'registered',
+    label: 'Registered Office',
+    address: 'B-509, Golf Scape, Behind Sunny Estate, Sion Trombay Road, Chembur, Mumbai - 400 071',
+    phones: [],
+    email: '',
+    mapSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d471.40885046812235!2d72.89682127203027!3d19.05182760000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c8a812e7105b%3A0x4075fcc77f49f150!2sGolf%20Scappe%20Apartments!5e0!3m2!1sen!2sin!4v1686567166227!5m2!1sen!2sin',
+  },
+];
+
+const SALES_EMAIL = 'sales@prudentepc.com';
+const MAIN_PHONE = '+91 22 3162 0157';
+const WHATSAPP_URL = 'https://wa.me/8369640531';
+const COMPANY_PROFILE_URL = 'https://www.prudentepc.com/assets/images/company/cp.pdf';
+
+const socials = [
+  { icon: <FiFacebook size={16} />, url: 'https://www.facebook.com/profile.php?id=100090938186393', label: 'Facebook' },
+  { icon: <FiTwitter size={16} />, url: 'https://twitter.com/PrudentEPC', label: 'Twitter' },
+  { icon: <FiInstagram size={16} />, url: 'https://www.instagram.com/prudentepc/', label: 'Instagram' },
+  { icon: <FiYoutube size={16} />, url: 'https://youtube.com/@prudentepc', label: 'YouTube' },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Local styles — scoped to this page, same technique as Services.jsx */
+/* ------------------------------------------------------------------ */
+function ContactStyles() {
   return (
     <style>{`
-      @keyframes svcGridDrift {
+      @keyframes contactGridDrift {
         from { background-position: 0px 0px, 0px 0px; }
         to { background-position: 48px 48px, 48px 48px; }
       }
-      @keyframes svcFloatOrb {
+      @keyframes contactFloatOrb {
         0%, 100% { transform: translateY(0px) translateX(0px); }
         50% { transform: translateY(-22px) translateX(10px); }
       }
-      .services-blueprint-bg {
+      .contact-blueprint-bg {
         background-image:
           linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
           linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
         background-size: 48px 48px, 48px 48px;
-        animation: svcGridDrift 14s linear infinite;
+        animation: contactGridDrift 14s linear infinite;
       }
-      .service-tilt {
+      .contact-tilt {
         transform-style: preserve-3d;
         transition: transform .18s ease-out, box-shadow .35s ease, border-color .35s ease;
         will-change: transform;
       }
-      .service-tilt:hover {
+      .contact-tilt:hover {
         box-shadow: 0 30px 70px rgba(0,96,48,.16);
       }
-      @keyframes ringRotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
+      .contact-office-card {
+        position: relative;
+        overflow: hidden;
+        background: var(--color-white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+        height: 100%;
       }
-      .service-ring-motif {
-        animation: ringRotate 70s linear infinite;
+      .contact-office-accent {
+        height: 4px;
+        width: 100%;
+        background: linear-gradient(90deg, #FF9933 0%, var(--color-white) 45%, #128807 100%);
       }
-      .services-side-rail {
+      .contact-input {
+        width: 100%;
+        padding: 14px 16px 14px 44px;
+        border-radius: var(--radius-md);
+        border: 1.5px solid rgba(0,96,48,.14);
+        background: var(--color-white);
+        font-size: .95rem;
+        color: var(--color-text-dark);
+        transition: border-color .25s ease, box-shadow .25s ease;
+        font-family: inherit;
+      }
+      .contact-input:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 4px rgba(0,96,48,.08);
+      }
+      .contact-input-wrap {
+        position: relative;
+      }
+      .contact-input-icon {
+        position: absolute;
+        left: 14px;
+        top: 16px;
+        color: var(--color-text-muted);
+        pointer-events: none;
+      }
+      .contact-side-rail {
         position: fixed;
         right: 28px;
         top: 50%;
@@ -58,57 +126,40 @@ function ServicesStyles() {
         z-index: 40;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 18px;
+        gap: 14px;
       }
       @media (max-width: 1100px) {
-        .services-side-rail { display: none; }
+        .contact-side-rail { display: none; }
       }
-
-      /* Light pattern for the services-list section, replacing the flat
-         white background — same grid-drift technique used elsewhere on
-         the site (capabilities/engineering sections), just a lighter,
-         brand-green-tinted variant so it stays quiet behind the panels. */
-      .services-list-bg {
-        position: relative;
-        background: #fbfdfc;
+      .contact-rail-btn {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-white);
+        color: var(--color-primary);
+        box-shadow: var(--shadow-sm);
+        transition: transform .25s ease, box-shadow .25s ease, color .25s ease, background .25s ease;
       }
-      .services-list-bg::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 0;
-        background-image:
-          linear-gradient(rgba(0, 96, 48, .05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(0, 96, 48, .05) 1px, transparent 1px);
-        background-size: 44px 44px, 44px 44px;
-        animation: svcGridDrift 18s linear infinite;
-      }
-      .services-list-bg::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 0;
-        background: radial-gradient(circle at 12% 15%, rgba(0, 96, 48, .05), transparent 55%);
-      }
-      .services-list-content {
-        position: relative;
-        z-index: 1;
+      .contact-rail-btn:hover {
+        transform: scale(1.1);
+        color: #fff;
+        background: var(--color-secondary);
+        box-shadow: 0 10px 24px rgba(240,128,32,.3);
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .services-blueprint-bg { animation: none !important; }
-        .service-tilt { transition: none !important; }
-        .services-list-bg::before { animation: none !important; }
+        .contact-blueprint-bg { animation: none !important; }
+        .contact-tilt { transition: none !important; }
       }
     `}</style>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  Mouse-tracked 3D tilt wrapper                                       */
+/*  Mouse-tracked 3D tilt wrapper — same pattern as Services.jsx        */
 /* ------------------------------------------------------------------ */
 function TiltPanel({ children, style, className = '', maxTilt = 3, ...rest }) {
   const ref = useRef(null);
@@ -134,7 +185,7 @@ function TiltPanel({ children, style, className = '', maxTilt = 3, ...rest }) {
       ref={ref}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      className={`service-tilt ${className}`}
+      className={`contact-tilt ${className}`}
       style={{ transform, ...style }}
       {...rest}
     >
@@ -144,84 +195,142 @@ function TiltPanel({ children, style, className = '', maxTilt = 3, ...rest }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Fixed side rail — a live spec-index of the service list, tracks     */
-/*  scroll position and lets you jump between services                 */
+/*  Quick-action rail — call / WhatsApp / email, one tap away           */
 /* ------------------------------------------------------------------ */
-function ServiceRail({ count, activeIndex, onJump }) {
+function QuickContactRail() {
+  const actions = [
+    { icon: <FiPhone size={18} />, href: `tel:${MAIN_PHONE.replace(/\s/g, '')}`, label: 'Call us' },
+    { icon: <FiMessageCircle size={18} />, href: WHATSAPP_URL, label: 'WhatsApp us' },
+    { icon: <FiMail size={18} />, href: `mailto:${SALES_EMAIL}`, label: 'Email us' },
+  ];
   return (
-    <div className="services-side-rail" aria-hidden="false">
-      {Array.from({ length: count }).map((_, i) => (
-        <button
-          key={i}
-          onClick={() => onJump(i)}
-          aria-label={`Jump to service ${i + 1}`}
-          style={{
-            width: activeIndex === i ? '12px' : '8px',
-            height: activeIndex === i ? '12px' : '8px',
-            borderRadius: '50%',
-            border: 'none',
-            padding: 0,
-            cursor: 'pointer',
-            background: activeIndex === i ? 'var(--color-secondary)' : 'rgba(0,96,48,.25)',
-            transition: 'all .3s ease',
-            boxShadow: activeIndex === i ? '0 0 0 5px rgba(240,128,32,.16)' : 'none',
-          }}
-        />
+    <div className="contact-side-rail">
+      {actions.map((a) => (
+        <a key={a.label} href={a.href} target={a.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="contact-rail-btn" aria-label={a.label}>
+          {a.icon}
+        </a>
       ))}
     </div>
   );
 }
 
-export default function Services() {
-  const listRef = useRef(null);
-  const panelRefs = useRef([]);
-  const [activeIndex, setActiveIndex] = useState(0);
+/* ------------------------------------------------------------------ */
+/*  Contact form — controlled, local state. Wire the onSubmit handler   */
+/*  up to your backend / form service (e.g. Formspree, an API route).   */
+/* ------------------------------------------------------------------ */
+function ContactForm() {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
+  const [status, setStatus] = useState('idle'); // idle | sending | sent
 
-  const { scrollYProgress } = useScroll({
-    target: listRef,
-    offset: ['start start', 'end end'],
-  });
-
-  useEffect(() => {
-    const observers = panelRefs.current.map((el, i) => {
-      if (!el) return null;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveIndex(i);
-        },
-        { threshold: 0.4 }
-      );
-      observer.observe(el);
-      return observer;
-    });
-    return () => observers.forEach((o) => o && o.disconnect());
-  }, []);
-
-  const jumpTo = (i) => {
-    panelRefs.current[i]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const handleChange = (e) => {
+    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setStatus('sending');
+    // TODO: replace with your actual submit endpoint
+    setTimeout(() => setStatus('sent'), 700);
+  };
+
+  if (status === 'sent') {
+    return (
+      <div style={{ textAlign: 'center', padding: '48px 24px' }}>
+        <div
+          style={{
+            width: '64px', height: '64px', borderRadius: '50%',
+            background: 'var(--color-primary-glow)', color: 'var(--color-primary)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
+          }}
+        >
+          <FiCheck size={28} />
+        </div>
+        <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '8px' }}>
+          Message sent
+        </h3>
+        <p style={{ color: 'var(--color-text-muted)' }}>
+          Thanks for reaching out — our team will get back to you shortly.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '18px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
+        <div className="contact-input-wrap">
+          <FiUser className="contact-input-icon" size={16} />
+          <input className="contact-input" name="name" placeholder="Your name" value={form.name} onChange={handleChange} required />
+        </div>
+        <div className="contact-input-wrap">
+          <FiMail className="contact-input-icon" size={16} />
+          <input className="contact-input" type="email" name="email" placeholder="Email address" value={form.email} onChange={handleChange} required />
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
+        <div className="contact-input-wrap">
+          <FiPhone className="contact-input-icon" size={16} />
+          <input className="contact-input" name="phone" placeholder="Phone number" value={form.phone} onChange={handleChange} />
+        </div>
+        <div className="contact-input-wrap">
+          <FiMessageCircle className="contact-input-icon" size={16} />
+          <input className="contact-input" name="subject" placeholder="Subject" value={form.subject} onChange={handleChange} required />
+        </div>
+      </div>
+
+      <textarea
+        className="contact-input"
+        name="message"
+        placeholder="Tell us about your project"
+        rows={5}
+        value={form.message}
+        onChange={handleChange}
+        style={{ paddingLeft: '16px', resize: 'vertical' }}
+        required
+      />
+
+      <motion.button
+        type="submit"
+        disabled={status === 'sending'}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        style={{
+          justifySelf: 'start',
+          display: 'inline-flex', alignItems: 'center', gap: '10px',
+          padding: '14px 28px', borderRadius: '999px', border: 'none',
+          background: 'var(--color-secondary)', color: '#fff', fontWeight: 700,
+          cursor: status === 'sending' ? 'wait' : 'pointer', opacity: status === 'sending' ? 0.7 : 1,
+          boxShadow: '0 14px 30px rgba(240,128,32,.28)',
+        }}
+      >
+        {status === 'sending' ? 'Sending…' : 'Send message'}
+        <FiSend size={16} />
+      </motion.button>
+    </form>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Page                                                                */
+/* ------------------------------------------------------------------ */
+export default function Contact() {
   return (
     <>
-      <ServicesStyles />
-      <ServiceRail count={services.length} activeIndex={activeIndex} onJump={jumpTo} />
+      <ContactStyles />
+      <QuickContactRail />
 
       {/* PAGE HEADER */}
       <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: '140px 0 80px', color: '#fff', position: 'relative', overflow: 'hidden' }}>
-        <div className="services-blueprint-bg" style={{ position: 'absolute', inset: 0, opacity: 0.5, pointerEvents: 'none' }} />
+        <div className="contact-blueprint-bg" style={{ position: 'absolute', inset: 0, opacity: 0.5, pointerEvents: 'none' }} />
 
         <motion.div
           animate={{ y: [0, -22, 0], x: [0, 10, 0] }}
           transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
           style={{
-            position: 'absolute',
-            width: '400px',
-            height: '400px',
-            borderRadius: '50%',
+            position: 'absolute', width: '400px', height: '400px', borderRadius: '50%',
             background: 'radial-gradient(circle, rgba(240, 128, 32, 0.14) 0%, transparent 70%)',
-            top: '-20%',
-            right: '-10%',
-            pointerEvents: 'none',
+            top: '-20%', right: '-10%', pointerEvents: 'none',
           }}
         />
 
@@ -234,12 +343,12 @@ export default function Services() {
             style={{ color: 'var(--color-secondary)', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
           >
             <span style={{ width: '28px', height: '2px', background: 'var(--color-secondary)', display: 'inline-block' }} />
-            Engineering Services
+            Get In Touch
           </motion.span>
 
           <ScrollText
             as="h1"
-            text="Services"
+            text="Contact"
             style={{ fontSize: 'clamp(3rem,5vw,4.8rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}
             amount={0}
             delay={0.1}
@@ -249,58 +358,69 @@ export default function Services() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '760px', margin: '0' }}
+            style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '700px', margin: 0 }}
           >
-            Our engineering services extend beyond project delivery, providing complete lifecycle support—from engineering, procurement, commissioning, remote monitoring, modernization, and preventive maintenance to ensure reliable, efficient, and future-ready infrastructure.
+            Whether it's a fire safety audit, a surveillance rollout, or a full data-center
+            build — tell us what you're planning and our team will get back to you directly.
           </motion.p>
+        </div>
+      </section>
 
+      {/* OFFICES */}
+      <section className="section" style={{ background: '#fbfdfc' }}>
+        <div className="container">
           <ScrollStagger
             variant="rise-blur-3d"
             stagger={0.08}
-            className="services-hero-stats"
-            style={{
-              display: 'grid',
-              gap: '24px',
-              marginTop: '44px',
-            }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '28px' }}
           >
-            {[
-              ['EPC', 'Execution'],
-              ['AMC', 'Support'],
-              ['24×7', 'Monitoring'],
-              ['Pan India', 'Service'],
-            ].map(([value, label]) => (
-              <TiltPanel
-                key={label}
-                maxTilt={5}
-                style={{
-                  padding: '22px',
-                  borderRadius: '18px',
-                  background: 'linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05))',
-                  border: '1px solid rgba(255,255,255,.14)',
-                  backdropFilter: 'blur(14px)',
-                }}
-              >
-                <div
-                  style={{
-                    color: '#fff',
-                    fontWeight: 800,
-                    fontSize: value === 'Pan India' ? '1.3rem' : '2rem',
-                  }}
-                >
-                  {value}
-                </div>
+            {offices.map((office) => (
+              <TiltPanel key={office.id} maxTilt={3}>
+                <div className="contact-office-card">
+                  <div className="contact-office-accent" />
+                  <div style={{ padding: '32px' }}>
+                    <div
+                      style={{
+                        width: '52px', height: '52px', borderRadius: '14px',
+                        background: 'var(--color-primary-glow)', color: 'var(--color-primary)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '18px',
+                      }}
+                    >
+                      <FiMapPin size={22} />
+                    </div>
 
-                <div
-                  style={{
-                    marginTop: '8px',
-                    color: '#dbe5df',
-                    fontSize: '.8rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '.12em',
-                  }}
-                >
-                  {label}
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '10px' }}>
+                      {office.label}
+                    </h3>
+
+                    <p style={{ color: 'var(--color-text-muted)', fontSize: '.95rem', lineHeight: 1.6, marginBottom: '16px' }}>
+                      {office.address}
+                    </p>
+
+                    {office.phones.map((p) => (
+                      <a key={p} href={`tel:${p.replace(/\s/g, '')}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-body)', fontSize: '.92rem', fontWeight: 600, marginBottom: '6px', textDecoration: 'none' }}>
+                        <FiPhone size={14} style={{ color: 'var(--color-secondary)' }} /> {p}
+                      </a>
+                    ))}
+
+                    {office.email && (
+                      <a href={`mailto:${office.email}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-body)', fontSize: '.92rem', fontWeight: 600, marginBottom: '18px', textDecoration: 'none' }}>
+                        <FiMail size={14} style={{ color: 'var(--color-secondary)' }} /> {office.email}
+                      </a>
+                    )}
+
+                    <div style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', height: '180px', marginTop: office.email || office.phones.length ? 0 : '18px' }}>
+                      <iframe
+                        title={`${office.label} map`}
+                        src={office.mapSrc}
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                      />
+                    </div>
+                  </div>
                 </div>
               </TiltPanel>
             ))}
@@ -308,243 +428,80 @@ export default function Services() {
         </div>
       </section>
 
-      {/* SERVICES LIST — a scroll-tracked spec index, each entry a rich,
-          tactile panel. Alternating fade-right/fade-left ScrollReveal per
-          panel is kept exactly as-is; it's already doing what the richer
-          system does elsewhere, tied to the IntersectionObserver-driven
-          rail above, so it isn't touched. */}
-      <section className="section services-list-bg" style={{ overflow: 'hidden' }}>
-        <div ref={listRef} className="container services-list-content" style={{ display: 'flex', flexDirection: 'column', gap: '80px' }}>
-          {services.map((s, i) => (
-            <div key={s.id} ref={(el) => (panelRefs.current[i] = el)}>
-              <ScrollReveal
-                variant={i % 2 === 0 ? 'fade-right' : 'fade-left'}
-                className="service-panel-reveal"
-              >
-                <TiltPanel
-                  maxTilt={2}
-                  className={`service-panel ${i % 2 === 1 ? 'reverse' : ''}`}
+      {/* FORM + QUICK INFO */}
+      <section className="section">
+        <div className="container">
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.4fr) minmax(280px, 1fr)', gap: '48px', alignItems: 'start' }}>
+
+            <ScrollReveal variant="fade-right">
+              <TiltPanel maxTilt={1}>
+                <div style={{ background: 'var(--color-white)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)', padding: '48px' }}>
+                  <h2 style={{ fontSize: 'clamp(1.6rem,2vw,2rem)', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '8px' }}>
+                    Send us a message
+                  </h2>
+                  <p style={{ color: 'var(--color-text-muted)', marginBottom: '32px' }}>
+                    We typically reply within one business day.
+                  </p>
+                  <ContactForm />
+                </div>
+              </TiltPanel>
+            </ScrollReveal>
+
+            <ScrollReveal variant="fade-left">
+              <div style={{ display: 'grid', gap: '24px' }}>
+                <div style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', borderRadius: 'var(--radius-lg)', padding: '32px', color: '#fff' }}>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '18px' }}>Prefer to talk directly?</h3>
+
+                  <a href={`tel:${MAIN_PHONE.replace(/\s/g, '')}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#fff', textDecoration: 'none', marginBottom: '14px' }}>
+                    <FiPhone size={16} style={{ color: 'var(--color-secondary)' }} /> {MAIN_PHONE}
+                  </a>
+                  <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#fff', textDecoration: 'none', marginBottom: '14px' }}>
+                    <FiMessageCircle size={16} style={{ color: 'var(--color-secondary)' }} /> WhatsApp us
+                  </a>
+                  <a href={`mailto:${SALES_EMAIL}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#fff', textDecoration: 'none' }}>
+                    <FiMail size={16} style={{ color: 'var(--color-secondary)' }} /> {SALES_EMAIL}
+                  </a>
+
+                  <div style={{ display: 'flex', gap: '10px', marginTop: '26px' }}>
+                    {socials.map((s) => (
+                      <a
+                        key={s.label}
+                        href={s.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={s.label}
+                        style={{
+                          width: '38px', height: '38px', borderRadius: '50%',
+                          background: 'rgba(255,255,255,.12)', color: '#fff',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        }}
+                      >
+                        {s.icon}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                <a
+                  href={COMPANY_PROFILE_URL}
+                  target="_blank"
+                  rel="noreferrer"
                   style={{
-                    padding: '2px',
-                    borderRadius: 'var(--radius-lg)',
-                    background: 'linear-gradient(135deg, #FF9933 0%, rgba(255,153,51,.35) 45%, rgba(255,153,51,0) 72%)',
-                    boxShadow: 'var(--shadow-sm)',
-                    position: 'relative',
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    background: '#fbfdfc', border: '1.5px solid rgba(0,96,48,.14)',
+                    borderRadius: 'var(--radius-lg)', padding: '22px 24px', textDecoration: 'none',
                   }}
                 >
-                  <div
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                      gap: '80px',
-                      alignItems: 'center',
-                      background: 'var(--color-white)',
-                      padding: '48px',
-                      borderRadius: 'calc(var(--radius-lg) - 2px)',
-                      position: 'relative',
-                      overflow: 'hidden',
-                    }}
-                  >
-
-                  {/* Abstract engineering ring — a quiet nod to national institutional trust, not a literal emblem */}
-                  <svg
-                    className="service-ring-motif"
-                    viewBox="0 0 200 200"
-                    style={{
-                      position: 'absolute',
-                      right: '-60px',
-                      bottom: '-60px',
-                      width: '260px',
-                      height: '260px',
-                      opacity: 0.05,
-                      pointerEvents: 'none',
-                      zIndex: 0,
-                    }}
-                  >
-                    <circle cx="100" cy="100" r="90" fill="none" stroke="#0B2447" strokeWidth="2" />
-                    <circle cx="100" cy="100" r="6" fill="#0B2447" />
-                    {Array.from({ length: 16 }).map((_, spoke) => {
-                      const angle = (spoke / 16) * 2 * Math.PI;
-                      const x2 = 100 + 90 * Math.cos(angle);
-                      const y2 = 100 + 90 * Math.sin(angle);
-                      return (
-                        <line
-                          key={spoke}
-                          x1="100"
-                          y1="100"
-                          x2={x2}
-                          y2={y2}
-                          stroke="#0B2447"
-                          strokeWidth="2"
-                        />
-                      );
-                    })}
-                  </svg>
-
-                  {/* Soft diagonal tricolor bands — fade out toward the photo, stay quiet behind the text */}
-                  <div
-                    aria-hidden="true"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      pointerEvents: 'none',
-                      zIndex: 0,
-                      backgroundImage: `
-                        linear-gradient(${i % 2 === 0 ? 105 : 75}deg,
-                          transparent 0%,
-                          rgba(255,153,51,.04) 4%,
-                          rgba(255,153,51,.16) 9%,
-                          rgba(255,153,51,.16) 21%,
-                          rgba(255,153,51,.04) 26%,
-                          transparent 30%,
-                          transparent 34%,
-                          rgba(18,136,7,.04) 38%,
-                          rgba(18,136,7,.14) 43%,
-                          rgba(18,136,7,.14) 55%,
-                          rgba(18,136,7,.04) 60%,
-                          transparent 64%,
-                          transparent 100%
-                        ),
-                        linear-gradient(${i % 2 === 0 ? 90 : 270}deg,
-                          rgba(255,255,255,0) 0%,
-                          rgba(255,255,255,.55) 55%,
-                          #ffffff 75%
-                        )
-                      `,
-                    }}
-                  />
-
-                  {/* Service index tag — reinforces the "engineering spec sheet" identity */}
-                  <span
-                    style={{
-                      position: 'absolute',
-                      top: '24px',
-                      right: '28px',
-                      fontSize: '.75rem',
-                      fontWeight: 700,
-                      letterSpacing: '.16em',
-                      textTransform: 'uppercase',
-                      color: 'var(--color-text-muted)',
-                      opacity: 0.6,
-                      zIndex: 1,
-                    }}
-                  >
-                    Service {String(i + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
+                  <span style={{ fontWeight: 700, color: 'var(--color-text-dark)', fontSize: '.95rem' }}>
+                    Download company profile
                   </span>
-
-                  <div
-                    className="service-panel-image-wrap"
-                    style={{
-                      borderRadius: 'var(--radius-md)',
-                      overflow: 'hidden',
-                      boxShadow: 'var(--shadow-md)',
-                      height: '380px',
-                      position: 'relative',
-                      zIndex: 1,
-                    }}
-                  >
-                    <img
-                      src={s.image}
-                      alt={s.title}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        display: 'block',
-                        transition: 'transform var(--transition-med)',
-                      }}
-                      className="service-panel-image"
-                    />
-                    <div
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background: 'linear-gradient(to top, rgba(0, 96, 48, 0.2) 0%, transparent 60%)',
-                        pointerEvents: 'none',
-                      }}
-                    />
-                  </div>
-
-                  <div className="service-panel-info" style={{ position: 'relative', zIndex: 1 }}>
-                    <motion.div
-                      whileHover={{ scale: 1.08, rotate: -4 }}
-                      transition={{ type: 'spring', stiffness: 300 }}
-                      style={{
-                        width: '76px',
-                        height: '76px',
-                        borderRadius: '20px',
-                        background: 'linear-gradient(135deg, var(--color-primary-glow), rgba(0, 96, 48, 0.03))',
-                        color: 'var(--color-primary)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginBottom: '24px',
-                      }}
-                    >
-                      {iconMap[s.id] || <FiCpu size={32} />}
-                    </motion.div>
-
-                    <h3 style={{ fontSize: 'clamp(1.8rem,2vw,2.2rem)', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '18px', lineHeight: 1.3 }}>
-                      {s.title}
-                    </h3>
-
-                    <p style={{ color: 'var(--color-text-muted)', fontSize: '1.08rem', lineHeight: 1.7, marginBottom: '28px' }}>
-                      {s.text}
-                    </p>
-
-                    {s.bullets && (
-                      <ScrollStagger
-                        variant="fade-right"
-                        stagger={0.06}
-                        style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}
-                      >
-                        {s.bullets.map((bullet, bi) => (
-                          <div key={bullet} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                            <div
-                              style={{
-                                width: '20px',
-                                height: '20px',
-                                borderRadius: '50%',
-                                background: bi % 2 === 0 ? 'var(--color-primary-glow)' : 'rgba(255,153,51,.14)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexShrink: 0,
-                              }}
-                            >
-                              <FiCheck style={{ color: bi % 2 === 0 ? 'var(--color-primary)' : '#E08018', fontSize: '0.8rem' }} />
-                            </div>
-                            <span style={{ fontSize: '0.92rem', fontWeight: 500, color: 'var(--color-text-body)' }}>{bullet}</span>
-                          </div>
-                        ))}
-                      </ScrollStagger>
-                    )}
-                  </div>
-                  </div>
-                </TiltPanel>
-              </ScrollReveal>
-            </div>
-          ))}
+                  <FiDownload size={18} style={{ color: 'var(--color-secondary)' }} />
+                </a>
+              </div>
+            </ScrollReveal>
+          </div>
         </div>
-
-        {/* Overall read progress of the services list — small, honest, and ties to the rail dots above */}
-        <motion.div
-          style={{
-            position: 'fixed',
-            left: 0,
-            top: 0,
-            height: '3px',
-            width: '100%',
-            transformOrigin: 'left',
-            scaleX: scrollYProgress,
-            background: 'linear-gradient(90deg, var(--color-primary), var(--color-secondary))',
-            zIndex: 50,
-          }}
-        />
       </section>
-
-      {/* CALL TO ACTION */}
-      <ContactCTA />
     </>
   );
 }
