@@ -12,6 +12,8 @@ import ContinuityThread from "./components/ContinuityThread";
 import PremiumLoader from "./components/Loading/PremiumLoader";
 import CustomCursor from "./components/CustomCursor";
 
+import CurtainTransition from "./components/animations/CurtainTransition";
+
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Solutions from "./pages/Solutions";
@@ -24,22 +26,28 @@ import Contact from "./pages/Contact";
 import "./App.css";
 import "./styles/loader.css";
 
+const routeCurtainMap = {
+  '/': 'doors',
+  '/about': 'stagger',
+  '/services': 'shutter',
+  '/clients': 'iris',
+  '/gallery': 'mixed',
+  '/career': 'stagger',
+  '/contact': 'wipe',
+};
+
+function getCurtainMode(pathname) {
+  if (pathname.startsWith('/solutions')) return 'wipe';
+  return routeCurtainMap[pathname] || 'doors';
+}
+
 function AppRoutes() {
   const location = useLocation();
-  const shouldReduceMotion = useReducedMotion();
+  const mode = getCurtainMode(location.pathname);
 
   return (
     <AnimatePresence mode="wait">
-      <motion.div
-        key={location.pathname}
-        initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={shouldReduceMotion ? undefined : { opacity: 0, y: -12 }}
-        transition={{
-          duration: shouldReduceMotion ? 0 : 0.4,
-          ease: [0.22, 1, 0.36, 1],
-        }}
-      >
+      <CurtainTransition key={location.pathname} mode={mode}>
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -50,7 +58,7 @@ function AppRoutes() {
           <Route path="/career" element={<Career />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
-      </motion.div>
+      </CurtainTransition>
     </AnimatePresence>
   );
 }
