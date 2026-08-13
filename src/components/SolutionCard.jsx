@@ -67,7 +67,7 @@ export default function SolutionCard({ title, blurb, image, path, index }) {
             }
       }
     >
-      <div className="solution-card-image-wrap">
+      <motion.div className="solution-card-image-wrap" layoutId={`sol-img-${path}`}>
         <motion.img
           src={image}
           alt={title}
@@ -91,7 +91,7 @@ export default function SolutionCard({ title, blurb, image, path, index }) {
           />
         )}
         <span className="solution-card-number" aria-hidden="true">{number}</span>
-      </div>
+      </motion.div>
 
       <div className="solution-card-content">
         <div className="solution-card-heading">

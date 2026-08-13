@@ -71,25 +71,42 @@ export default function Gallery() {
           <ScrollReveal variant="fade-up">
             <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '48px' }}>
               {categories.map((cat) => (
-                <button
+                <motion.button
                   key={cat.id}
                   className="filter-button"
                   onClick={() => setFilter(cat.id)}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   style={{
+                    position: 'relative',
                     padding: '10px 24px',
                     borderRadius: '999px',
                     fontSize: '0.9rem',
                     fontWeight: 600,
                     cursor: 'pointer',
                     border: 'none',
-                    background: filter === cat.id ? 'var(--color-primary)' : 'var(--color-gray-100)',
+                    background: filter === cat.id ? 'transparent' : 'var(--color-gray-100)',
                     color: filter === cat.id ? 'var(--color-white)' : 'var(--color-text-muted)',
-                    transition: 'all 0.3s ease',
-                    boxShadow: filter === cat.id ? '0 4px 12px rgba(0, 96, 48, 0.15)' : 'none',
+                    transition: 'color 0.3s ease',
+                    overflow: 'hidden',
                   }}
                 >
-                  {cat.label}
-                </button>
+                  {filter === cat.id && (
+                    <motion.span
+                      layoutId="gallery-active-pill"
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        borderRadius: '999px',
+                        background: 'var(--color-primary)',
+                        boxShadow: '0 4px 12px rgba(0, 96, 48, 0.2)',
+                        zIndex: 0,
+                      }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  <span style={{ position: 'relative', zIndex: 1 }}>{cat.label}</span>
+                </motion.button>
               ))}
             </div>
           </ScrollReveal>

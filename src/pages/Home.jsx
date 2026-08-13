@@ -9,6 +9,7 @@ import ContactCTA from '../components/ContactCTA';
 import EngineeringIntelligence from '../components/EngineeringIntelligence';
 import FeaturedProjects from '../components/FeaturedProjects/FeaturedProjects';
 import CountUp from '../components/animations/CountUp';
+import MagneticButton from '../components/animations/MagneticButton';
 import { useTilt3D } from '../animations/parallaxVariants';
 
 // motion(Link) so the primary CTA gets a real spring/tap interaction
@@ -204,16 +205,18 @@ export default function Home() {
               </motion.p>
 
               <motion.div className="epc-hero-actions-v2" variants={heroCopy} transition={{ delay: 0.2 }}>
-                <MotionLink
-                  to="/solutions"
-                  className="epc-btn-primary-v2"
-                  whileHover={shouldReduceMotion ? undefined : { y: -3, scale: 1.02 }}
-                  whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
-                  transition={{ type: 'spring', stiffness: 320, damping: 20 }}
-                >
-                  Explore Solutions
-                  <FiArrowRight />
-                </MotionLink>
+                <MagneticButton style={{ display: 'inline-block' }}>
+                  <MotionLink
+                    to="/solutions"
+                    className="epc-btn-primary-v2"
+                    whileHover={shouldReduceMotion ? undefined : { y: -3, scale: 1.02 }}
+                    whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
+                    transition={{ type: 'spring', stiffness: 320, damping: 20 }}
+                  >
+                    Explore Solutions
+                    <FiArrowRight />
+                  </MotionLink>
+                </MagneticButton>
                 <Link to="/gallery" className="epc-btn-outline-v2">
                   Our Projects
                 </Link>

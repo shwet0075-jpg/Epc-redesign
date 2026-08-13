@@ -6,6 +6,7 @@ import ScrollReveal from '../components/ScrollReveal';
 import ScrollStagger from '../components/ScrollStagger';
 import ScrollText from '../components/ScrollText';
 import SectionTitle from '../components/SectionTitle';
+import MagneticButton from '../components/animations/MagneticButton';
 
 const skills = [
   'Design engineering',
@@ -1428,15 +1429,17 @@ export default function About() {
               flexWrap: 'wrap',
             }}
           >
-            <motion.a
-              href="/contact"
-              className="btn btn-primary"
-              whileHover={{ y: -3, boxShadow: '0 14px 30px rgba(0,0,0,.25)' }}
-              whileTap={{ y: 0 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-            >
-              Discuss Your Project
-            </motion.a>
+            <MagneticButton style={{ display: 'inline-block' }}>
+              <motion.a
+                href="/contact"
+                className="btn btn-primary"
+                whileHover={{ y: -3, boxShadow: '0 14px 30px rgba(0,0,0,.25)' }}
+                whileTap={{ y: 0 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                Discuss Your Project
+              </motion.a>
+            </MagneticButton>
 
             <motion.a
               href="/projects"

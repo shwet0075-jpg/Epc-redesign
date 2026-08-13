@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { FiCheck } from 'react-icons/fi';
 import { solutionsOverview } from '../data/solutions';
 import ScrollReveal from '../components/ScrollReveal';
@@ -261,7 +262,8 @@ function SolutionDetail() {
           <div className="container">
             <div className="dc-layout" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '64px', alignItems: 'start' }}>
               <ScrollReveal variant="fade-right">
-                <div
+                <motion.div
+                  layoutId={`sol-img-${sol.path}`}
                   className="dc-image-wrap"
                   style={{
                     borderRadius: 'var(--radius-lg)',
@@ -281,7 +283,7 @@ function SolutionDetail() {
                       display: 'block',
                     }}
                   />
-                </div>
+                </motion.div>
               </ScrollReveal>
 
               <ScrollReveal variant="fade-left">

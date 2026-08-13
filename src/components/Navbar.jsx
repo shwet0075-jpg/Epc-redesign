@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { Phone, ChevronDown, Menu, X, ArrowUpRight, Flame, ShieldCheck, Server, Building2 } from 'lucide-react';
 import { navLinks, contactInfo } from '../data/navigation';
 import '../styles/navbar.css';
@@ -8,18 +8,17 @@ import { FaFacebookF, FaWhatsapp, FaInstagram, FaYoutube, FaXTwitter } from 'rea
 
 const solutionIcons = [Flame, ShieldCheck, Server, Building2];
 
-
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 400, damping: 35, restDelta: 0.001 });
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 20);
-      const maximum = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(maximum > 0 ? (window.scrollY / maximum) * 100 : 0);
     };
     window.addEventListener('scroll', onScroll);
     onScroll();
@@ -45,7 +44,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="scroll-progress" style={{ transform: `scaleX(${scrollProgress / 100})` }} aria-hidden="true" />
+      <motion.div className="scroll-progress" style={{ scaleX }} aria-hidden="true" />
       <div className="topbar">
         <div className="container topbar-inner">
           <div className="topbar-contacts">
@@ -100,8 +99,19 @@ export default function Navbar() {
                   aria-haspopup={link.children ? 'true' : undefined}
                   aria-expanded={link.children ? openDropdown === link.path : undefined}
                 >
-                  {link.label}
-                  {link.children && <ChevronDown className="chevron" size={14} />}
+                  {({ isActive }) => (
+                    <>
+                      {isActive && (
+                        <motion.span
+                          layoutId="navbar-active-pill"
+                          className="navbar-active-pill"
+                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                      <span className="nav-label-text">{link.label}</span>
+                      {link.children && <ChevronDown className="chevron" size={14} />}
+                    </>
+                  )}
                 </NavLink>
                 {link.children && (
                   <AnimatePresence>
