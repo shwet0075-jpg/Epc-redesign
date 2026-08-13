@@ -108,23 +108,31 @@ export default function Navbar() {
                     {openDropdown === link.path && (
                       <motion.div
                         className="dropdown"
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
+                        initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -6, scale: 0.98 }}
                         transition={{
-                          type: "spring",
-                          stiffness: 260,
-                          damping: 22
+                          duration: 0.28,
+                          ease: [0.22, 1, 0.36, 1]
                         }}
                       >
                         <span className="mega-menu__eyebrow">Integrated building systems</span>
                         <div className="mega-menu__grid">
                           {link.children.map((child, index) => {
                             const Icon = solutionIcons[index];
-                            return <NavLink className="mega-menu__item" key={child.path} to={child.path}>
-                              <span className="mega-menu__icon"><Icon size={18} /></span>
-                              <span>{child.label}<small>Explore solution <ArrowUpRight size={11} /></small></span>
-                            </NavLink>;
+                            return (
+                              <motion.div
+                                key={child.path}
+                                initial={{ opacity: 0, y: 6 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.2, delay: index * 0.04 }}
+                              >
+                                <NavLink className="mega-menu__item" to={child.path}>
+                                  <span className="mega-menu__icon"><Icon size={18} /></span>
+                                  <span>{child.label}<small>Explore solution <ArrowUpRight size={11} /></small></span>
+                                </NavLink>
+                              </motion.div>
+                            );
                           })}
                         </div>
                         <NavLink className="mega-menu__all" to="/solutions">Explore all Prudent EPC solutions <ArrowUpRight size={14} /></NavLink>
@@ -150,14 +158,14 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
+              transition={{ duration: 0.3 }}
               onClick={() => setMobileOpen(false)}
               style={{
                 position: 'fixed',
                 inset: 0,
-                background: 'rgba(14, 20, 17, 0.5)',
-                backdropFilter: 'blur(5px)',
-                WebkitBackdropFilter: 'blur(5px)',
+                background: 'rgba(14, 20, 17, 0.55)',
+                backdropFilter: 'blur(6px)',
+                WebkitBackdropFilter: 'blur(6px)',
                 zIndex: 199,
               }}
             />
@@ -166,15 +174,21 @@ export default function Navbar() {
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               style={{ zIndex: 200 }}
             >
               <button className="mobile-close" onClick={() => setMobileOpen(false)} aria-label="Close menu">
                 <X size={24} />
               </button>
               <nav id="mobile-navigation" style={{ marginTop: '16px' }} aria-label="Mobile navigation">
-                {navLinks.map((link) => (
-                  <div key={link.path} className="mobile-nav-item">
+                {navLinks.map((link, index) => (
+                  <motion.div
+                    key={link.path}
+                    className="mobile-nav-item"
+                    initial={{ opacity: 0, x: 14 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.08 + index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                  >
                     <NavLink to={link.path} className={({ isActive }) => (isActive ? 'active' : '')} onClick={() => setMobileOpen(false)}>
                       {link.label}
                     </NavLink>
@@ -187,7 +201,7 @@ export default function Navbar() {
                         ))}
                       </div>
                     )}
-                  </div>
+                  </motion.div>
                 ))}
               </nav>
             </motion.div>

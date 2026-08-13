@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiMapPin, FiPhone, FiMail, FiSend, FiDownload, FiCheck,
   FiFacebook, FiTwitter, FiInstagram, FiYoutube, FiMessageCircle, FiUser,
@@ -233,81 +233,96 @@ function ContactForm() {
     setTimeout(() => setStatus('sent'), 700);
   };
 
-  if (status === 'sent') {
-    return (
-      <div style={{ textAlign: 'center', padding: '48px 24px' }}>
-        <div
-          style={{
-            width: '64px', height: '64px', borderRadius: '50%',
-            background: 'var(--color-primary-glow)', color: 'var(--color-primary)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
-          }}
-        >
-          <FiCheck size={28} />
-        </div>
-        <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '8px' }}>
-          Message sent
-        </h3>
-        <p style={{ color: 'var(--color-text-muted)' }}>
-          Thanks for reaching out — our team will get back to you shortly.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '18px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
-        <div className="contact-input-wrap">
-          <FiUser className="contact-input-icon" size={16} />
-          <input className="contact-input" name="name" placeholder="Your name" value={form.name} onChange={handleChange} required />
-        </div>
-        <div className="contact-input-wrap">
-          <FiMail className="contact-input-icon" size={16} />
-          <input className="contact-input" type="email" name="email" placeholder="Email address" value={form.email} onChange={handleChange} required />
-        </div>
-      </div>
+    <AnimatePresence mode="wait">
+      {status === 'sent' ? (
+        <motion.div
+          key="sent-success"
+          initial={{ opacity: 0, scale: 0.96, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.96, y: -10 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          style={{ textAlign: 'center', padding: '48px 24px' }}
+        >
+          <div
+            style={{
+              width: '64px', height: '64px', borderRadius: '50%',
+              background: 'var(--color-primary-glow)', color: 'var(--color-primary)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
+            }}
+          >
+            <FiCheck size={28} />
+          </div>
+          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '8px' }}>
+            Message sent
+          </h3>
+          <p style={{ color: 'var(--color-text-muted)' }}>
+            Thanks for reaching out — our team will get back to you shortly.
+          </p>
+        </motion.div>
+      ) : (
+        <motion.form
+          key="contact-form"
+          onSubmit={handleSubmit}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          style={{ display: 'grid', gap: '18px' }}
+        >
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
+            <div className="contact-input-wrap">
+              <FiUser className="contact-input-icon" size={16} />
+              <input className="contact-input" name="name" placeholder="Your name" value={form.name} onChange={handleChange} required />
+            </div>
+            <div className="contact-input-wrap">
+              <FiMail className="contact-input-icon" size={16} />
+              <input className="contact-input" type="email" name="email" placeholder="Email address" value={form.email} onChange={handleChange} required />
+            </div>
+          </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
-        <div className="contact-input-wrap">
-          <FiPhone className="contact-input-icon" size={16} />
-          <input className="contact-input" name="phone" placeholder="Phone number" value={form.phone} onChange={handleChange} />
-        </div>
-        <div className="contact-input-wrap">
-          <FiMessageCircle className="contact-input-icon" size={16} />
-          <input className="contact-input" name="subject" placeholder="Subject" value={form.subject} onChange={handleChange} required />
-        </div>
-      </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
+            <div className="contact-input-wrap">
+              <FiPhone className="contact-input-icon" size={16} />
+              <input className="contact-input" name="phone" placeholder="Phone number" value={form.phone} onChange={handleChange} />
+            </div>
+            <div className="contact-input-wrap">
+              <FiMessageCircle className="contact-input-icon" size={16} />
+              <input className="contact-input" name="subject" placeholder="Subject" value={form.subject} onChange={handleChange} required />
+            </div>
+          </div>
 
-      <textarea
-        className="contact-input"
-        name="message"
-        placeholder="Tell us about your project"
-        rows={5}
-        value={form.message}
-        onChange={handleChange}
-        style={{ paddingLeft: '16px', resize: 'vertical' }}
-        required
-      />
+          <textarea
+            className="contact-input"
+            name="message"
+            placeholder="Tell us about your project"
+            rows={5}
+            value={form.message}
+            onChange={handleChange}
+            style={{ paddingLeft: '16px', resize: 'vertical' }}
+            required
+          />
 
-      <motion.button
-        type="submit"
-        disabled={status === 'sending'}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        style={{
-          justifySelf: 'start',
-          display: 'inline-flex', alignItems: 'center', gap: '10px',
-          padding: '14px 28px', borderRadius: '999px', border: 'none',
-          background: 'var(--color-secondary)', color: '#fff', fontWeight: 700,
-          cursor: status === 'sending' ? 'wait' : 'pointer', opacity: status === 'sending' ? 0.7 : 1,
-          boxShadow: '0 14px 30px rgba(240,128,32,.28)',
-        }}
-      >
-        {status === 'sending' ? 'Sending…' : 'Send message'}
-        <FiSend size={16} />
-      </motion.button>
-    </form>
+          <motion.button
+            type="submit"
+            disabled={status === 'sending'}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            style={{
+              justifySelf: 'start',
+              display: 'inline-flex', alignItems: 'center', gap: '10px',
+              padding: '14px 28px', borderRadius: '999px', border: 'none',
+              background: 'var(--color-secondary)', color: '#fff', fontWeight: 700,
+              cursor: status === 'sending' ? 'wait' : 'pointer', opacity: status === 'sending' ? 0.7 : 1,
+              boxShadow: '0 14px 30px rgba(240,128,32,.28)',
+            }}
+          >
+            {status === 'sending' ? 'Sending…' : 'Send message'}
+            <FiSend size={16} />
+          </motion.button>
+        </motion.form>
+      )}
+    </AnimatePresence>
   );
 }
 

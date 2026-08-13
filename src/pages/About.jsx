@@ -25,12 +25,54 @@ const skills = [
 ];
 
 const timelineData = [
-  { year: '2019', title: 'Company Incorporation', text: 'Prudent EPC Pvt. Ltd. was incorporated as a subsidiary of Prudent Controls Pvt. Ltd. to focus on major engineering and electro-mechanical projects.' },
-  { year: '2020', title: 'Regulatory Licensing', text: 'Acquired Central Public Works Department Class II registry and class A licensing from Maharashtra Fire Services for safety installations.' },
-  { year: '2021', title: 'UTC Gold Partnership', text: 'Achieved prestigious UTC Gold Partner status for Clean Agent Suppression Systems, accelerating high-hazard facility safety delivery.' },
-  { year: '2022', title: 'TIER-III Data Centre', text: 'Successfully designed, built, and commissioned complete TIER-III Data Centre packages for Mumbai City Surveillance DC & DR Sites.' },
-  { year: '2023', title: 'BMS Innovation', text: 'Reached milestone of completing 60+ complex automation projects in Intelligent Building Management Systems (IBMS) nationwide.' },
-  { year: '2024', title: 'Mega Infrastructure Projects', text: 'Commissioned massive critical grid surveillance for JNPT Port, Mahatransco, and Colaba Depot under the Southern Army Command.' }
+  {
+    year: '2019',
+    title: 'Company Incorporation',
+    category: 'FOUNDATION',
+    text: 'Prudent EPC Pvt. Ltd. was incorporated as a strategic subsidiary of Prudent Controls Pvt. Ltd. to lead major engineering and electro-mechanical projects across India.',
+    chips: ['🚀 Prudent Subsidiary', '⚡ Electro-Mechanical Core', '🏢 HQ Mumbai'],
+    badge: 'Phase 01'
+  },
+  {
+    year: '2020',
+    title: 'Regulatory Licensing & Accreditation',
+    category: 'REGULATORY MILESTONE',
+    text: 'Acquired Central Public Works Department Class II registry and Class A licensing from Maharashtra Fire Services for comprehensive fire safety & building systems.',
+    chips: ['📜 CPWD Class II', '🔥 MFS Class A License', '🛡️ Safety Compliance'],
+    badge: 'Phase 02'
+  },
+  {
+    year: '2021',
+    title: 'UTC Gold Partnership Achieved',
+    category: 'GLOBAL PARTNERSHIP',
+    text: 'Achieved prestigious UTC Gold Partner status for Clean Agent Suppression Systems, accelerating high-hazard facility safety delivery for national infrastructure.',
+    chips: ['⭐ UTC Gold Partner', '🧪 Clean Agent Suppression', '🔒 High-Hazard Safety'],
+    badge: 'Phase 03'
+  },
+  {
+    year: '2022',
+    title: 'TIER-III Data Centre Commissioning',
+    category: 'ENTERPRISE DATA CENTRE',
+    text: 'Successfully designed, built, and commissioned complete TIER-III Data Centre packages for Mumbai City Surveillance DC & DR Sites with 99.999% uptime compliance.',
+    chips: ['💻 TIER-III Standards', '🌆 City Surveillance DC & DR', '🔌 24/7 Redundancy'],
+    badge: 'Phase 04'
+  },
+  {
+    year: '2023',
+    title: 'BMS & IBMS Automation Milestone',
+    category: 'AUTOMATION INNOVATION',
+    text: 'Reached the landmark milestone of completing 60+ complex automation projects in Intelligent Building Management Systems (IBMS) nationwide.',
+    chips: ['⚡ 60+ IBMS Installations', '🤖 Smart Automation', '🌐 Pan-India Reach'],
+    badge: 'Phase 05'
+  },
+  {
+    year: '2024',
+    title: 'Mega Strategic Infrastructure Projects',
+    category: 'NATIONAL DEFENCE & GRID',
+    text: 'Commissioned massive critical grid surveillance for JNPT Port, Mahatransco, and Colaba Depot under the Southern Army Command.',
+    chips: ['⚓ JNPT Port Surveillance', '🏛️ Southern Army Command', '⚡ Mahatransco Grid'],
+    badge: 'Phase 06'
+  }
 ];
 
 // Director's credentials, split out so the paragraph text stays the
@@ -90,6 +132,72 @@ function AboutStyles() {
       .about-tilt-card:hover {
         box-shadow: 0 25px 60px rgba(0,96,48,.16);
       }
+      .timeline-card-creative {
+        transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1) !important;
+      }
+      .timeline-card-creative:hover {
+        transform: translateY(-6px) scale(1.015) !important;
+        border-color: rgba(0, 96, 48, 0.3) !important;
+        box-shadow: 0 24px 60px rgba(0, 40, 20, 0.14) !important;
+      }
+      .timeline-year-watermark {
+        font-size: 5.5rem;
+        font-weight: 900;
+        position: absolute;
+        right: 16px;
+        bottom: 4px;
+        color: rgba(0, 96, 48, 0.05);
+        line-height: 1;
+        pointer-events: none;
+        user-select: none;
+        transition: all 0.4s ease;
+        letter-spacing: -0.04em;
+      }
+      .timeline-card-creative:hover .timeline-year-watermark {
+        transform: scale(1.08) translateY(-4px);
+        color: rgba(240, 128, 32, 0.12);
+      }
+      .timeline-chip-pill {
+        background: rgba(0, 96, 48, 0.06);
+        border: 1px solid rgba(0, 96, 48, 0.15);
+        color: #006030;
+        font-size: 0.76rem;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.25s ease;
+      }
+      .timeline-chip-pill:hover {
+        background: rgba(240, 128, 32, 0.12);
+        border-color: rgba(240, 128, 32, 0.35);
+        color: #d97706;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(240, 128, 32, 0.15);
+      }
+      .timeline-node-creative {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 3px solid var(--color-primary);
+        box-shadow: 0 0 0 6px rgba(0, 96, 48, 0.12), 0 10px 25px rgba(0, 0, 0, 0.1);
+        z-index: 4;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        flex-shrink: 0;
+      }
+      .timeline-item-wrapper:hover .timeline-node-creative {
+        transform: scale(1.18);
+        border-color: var(--color-secondary);
+        color: var(--color-secondary) !important;
+        box-shadow: 0 0 0 10px rgba(240, 128, 32, 0.2), 0 12px 30px rgba(240, 128, 32, 0.25);
+      }
       .about-shimmer-badge {
         background: linear-gradient(90deg, var(--color-secondary) 0%, #ffd8a8 25%, var(--color-secondary) 50%);
         background-size: 200% auto;
@@ -108,7 +216,7 @@ function AboutStyles() {
         transition: transform .35s ease;
       }
       .timeline-content:hover .timeline-dot-icon {
-        transform: scale(1.12);
+        transform: scale(1.15) rotate(5deg);
       }
       .cert-card-pro {
         transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease, border-color .4s ease;
@@ -277,9 +385,8 @@ function HighlightTile({ icon, value, label }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Modular timeline entry — one component instead of repeating the   */
-/*  left/right/dot/spacer markup inline for every milestone. Each      */
-/*  node now carries an icon and a "Milestone NN" index tag.           */
+/*  Modular timeline entry — redesigned with watermark typography,    */
+/*  category tags, achievement chips, and dynamic hover effects.       */
 /* ------------------------------------------------------------------ */
 function TimelineItem({ item, index }) {
   const isLeft = index % 2 === 0;
@@ -302,59 +409,151 @@ function TimelineItem({ item, index }) {
         className="timeline-item"
       >
         <TiltCard
-          maxTilt={3}
+          maxTilt={4}
           style={{
-            width: '45%',
-            background: '#fff',
-            border: '1px solid rgba(0,96,48,.08)',
-            boxShadow: '0 18px 45px rgba(0,0,0,.08)',
-            borderRadius: '22px',
-            padding: '36px',
+            width: '46%',
+            background: '#ffffff',
+            border: '1px solid rgba(0,96,48,.12)',
+            boxShadow: '0 18px 45px rgba(0,40,20,.07)',
+            borderRadius: '24px',
+            padding: '32px 28px',
             position: 'relative',
-            textAlign: isLeft ? 'right' : 'left',
+            textAlign: 'left',
+            overflow: 'hidden',
           }}
-          className="timeline-content"
+          className="timeline-content timeline-card-creative"
         >
-          <span
+          {/* Top animated shimmer border accent */}
+          <div
             style={{
-              display: 'inline-flex',
-              fontSize: '.72rem',
-              fontWeight: 700,
-              letterSpacing: '.14em',
-              textTransform: 'uppercase',
-              color: '#9aa79f',
-              marginBottom: '10px',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: isLeft
+                ? 'linear-gradient(90deg, #006030 0%, #f08020 100%)'
+                : 'linear-gradient(90deg, #f08020 0%, #006030 100%)',
+            }}
+          />
+
+          {/* Background giant watermark year */}
+          <div className="timeline-year-watermark">
+            {item.year}
+          </div>
+
+          {/* Header Row: Category Tag & Phase Badge */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '14px',
+              position: 'relative',
+              zIndex: 1,
             }}
           >
-            Milestone {String(index + 1).padStart(2, '0')} / {String(timelineData.length).padStart(2, '0')}
-          </span>
-          <span style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--color-secondary)', display: 'block', marginBottom: '8px', letterSpacing: '-0.02em' }}>{item.year}</span>
-          <h4 style={{ fontSize: '1.3rem', fontWeight: 700, margin: '0 0 10px', color: 'var(--color-text-dark)' }}>{item.title}</h4>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.92rem', margin: 0, lineHeight: 1.6 }}>{item.text}</p>
+            <span
+              style={{
+                fontSize: '.72rem',
+                fontWeight: 800,
+                letterSpacing: '.14em',
+                textTransform: 'uppercase',
+                color: isLeft ? '#006030' : '#f08020',
+                background: isLeft ? 'rgba(0,96,48,.08)' : 'rgba(240,128,32,.1)',
+                padding: '4px 12px',
+                borderRadius: '999px',
+                border: `1px solid ${isLeft ? 'rgba(0,96,48,.2)' : 'rgba(240,128,32,.25)'}`,
+              }}
+            >
+              {item.category}
+            </span>
+
+            <span
+              style={{
+                fontSize: '.72rem',
+                fontWeight: 700,
+                color: '#94a3b8',
+                letterSpacing: '.08em',
+              }}
+            >
+              {item.badge || `Milestone ${String(index + 1).padStart(2, '0')}`}
+            </span>
+          </div>
+
+          {/* Main Title & Year Row */}
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '8px', position: 'relative', zIndex: 1 }}>
+            <span
+              style={{
+                fontSize: '2rem',
+                fontWeight: 800,
+                color: 'var(--color-secondary)',
+                letterSpacing: '-0.03em',
+                lineHeight: 1,
+              }}
+            >
+              {item.year}
+            </span>
+            <h4
+              style={{
+                fontSize: '1.2rem',
+                fontWeight: 700,
+                margin: 0,
+                color: 'var(--color-text-dark)',
+                lineHeight: 1.35,
+              }}
+            >
+              {item.title}
+            </h4>
+          </div>
+
+          {/* Description */}
+          <p
+            style={{
+              color: '#475569',
+              fontSize: '0.92rem',
+              margin: '0 0 18px',
+              lineHeight: 1.6,
+              position: 'relative',
+              zIndex: 1,
+            }}
+          >
+            {item.text}
+          </p>
+
+          {/* Achievement Chips Row */}
+          {item.chips && (
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '8px',
+                position: 'relative',
+                zIndex: 1,
+              }}
+            >
+              {item.chips.map((chip, idx) => (
+                <span key={idx} className="timeline-chip-pill">
+                  {chip}
+                </span>
+              ))}
+            </div>
+          )}
         </TiltCard>
 
-        {/* Timeline dot — now carries an icon instead of sitting empty */}
+        {/* Timeline Center Node */}
         <div
-          className="about-dot-active"
+          className="timeline-node-creative about-dot-active"
           style={{
-            width: '44px',
-            height: '44px',
-            borderRadius: '50%',
-            background: '#ffffff',
-            border: `4px solid ${accent}`,
-            zIndex: 2,
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            borderColor: accent,
             color: accent,
           }}
         >
-          <Icon className="timeline-dot-icon" size={18} />
+          <Icon className="timeline-dot-icon" size={20} />
         </div>
 
-        {/* Empty spacer for grid alignment */}
-        <div style={{ width: '45%' }} className="timeline-spacer" />
+        {/* Empty Spacer */}
+        <div style={{ width: '46%' }} className="timeline-spacer" />
       </div>
     </ScrollReveal>
   );

@@ -32,11 +32,11 @@ function AppRoutes() {
     <AnimatePresence mode="wait">
       <motion.div
         key={location.pathname}
-        initial={shouldReduceMotion ? false : { opacity: 0, y: 18, clipPath: 'inset(0 0 7% 0)' }}
-        animate={{ opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)' }}
-        exit={shouldReduceMotion ? undefined : { opacity: 0, y: -10, clipPath: 'inset(7% 0 0 0)' }}
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={shouldReduceMotion ? undefined : { opacity: 0, y: -12 }}
         transition={{
-          duration: shouldReduceMotion ? 0 : 0.34,
+          duration: shouldReduceMotion ? 0 : 0.4,
           ease: [0.22, 1, 0.36, 1],
         }}
       >
