@@ -63,7 +63,7 @@ function Website() {
       <Navbar />
       <ContinuityThread />
 
-      <main>
+      <main style={{ position: 'relative', zIndex: 10, background: '#ffffff' }}>
         <AppRoutes />
       </main>
 

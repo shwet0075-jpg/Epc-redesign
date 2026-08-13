@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring, useMotionValueEvent } from 'framer-motion';
 import { Phone, ChevronDown, Menu, X, ArrowUpRight, Flame, ShieldCheck, Server, Building2 } from 'lucide-react';
 import { navLinks, contactInfo } from '../data/navigation';
 import '../styles/navbar.css';
@@ -12,9 +12,19 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [hidden, setHidden] = useState(false);
 
-  const { scrollYProgress } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 400, damping: 35, restDelta: 0.001 });
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
 
   useEffect(() => {
     const onScroll = () => {
@@ -75,7 +85,15 @@ export default function Navbar() {
         </div>
       </div>
 
-      <header className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
+      <motion.header
+        className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}
+        variants={{
+          visible: { y: 0 },
+          hidden: { y: '-140%' },
+        }}
+        animate={hidden && !mobileOpen ? 'hidden' : 'visible'}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      >
         <div className="container navbar-inner">
           <NavLink to="/" className="navbar-logo" aria-label="Prudent EPC home">
             <img src="/assets/images/logo.png" alt="Prudent EPC" />
@@ -122,7 +140,7 @@ export default function Navbar() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -6, scale: 0.98 }}
                         transition={{
-                          duration: 0.28,
+                          duration: 0.90,
                           ease: [0.22, 1, 0.36, 1]
                         }}
                       >
@@ -135,7 +153,7 @@ export default function Navbar() {
                                 key={child.path}
                                 initial={{ opacity: 0, y: 6 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.2, delay: index * 0.04 }}
+                                transition={{ duration: 0.25, delay: index * 0.05 }}
                               >
                                 <NavLink className="mega-menu__item" to={child.path}>
                                   <span className="mega-menu__icon"><Icon size={18} /></span>
@@ -164,7 +182,7 @@ export default function Navbar() {
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-      </header>
+      </motion.header>
 
       <AnimatePresence>
         {mobileOpen && (
