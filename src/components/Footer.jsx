@@ -24,8 +24,8 @@ export default function Footer() {
     offset: ['start end', 'end end'],
   });
 
-  // Internal content parallax translation as page uncovers the fixed footer
-  const contentY = useTransform(scrollYProgress, [0, 1], [-100, 0]);
+  // Smooth content Y translation as sticky footer unveils
+  const contentY = useTransform(scrollYProgress, [0, 1], [-60, 0]);
 
   const subscribe = (event) => {
     event.preventDefault();
