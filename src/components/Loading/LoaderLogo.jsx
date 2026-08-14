@@ -1,4 +1,6 @@
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { animate, stagger } from "animejs";
 
 const easeOutSoft = [0.22, 1, 0.36, 1];
 
@@ -10,44 +12,36 @@ const epcLetters = [
 ];
 
 export default function LoaderLogo({ shouldReduceMotion }) {
-  // Container stagger variant for Prudent text
-  const prudentContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.06,
-        delayChildren: 1.85,
-      },
-    },
-  };
+  const textRef = useRef(null);
 
-  // Container stagger variant for EPC text
-  const epcContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.07,
-        delayChildren: 2.4,
-      },
-    },
-  };
+  useEffect(() => {
+    if (shouldReduceMotion || !textRef.current) return;
 
-  const letterVariants = {
-    hidden: shouldReduceMotion
-      ? { opacity: 0, y: 0 }
-      : { opacity: 0, y: 16, filter: "blur(4px)" },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      transition: {
-        duration: 0.45,
-        ease: easeOutSoft,
+    const letters = textRef.current.querySelectorAll(".loader-letter");
+    if (!letters.length) return;
+
+    const anim = animate(letters, {
+      y: [
+        { to: "-2.75rem", ease: "outExpo", duration: 600 },
+        { to: 0, ease: "outBounce", duration: 800, delay: 100 },
+      ],
+      rotate: {
+        from: "-1turn",
+        delay: 0,
       },
-    },
-  };
+      delay: stagger(50, { start: 400 }),
+      ease: "inOutCirc",
+      loopDelay: 1000,
+      loop: true,
+    });
+
+    return () => {
+      if (anim) {
+        if (typeof anim.pause === "function") anim.pause();
+        if (typeof anim.revert === "function") anim.revert();
+      }
+    };
+  }, [shouldReduceMotion]);
 
   return (
     <div className="loader-brand">
@@ -89,23 +83,23 @@ export default function LoaderLogo({ shouldReduceMotion }) {
         />
 
         {/* Top-Left Orange Piece with Motion Trail Glow */}
-       <motion.div
-  className="loader-piece-wrapper loader-piece-orange-wrapper"
-  initial={
-    shouldReduceMotion
-      ? { opacity: 0, x: 0, y: 0, scale: 1, rotate: 0, filter: "drop-shadow(0px 0px 0px rgba(240,128,32,0))" }
-      : { opacity: 0, x: "-55vw", y: "-55vh", scale: 1.28, rotate: -12, filter: "drop-shadow(-16px -16px 20px rgba(240,128,32,0.65))" }
-  }
-  animate={{
-    opacity: 1, x: 0, y: 0, scale: 1, rotate: 0,
-    filter: "drop-shadow(0px 0px 0px rgba(240,128,32,0))",
-  }}
-  transition={
-    shouldReduceMotion
-      ? { duration: 0.3 }
-      : { duration: 1.5, delay: 0.3, ease: easeOutSoft }
-  }
->
+        <motion.div
+          className="loader-piece-wrapper loader-piece-orange-wrapper"
+          initial={
+            shouldReduceMotion
+              ? { opacity: 0, x: 0, y: 0, scale: 1, rotate: 0, filter: "drop-shadow(0px 0px 0px rgba(240,128,32,0))" }
+              : { opacity: 0, x: "-55vw", y: "-55vh", scale: 1.28, rotate: -12, filter: "drop-shadow(-16px -16px 20px rgba(240,128,32,0.65))" }
+          }
+          animate={{
+            opacity: 1, x: 0, y: 0, scale: 1, rotate: 0,
+            filter: "drop-shadow(0px 0px 0px rgba(240,128,32,0))",
+          }}
+          transition={
+            shouldReduceMotion
+              ? { duration: 0.3 }
+              : { duration: 1.5, delay: 0.3, ease: easeOutSoft }
+          }
+        >
           <img
             src="/assets/images/logo-orange.png"
             alt="Prudent EPC Orange Symbol Piece"
@@ -114,41 +108,23 @@ export default function LoaderLogo({ shouldReduceMotion }) {
         </motion.div>
 
         {/* Bottom-Right Green Piece with Motion Trail Glow */}
-       <motion.div
-
-  className="loader-piece-wrapper loader-piece-green-wrapper"
-
-  initial={
-
-    shouldReduceMotion
-
-      ? { opacity: 0, x: 0, y: 0, scale: 1, rotate: 0, filter: "drop-shadow(0px 0px 0px rgba(0,96,48,0))" }
-
-      : { opacity: 0, x: "55vw", y: "55vh", scale: 1.28, rotate: 12, filter: "drop-shadow(16px 16px 20px rgba(0,96,48,0.65))" }
-
-  }
-
-  animate={{
-
-    opacity: 1, x: 0, y: 0, scale: 1, rotate: 0,
-
-    filter: "drop-shadow(0px 0px 0px rgba(0,96,48,0))",
-
-  }}
-
-  transition={
-
-    shouldReduceMotion
-
-      ? { duration: 0.3 }
-
-      : { duration: 1.5, delay: 0.3, ease: easeOutSoft }
-
-  }
-
->
-
-  
+        <motion.div
+          className="loader-piece-wrapper loader-piece-green-wrapper"
+          initial={
+            shouldReduceMotion
+              ? { opacity: 0, x: 0, y: 0, scale: 1, rotate: 0, filter: "drop-shadow(0px 0px 0px rgba(0,96,48,0))" }
+              : { opacity: 0, x: "55vw", y: "55vh", scale: 1.28, rotate: 12, filter: "drop-shadow(16px 16px 20px rgba(0,96,48,0.65))" }
+          }
+          animate={{
+            opacity: 1, x: 0, y: 0, scale: 1, rotate: 0,
+            filter: "drop-shadow(0px 0px 0px rgba(0,96,48,0))",
+          }}
+          transition={
+            shouldReduceMotion
+              ? { duration: 0.3 }
+              : { duration: 1.5, delay: 0.3, ease: easeOutSoft }
+          }
+        >
           <img
             src="/assets/images/logo-green.png"
             alt="Prudent EPC Green Symbol Piece"
@@ -157,49 +133,35 @@ export default function LoaderLogo({ shouldReduceMotion }) {
         </motion.div>
       </motion.div>
 
-      {/* Letter-Staggered Typography Reveal */}
-      <div className="loader-text-wrapper">
-        <h1 className="loader-title" aria-label="Prudent EPC">
+      {/* Typography with Character Bounce & Spin Animation */}
+      <div className="loader-text-wrapper" ref={textRef}>
+        <h2 className="loader-title text-xl" aria-label="Prudent EPC">
           {/* Prudent Stagger Group (#006030) */}
-          <motion.span
-            className="loader-title-group loader-title-prudent"
-            variants={prudentContainerVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          <span className="loader-title-group loader-title-prudent">
             {prudentLetters.map((char, index) => (
-              <motion.span
+              <span
                 key={`prudent-${index}`}
                 className="loader-letter letter-prudent"
-                variants={letterVariants}
               >
                 {char}
-              </motion.span>
+              </span>
             ))}
-          </motion.span>
+          </span>
 
           {/* EPC Stagger Group (E: #F08020, PC: #006030) */}
-          <motion.span
-            className="loader-title-group loader-title-epc"
-            variants={epcContainerVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          <span className="loader-title-group loader-title-epc">
             {epcLetters.map((item, index) => (
-              <motion.span
+              <span
                 key={`epc-${index}`}
                 className={`loader-letter ${
                   item.isOrange ? "letter-orange" : "letter-green"
                 }`}
-                variants={letterVariants}
               >
                 {item.char}
-              </motion.span>
+              </span>
             ))}
-          </motion.span>
-        </h1>
-
-  
+          </span>
+        </h2>
       </div>
     </div>
   );

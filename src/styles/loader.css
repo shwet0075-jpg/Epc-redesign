@@ -103,8 +103,8 @@
   flex-direction: column;
   align-items: center;
   width: 90%;
-  max-width: 450px;
-  padding: 48px 36px;
+  max-width: 460px;
+  padding: 52px 36px 44px;
   text-align: center;
 
   background: #ffffff;
@@ -124,7 +124,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 32px;
 }
 
 /* Logo Assembly Container */
@@ -179,29 +179,36 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  margin-top: 8px;
+  overflow: visible;
 }
 
-.loader-title {
+.loader-title,
+.text-xl {
   margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35em;
-  font-size: clamp(1.6rem, 1.3rem + 1.3vw, 2.1rem);
+  gap: 0.42em;
+  font-size: 1.5rem;
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   line-height: 1.2;
+  overflow: visible;
 }
 
 .loader-title-group {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  overflow: visible;
 }
 
 .loader-letter {
   display: inline-block;
-  will-change: transform, opacity;
+  will-change: transform;
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* "Prudent" Wordmark Color (#006030) */
@@ -230,13 +237,11 @@
   text-transform: uppercase;
 }
 
-
-
 /* Responsive Adjustments */
 @media (max-width: 640px) {
   .loader-content {
-    max-width: 320px;
-    padding: 38px 24px;
+    max-width: 330px;
+    padding: 42px 24px 36px;
     border-radius: 22px;
   }
 
@@ -245,17 +250,17 @@
     height: 100px;
   }
 
-  .loader-title {
-    font-size: 1.35rem;
-    gap: 0.28em;
+  .loader-title,
+  .text-xl {
+    font-size: 1.3rem;
+    letter-spacing: 0.05em;
+    gap: 0.32em;
   }
 
   .loader-subtitle {
     font-size: 0.65rem;
     letter-spacing: 0.22em;
   }
-
-
 }
 
 /* Accessibility: Reduced Motion Override */
