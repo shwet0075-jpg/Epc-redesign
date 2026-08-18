@@ -167,7 +167,7 @@ export default function Footer() {
                   © {new Date().getFullYear()} Prudent EPC Pvt. Ltd. All Rights Reserved.
                 </span>
                 <span className="footer-credit">
-                  Crafted by <strong>~Shwet</strong>
+                  Crafted by <a href="https://incandescent-swan-d87600.netlify.app/" target="_blank" rel="noopener noreferrer"><strong>~Shwet</strong></a>
                 </span>
               </div>
             </div>

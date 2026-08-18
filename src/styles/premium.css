@@ -456,6 +456,7 @@ main {
     radial-gradient(circle at 85% 0%, rgba(0, 96, 48, 0.24), transparent 27rem);
 }
 
+
 .footer::after {
   content: '';
   position: absolute;

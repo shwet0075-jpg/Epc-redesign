@@ -488,11 +488,32 @@
 
 }
 
+.footer-credit a{
+    text-decoration:none;
+    color:inherit;
+}
+
 .footer-credit strong{
 
     color:#F08020;
 
-    font-weight:600;
+    font-weight:700;
+
+    font-size:1.05rem;
+
+    letter-spacing:.03em;
+
+    display:inline-block;
+
+    transition:transform .2s ease, color .2s ease;
+
+}
+
+.footer-credit a:hover strong{
+
+    text-decoration:underline;
+
+    transform:scale(1.08);
 
 }
 

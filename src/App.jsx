@@ -67,7 +67,6 @@ function Website() {
   return (
     <SmoothScroll>
       <ScrollToTop />
-   <CustomCursor />
       <Navbar />
       <ContinuityThread />
 
@@ -87,6 +86,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <CustomCursor />
       {loading ? (
         <PremiumLoader onComplete={() => setLoading(false)} />
       ) : (

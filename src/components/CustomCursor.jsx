@@ -9,25 +9,24 @@ const MAGNETIC_SELECTOR = 'a, button, [role="button"], input, textarea, select, 
 const INPUT_SELECTOR = 'input, textarea, select';
 
 export default function CustomCursor() {
-  // Use refs instead of useState for hover/press to avoid re-renders on every interaction
   const enabledRef = useRef(false);
   const dotRef = useRef(null);
   const ringRef = useRef(null);
   const targetRef = useRef(null);
   const pulseTimeoutRef = useRef(null);
+  const isInitializedRef = useRef(false);
 
   // Raw mouse position
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
   // Dot follows almost instantly — extremely tight spring for precise tracking
-  const dotX = useSpring(mouseX, { stiffness: 1200, damping: 50, mass: 0.12 });
-  const dotY = useSpring(mouseY, { stiffness: 1200, damping: 50, mass: 0.12 });
+  const dotX = useSpring(mouseX, { stiffness: 2000, damping: 55, mass: 0.05 });
+  const dotY = useSpring(mouseY, { stiffness: 2000, damping: 55, mass: 0.05 });
 
-  // Ring trails behind with a responsive spring — fast enough to feel connected,
-  // loose enough to convey fluid inertia. Significantly faster than original.
-  const ringX = useSpring(mouseX, { stiffness: 500, damping: 30, mass: 0.35 });
-const ringY = useSpring(mouseY, { stiffness: 500, damping: 30, mass: 0.35 });
+  // Ring trails behind with a responsive spring
+  const ringX = useSpring(mouseX, { stiffness: 550, damping: 30, mass: 0.32 });
+  const ringY = useSpring(mouseY, { stiffness: 550, damping: 30, mass: 0.32 });
 
   // Direct DOM class manipulation — zero React re-renders
   const setHoverState = useCallback((hovering, isInput) => {
@@ -77,17 +76,23 @@ const ringY = useSpring(mouseY, { stiffness: 500, damping: 30, mass: 0.35 });
     if (!hasFinePointer) return undefined;
     enabledRef.current = true;
 
-    // Force initial render to show cursor elements
-    if (dotRef.current) dotRef.current.style.display = '';
-    if (ringRef.current) ringRef.current.style.display = '';
-
     document.documentElement.classList.add('custom-cursor-active');
 
-    const handleMouseMove = (e) => {
+    const handlePointerMove = (e) => {
       const magnet = targetRef.current;
 
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
+      if (!isInitializedRef.current) {
+        isInitializedRef.current = true;
+        mouseX.jump(e.clientX);
+        mouseY.jump(e.clientY);
+        ringX.jump(e.clientX);
+        ringY.jump(e.clientY);
+        if (dotRef.current) dotRef.current.style.opacity = '1';
+        if (ringRef.current) ringRef.current.style.opacity = '1';
+      } else {
+        mouseX.set(e.clientX);
+        mouseY.set(e.clientY);
+      }
 
       if (magnet) {
         const rect = magnet.getBoundingClientRect();
@@ -130,11 +135,15 @@ const ringY = useSpring(mouseY, { stiffness: 500, damping: 30, mass: 0.35 });
     const handleDown = () => setPressedState(true);
     const handleUp = () => setPressedState(false);
     const handleLeaveWindow = () => {
+      if (dotRef.current) dotRef.current.style.opacity = '0';
+      if (ringRef.current) ringRef.current.style.opacity = '0';
+      isInitializedRef.current = false;
       mouseX.set(-100);
       mouseY.set(-100);
     };
 
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('pointerdown', handlePointerMove, { passive: true });
     window.addEventListener('mouseover', handleOver, { passive: true });
     window.addEventListener('mouseout', handleOut, { passive: true });
     window.addEventListener('mousedown', handleDown);
@@ -143,7 +152,8 @@ const ringY = useSpring(mouseY, { stiffness: 500, damping: 30, mass: 0.35 });
 
     return () => {
       document.documentElement.classList.remove('custom-cursor-active');
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerdown', handlePointerMove);
       window.removeEventListener('mouseover', handleOver);
       window.removeEventListener('mouseout', handleOut);
       window.removeEventListener('mousedown', handleDown);
@@ -155,12 +165,29 @@ const ringY = useSpring(mouseY, { stiffness: 500, damping: 30, mass: 0.35 });
 
   return (
     <>
-      {/* Tight glowing dot — true cursor position */}
+      {/* Orange Pointer Cursor — true cursor position */}
       <motion.div
         ref={dotRef}
-        className="custom-cursor-dot"
+        className="custom-cursor-pointer"
         style={{ left: dotX, top: dotY }}
-      />
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="cursor-arrow-svg"
+        >
+          <path
+            d="M3 3L10.07 20.97L13.58 13.58L20.97 10.07L3 3Z"
+            fill="#F08020"
+            stroke="#006030"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </motion.div>
 
       {/* Trailing ring — magnetically pulled toward hovered elements */}
       <motion.div
