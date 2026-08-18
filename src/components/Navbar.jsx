@@ -200,7 +200,7 @@ export default function Navbar() {
                 background: 'rgba(14, 20, 17, 0.55)',
                 backdropFilter: 'blur(6px)',
                 WebkitBackdropFilter: 'blur(6px)',
-                zIndex: 199,
+                zIndex: 1099,
               }}
             />
             <motion.div
@@ -209,7 +209,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              style={{ zIndex: 200 }}
+              style={{ zIndex: 1100 }}
             >
               <button className="mobile-close" onClick={() => setMobileOpen(false)} aria-label="Close menu">
                 <X size={24} />
