@@ -366,7 +366,7 @@
   height: 100vh;
   width: min(85vw, 380px);
   background: var(--color-dark);
-  z-index: 200;
+  z-index: 1100;
   padding: 40px 32px;
   display: flex;
   flex-direction: column;
