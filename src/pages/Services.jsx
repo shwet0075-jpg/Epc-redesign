@@ -110,9 +110,10 @@ function ServicesStyles() {
 /* ------------------------------------------------------------------ */
 function TiltPanel({ children, style, className = '', maxTilt = 3, ...rest }) {
   const ref = useRef(null);
-  const [transform, setTransform] = useState('perspective(1400px) rotateX(0deg) rotateY(0deg) translateZ(0px)');
+  const [transform, setTransform] = useState('none');
 
   const handleMove = (e) => {
+    if (window.matchMedia && !window.matchMedia('(pointer: fine)').matches) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -124,7 +125,7 @@ function TiltPanel({ children, style, className = '', maxTilt = 3, ...rest }) {
   };
 
   const handleLeave = () => {
-    setTransform('perspective(1400px) rotateX(0deg) rotateY(0deg) translateZ(0px)');
+    setTransform('none');
   };
 
   return (
@@ -332,13 +333,14 @@ export default function Services() {
                   }}
                 >
                   <div
+                    className="service-panel-inner"
                     style={{
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                      gap: '80px',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+                      gap: 'clamp(28px, 4vw, 80px)',
                       alignItems: 'center',
                       background: 'var(--color-white)',
-                      padding: '48px',
+                      padding: 'clamp(22px, 4vw, 48px)',
                       borderRadius: 'calc(var(--radius-lg) - 2px)',
                       position: 'relative',
                       overflow: 'hidden',
@@ -492,7 +494,7 @@ export default function Services() {
                     </p>
 
                     {s.bullets && (
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '12px' }}>
                         {s.bullets.map((bullet, bi) => (
                           <motion.div
                             key={bullet}

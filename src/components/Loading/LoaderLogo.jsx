@@ -1,6 +1,4 @@
-import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { animate, stagger } from "animejs";
 
 const easeOutSoft = [0.22, 1, 0.36, 1];
 
@@ -12,36 +10,9 @@ const epcLetters = [
 ];
 
 export default function LoaderLogo({ shouldReduceMotion }) {
-  const textRef = useRef(null);
-
-  useEffect(() => {
-    if (shouldReduceMotion || !textRef.current) return;
-
-    const letters = textRef.current.querySelectorAll(".loader-letter");
-    if (!letters.length) return;
-
-    const anim = animate(letters, {
-      y: [
-        { to: "-2.75rem", ease: "outExpo", duration: 600 },
-        { to: 0, ease: "outBounce", duration: 800, delay: 100 },
-      ],
-      rotate: {
-        from: "-1turn",
-        delay: 0,
-      },
-      delay: stagger(50, { start: 400 }),
-      ease: "inOutCirc",
-      loopDelay: 1000,
-      loop: true,
-    });
-
-    return () => {
-      if (anim) {
-        if (typeof anim.pause === "function") anim.pause();
-        if (typeof anim.revert === "function") anim.revert();
-      }
-    };
-  }, [shouldReduceMotion]);
+  // Base start delay so letters begin landing as the logo pieces assemble
+  const baseDelay = 0.55;
+  const letterStagger = 0.085;
 
   return (
     <div className="loader-brand">
@@ -133,40 +104,83 @@ export default function LoaderLogo({ shouldReduceMotion }) {
         </motion.div>
       </motion.div>
 
-      {/* Typography with Character Bounce & Spin Animation */}
-      <div className="loader-text-wrapper" ref={textRef}>
+      {/* Typography with Sequential Landing Animation */}
+      <div className="loader-text-wrapper">
         <h2 className="loader-title text-xl" aria-label="Prudent EPC">
           {/* Prudent Stagger Group (#006030) */}
           <span className="loader-title-group loader-title-prudent">
             {prudentLetters.map((char, index) => (
-              <span
+              <motion.span
                 key={`prudent-${index}`}
                 className="loader-letter letter-prudent"
+                initial={
+                  shouldReduceMotion
+                    ? { opacity: 1, y: 0, scale: 1 }
+                    : { opacity: 0, y: -45, scale: 1.35, filter: "blur(4px)" }
+                }
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  filter: "blur(0px)",
+                }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0.2 }
+                    : {
+                        type: "spring",
+                        stiffness: 420,
+                        damping: 20,
+                        mass: 0.7,
+                        delay: baseDelay + index * letterStagger,
+                      }
+                }
               >
                 {char}
-              </span>
+              </motion.span>
             ))}
           </span>
 
           {/* EPC Stagger Group (E: #F08020, PC: #006030) */}
           <span className="loader-title-group loader-title-epc">
-            {epcLetters.map((item, index) => (
-              <span
-                key={`epc-${index}`}
-                className={`loader-letter ${
-                  item.isOrange ? "letter-orange" : "letter-green"
-                }`}
-              >
-                {item.char}
-              </span>
-            ))}
+            {epcLetters.map((item, index) => {
+              const letterIndex = prudentLetters.length + index;
+              return (
+                <motion.span
+                  key={`epc-${index}`}
+                  className={`loader-letter ${
+                    item.isOrange ? "letter-orange" : "letter-green"
+                  }`}
+                  initial={
+                    shouldReduceMotion
+                      ? { opacity: 1, y: 0, scale: 1 }
+                      : { opacity: 0, y: -45, scale: 1.35, filter: "blur(4px)" }
+                  }
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    filter: "blur(0px)",
+                  }}
+                  transition={
+                    shouldReduceMotion
+                      ? { duration: 0.2 }
+                      : {
+                          type: "spring",
+                          stiffness: 420,
+                          damping: 20,
+                          mass: 0.7,
+                          delay: baseDelay + letterIndex * letterStagger + 0.08,
+                        }
+                  }
+                >
+                  {item.char}
+                </motion.span>
+              );
+            })}
           </span>
         </h2>
       </div>
     </div>
   );
 }
-
-
-
-
