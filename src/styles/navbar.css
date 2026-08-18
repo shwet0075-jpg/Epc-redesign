@@ -345,15 +345,26 @@
 
 .navbar-toggle {
   display: none;
-   width: 52px;
-  height: 52px;
+   width: 48px;
+  height: 48px;
   background: var(--color-primary-glow);
   border: none;
   color: var(--color-primary);
   cursor: pointer;
   padding: 10px;
   border-radius: 50%;
+    align-items: center;
+  justify-content: center;
+  line-height: 0;
   transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.navbar-toggle svg {
+  display: block;
+  width: 26px;
+  height: 26px;
+  margin: 0;
+  flex-shrink: 0;
 }
 
 .navbar-toggle:hover {
