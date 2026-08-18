@@ -211,27 +211,7 @@ main {
     box-shadow:
       0 22px 60px -34px rgba(0,43,21,.24),
       0 8px 24px rgba(0,0,0,.05)!important;
-}
-
-.service-panel::before{
-    content:'';
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:4px;
-    background:linear-gradient(
-      90deg,
-      var(--color-primary),
-      var(--color-secondary)
-    );
-    transform:scaleX(.2);
-    transform-origin:left;
-    transition:.45s;
-}
-
-.service-panel:hover::before{
-    transform:scaleX(1);
+    overflow: hidden;
 }
 
 .service-panel.reverse {
