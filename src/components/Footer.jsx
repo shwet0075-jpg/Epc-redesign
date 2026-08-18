@@ -25,7 +25,7 @@ export default function Footer() {
   });
 
   // Parallax Y offset for internal content unveiling as the user scrolls
-  const contentY = useTransform(scrollYProgress, [0, 1], [-100, 0]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [-60, 0]);
 
   const subscribe = (event) => {
     event.preventDefault();
