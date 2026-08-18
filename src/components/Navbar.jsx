@@ -179,7 +179,7 @@ export default function Navbar() {
             aria-expanded={mobileOpen}
             aria-controls="mobile-navigation"
           >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            {<Menu size={24} />}
           </button>
         </div>
       </motion.header>
