@@ -345,6 +345,8 @@
 
 .navbar-toggle {
   display: none;
+   width: 52px;
+  height: 52px;
   background: var(--color-primary-glow);
   border: none;
   color: var(--color-primary);
