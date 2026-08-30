@@ -22,7 +22,7 @@ const galleryItems = Array.from({ length: 18 }, (_, i) => {
   return {
     logo: `/assets/images/work-img/w${num}.png`,
     name: `Project ${String(num).padStart(2, '0')}`,
-    desc: 'On-site engineering, installation, testing, and commissioning work delivered by Prudent EPC.',
+    desc: 'On-site engineerinfor the , installation, testing, and commissioning work delivered by Prudent EPC.',
     category: sectorCycle[i % sectorCycle.length],
   };
 });
@@ -31,8 +31,8 @@ export default function Gallery() {
   const [filter, setFilter] = useState('all');
   const [lightbox, setLightbox] = useState(null);
 
-  const filteredItems = filter === 'all' 
-    ? galleryItems 
+  const filteredItems = filter === 'all'
+    ? galleryItems
     : galleryItems.filter(item => item.category === filter);
 
   return (
@@ -116,7 +116,7 @@ export default function Gallery() {
               animates on filter change; stacking scroll-triggered variants
               on top of filter-driven layout animation causes flicker on
               re-filter. */}
-          <motion.div 
+          <motion.div
             layout
             className="gallery-grid"
             style={{
@@ -169,7 +169,7 @@ export default function Gallery() {
                     }}
                     className="gallery-item-image"
                   />
-                  
+
                   {/* Hover Overlay */}
                   <div
                     style={{

@@ -114,10 +114,13 @@ const heroLine1 = (() => {
 })();
 const heroLine2 = 'smart infrastructure.';
 
+// Dynamically calculate years of experience since Jan 2019 (+1 added automatically every 1 Jan)
+const yearsExperience = Math.max(1, new Date().getFullYear() - 2019);
+
 const heroStats = [
-  { value: "15+", label: "Years Experience" },
-  { value: "250+", label: "Projects Delivered" },
-  { value: "Pan India", label: "Clients Served" },
+  { end: yearsExperience, suffix: "+", label: "Years Experience" },
+  { end: 250, suffix: "+", label: "Projects Delivered" },
+  { isText: true, text: "Pan India", label: "Clients Served" },
 ];
 
 // Marquee strip content — built from existing capability labels plus
@@ -225,7 +228,13 @@ export default function Home() {
               <motion.div className="epc-hero-stats-v2" variants={heroCopy} transition={{ delay: 0.25 }}>
                 {heroStats.map((stat) => (
                   <div key={stat.label} className="epc-hero-stat-v2">
-                    <h3><CountUp end={stat.value} /></h3>
+                    <h3>
+                      {stat.isText ? (
+                        stat.text
+                      ) : (
+                        <CountUp end={stat.end} suffix={stat.suffix} duration={2} />
+                      )}
+                    </h3>
                     <p>{stat.label}</p>
                   </div>
                 ))}

@@ -1,20 +1,89 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { FiCpu, FiServer, FiAward, FiShield, FiCheck } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import {
+  FiCpu,
+  FiServer,
+  FiAward,
+  FiShield,
+  FiCheck,
+  FiArrowRight,
+  FiActivity,
+  FiClock,
+  FiTool,
+  FiLayers,
+  FiTrendingUp,
+} from 'react-icons/fi';
 import { services } from '../data/services';
 import ScrollReveal from '../components/ScrollReveal';
 import ContactCTA from '../components/ContactCTA';
+import MagneticButton from '../components/animations/MagneticButton';
 
 const iconMap = {
-  epc: <FiCpu size={32} />,
-  'remote-monitoring': <FiServer size={32} />,
-  'project-works': <FiAward size={32} />,
-  amc: <FiShield size={32} />,
+  epc: <FiCpu size={28} />,
+  'remote-monitoring': <FiServer size={28} />,
+  'project-works': <FiAward size={28} />,
+  amc: <FiShield size={28} />,
 };
 
-/* ------------------------------------------------------------------ */
-/*  Local keyframes — scoped to this page, no new dependencies         */
-/* ------------------------------------------------------------------ */
+const lifecycleStages = [
+  {
+    step: '01',
+    title: 'Planning & Design',
+    desc: 'We understand your exact requirements, prepare clear drawings, and create a complete project roadmap.',
+    icon: <FiLayers size={22} />,
+    tag: 'Step 1: Planning',
+  },
+  {
+    step: '02',
+    title: 'Quality Sourcing',
+    desc: 'We procure genuine, certified equipment and materials directly from trusted manufacturers with strict quality checks.',
+    icon: <FiCpu size={22} />,
+    tag: 'Step 2: Procurement',
+  },
+  {
+    step: '03',
+    title: 'Installation & Testing',
+    desc: 'Our experienced engineering team installs, inspects, and thoroughly tests every system before final handover.',
+    icon: <FiTool size={22} />,
+    tag: 'Step 3: Execution',
+  },
+  {
+    step: '04',
+    title: '24×7 Support & AMC',
+    desc: 'We provide round-the-clock monitoring, routine maintenance checkups, and fast on-site assistance.',
+    icon: <FiActivity size={22} />,
+    tag: 'Step 4: Care & Support',
+  },
+];
+
+const serviceStandards = [
+  {
+    icon: <FiClock size={24} />,
+    title: 'Fast Response Time',
+    desc: 'Our dedicated support team is always ready to assist you quickly whenever you need help or emergency support.',
+    metric: 'Quick Help',
+  },
+  {
+    icon: <FiShield size={24} />,
+    title: 'Safety First',
+    desc: 'We strictly follow all national building and fire safety codes on every single project we execute.',
+    metric: '100% Safe',
+  },
+  {
+    icon: <FiServer size={24} />,
+    title: 'Pan-India Service',
+    desc: 'We have certified technicians and spare parts ready to support facilities across all major regions in India.',
+    metric: 'Pan India',
+  },
+  {
+    icon: <FiTrendingUp size={24} />,
+    title: 'Single Team Responsibility',
+    desc: 'You work with one trusted team from initial design all the way through installation and yearly maintenance.',
+    metric: 'Full Care',
+  },
+];
+
 function ServicesStyles() {
   return (
     <style>{`
@@ -22,51 +91,39 @@ function ServicesStyles() {
         from { background-position: 0px 0px, 0px 0px; }
         to { background-position: 48px 48px, 48px 48px; }
       }
-      @keyframes svcFloatOrb {
-        0%, 100% { transform: translateY(0px) translateX(0px); }
-        50% { transform: translateY(-22px) translateX(10px); }
+      @keyframes svcPulse {
+        0%, 100% { opacity: 0.4; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.15); }
       }
       .services-blueprint-bg {
         background-image:
           linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
           linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
         background-size: 48px 48px, 48px 48px;
-        animation: svcGridDrift 14s linear infinite;
+        animation: svcGridDrift 16s linear infinite;
       }
       .service-tilt {
         transform-style: preserve-3d;
-        transition: transform .18s ease-out, box-shadow .35s ease, border-color .35s ease;
+        transition: transform .2s ease-out, box-shadow .35s ease;
         will-change: transform;
       }
       .service-tilt:hover {
-        box-shadow: 0 30px 70px rgba(0,96,48,.16);
-      }
-      @keyframes ringRotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-      .service-ring-motif {
-        animation: ringRotate 70s linear infinite;
+        box-shadow: 0 24px 60px rgba(0,96,48,.12);
       }
       .services-side-rail {
         position: fixed;
-        right: 28px;
+        right: 24px;
         top: 50%;
         transform: translateY(-50%);
         z-index: 40;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 18px;
+        gap: 16px;
       }
       @media (max-width: 1100px) {
         .services-side-rail { display: none; }
       }
-
-      /* Light pattern for the services-list section, replacing the flat
-         white background — same grid-drift technique used elsewhere on
-         the site (capabilities/engineering sections), just a lighter,
-         brand-green-tinted variant so it stays quiet behind the panels. */
       .services-list-bg {
         position: relative;
         background: #fbfdfc;
@@ -78,36 +135,79 @@ function ServicesStyles() {
         pointer-events: none;
         z-index: 0;
         background-image:
-          linear-gradient(rgba(0, 96, 48, .05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(0, 96, 48, .05) 1px, transparent 1px);
+          linear-gradient(rgba(0, 96, 48, .045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 96, 48, .045) 1px, transparent 1px);
         background-size: 44px 44px, 44px 44px;
-        animation: svcGridDrift 18s linear infinite;
+        animation: svcGridDrift 20s linear infinite;
       }
-      .services-list-bg::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 0;
-        background: radial-gradient(circle at 12% 15%, rgba(0, 96, 48, .05), transparent 55%);
+      .svc-radar-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #F08020;
+        box-shadow: 0 0 10px #F08020;
+        display: inline-block;
+        animation: svcPulse 2s infinite ease-in-out;
       }
-      .services-list-content {
+      .svc-kpi-badge {
+        padding: 10px 14px;
+        border-radius: 12px;
+        background: rgba(0, 96, 48, 0.05);
+        border: 1px solid rgba(0, 96, 48, 0.12);
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .svc-kpi-badge span {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #557565;
+        font-weight: 700;
+      }
+      .svc-kpi-badge strong {
+        font-size: 0.95rem;
+        color: #006030;
+        font-weight: 800;
+      }
+      .svc-stage-card {
+        background: #ffffff;
+        border: 1px solid rgba(0, 96, 48, 0.12);
+        border-radius: 20px;
+        padding: 32px 24px;
         position: relative;
-        z-index: 1;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
       }
-
+      .svc-stage-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0, 96, 48, 0.1);
+        border-color: rgba(240, 128, 32, 0.4);
+      }
+      .svc-standard-card {
+        background: linear-gradient(145deg, #072215 0%, #03140c 100%);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 20px;
+        padding: 32px 26px;
+        color: #ffffff;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+      }
+      .svc-standard-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(240, 128, 32, 0.6);
+      }
       @media (prefers-reduced-motion: reduce) {
-        .services-blueprint-bg { animation: none !important; }
+        .services-blueprint-bg,
+        .services-list-bg::before,
+        .svc-radar-dot { animation: none !important; }
         .service-tilt { transition: none !important; }
-        .services-list-bg::before { animation: none !important; }
       }
     `}</style>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Mouse-tracked 3D tilt wrapper                                       */
-/* ------------------------------------------------------------------ */
 function TiltPanel({ children, style, className = '', maxTilt = 3, ...rest }) {
   const ref = useRef(null);
   const [transform, setTransform] = useState('none');
@@ -121,7 +221,7 @@ function TiltPanel({ children, style, className = '', maxTilt = 3, ...rest }) {
     const py = (e.clientY - rect.top) / rect.height;
     const rotateY = (px - 0.5) * (maxTilt * 2);
     const rotateX = (0.5 - py) * (maxTilt * 2);
-    setTransform(`perspective(1400px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(4px)`);
+    setTransform(`perspective(1400px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(3px)`);
   };
 
   const handleLeave = () => {
@@ -142,10 +242,6 @@ function TiltPanel({ children, style, className = '', maxTilt = 3, ...rest }) {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Fixed side rail — a live spec-index of the service list, tracks     */
-/*  scroll position and lets you jump between services                 */
-/* ------------------------------------------------------------------ */
 function ServiceRail({ count, activeIndex, onJump }) {
   return (
     <div className="services-side-rail" aria-hidden="false">
@@ -163,7 +259,7 @@ function ServiceRail({ count, activeIndex, onJump }) {
             cursor: 'pointer',
             background: activeIndex === i ? 'var(--color-secondary)' : 'rgba(0,96,48,.25)',
             transition: 'all .3s ease',
-            boxShadow: activeIndex === i ? '0 0 0 5px rgba(240,128,32,.16)' : 'none',
+            boxShadow: activeIndex === i ? '0 0 0 5px rgba(240,128,32,.2)' : 'none',
           }}
         />
       ))}
@@ -175,6 +271,7 @@ export default function Services() {
   const listRef = useRef(null);
   const panelRefs = useRef([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const shouldReduceMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: listRef,
@@ -188,7 +285,7 @@ export default function Services() {
         ([entry]) => {
           if (entry.isIntersecting) setActiveIndex(i);
         },
-        { threshold: 0.4 }
+        { threshold: 0.35 }
       );
       observer.observe(el);
       return observer;
@@ -205,115 +302,159 @@ export default function Services() {
       <ServicesStyles />
       <ServiceRail count={services.length} activeIndex={activeIndex} onJump={jumpTo} />
 
-      {/* PAGE HEADER */}
-      <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: '140px 0 80px', color: '#fff', position: 'relative', overflow: 'hidden' }}>
-        <div className="services-blueprint-bg" style={{ position: 'absolute', inset: 0, opacity: 0.5, pointerEvents: 'none' }} />
+      {/* =========================================================
+          HERO SECTION — Simple, Clear & Inviting Header
+      ========================================================= */}
+      <section
+        className="page-header"
+        style={{
+          background: 'linear-gradient(135deg, #03160c 0%, #006030 100%)',
+          padding: '145px 0 85px',
+          color: '#fff',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <div className="services-blueprint-bg" style={{ position: 'absolute', inset: 0, opacity: 0.45, pointerEvents: 'none' }} />
 
+        {/* Ambient radial glow */}
         <motion.div
-          animate={{ y: [0, -22, 0], x: [0, 10, 0] }}
-          transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+          animate={shouldReduceMotion ? undefined : { y: [0, -20, 0], x: [0, 10, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
           style={{
             position: 'absolute',
-            width: '400px',
-            height: '400px',
+            width: '450px',
+            height: '450px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(240, 128, 32, 0.14) 0%, transparent 70%)',
-            top: '-20%',
-            right: '-10%',
+            background: 'radial-gradient(circle, rgba(240, 128, 32, 0.16) 0%, transparent 70%)',
+            top: '-15%',
+            right: '-5%',
             pointerEvents: 'none',
           }}
         />
 
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-          <motion.span
-            initial={{ opacity: 0, y: -8 }}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="eyebrow"
-            style={{ color: 'var(--color-secondary)', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
+            transition={{ duration: 0.5 }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}
           >
-            <span style={{ width: '28px', height: '2px', background: 'var(--color-secondary)', display: 'inline-block' }} />
-            Engineering Services
-          </motion.span>
+            <span className="svc-radar-dot" />
+            <span
+              style={{
+                color: 'var(--color-secondary)',
+                fontSize: '0.78rem',
+                fontWeight: 800,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+              }}
+            >
+              WHAT WE DO
+            </span>
+          </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            style={{ fontSize: 'clamp(3rem,5vw,4.8rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            style={{ fontSize: 'clamp(2.8rem, 5.2vw, 4.8rem)', fontWeight: 800, margin: '6px 0 20px', color: '#ffffff', letterSpacing: '-0.03em' }}
           >
-            Services
+            Our <span style={{ color: '#F08020' }}>Services</span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '760px', margin: '0' }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            style={{ fontSize: '1.15rem', color: '#d8e5df', maxWidth: '780px', margin: '0 0 36px', lineHeight: 1.65 }}
           >
-            Our engineering services extend beyond project delivery, providing complete lifecycle support—from engineering, procurement, commissioning, remote monitoring, modernization, and preventive maintenance to ensure reliable, efficient, and future-ready infrastructure.
+            From planning and installing electrical, fire safety, and automation systems to 24×7 monitoring and annual maintenance, we take care of your facilities every step of the way.
           </motion.p>
 
+          {/* Quick Navigator Pill Bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.28 }}
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '10px',
+              marginBottom: '36px',
+            }}
+          >
+            {services.map((s, idx) => (
+              <button
+                key={s.id}
+                onClick={() => jumpTo(idx)}
+                style={{
+                  padding: '8px 18px',
+                  borderRadius: '999px',
+                  border: activeIndex === idx ? '1px solid #F08020' : '1px solid rgba(255,255,255,0.18)',
+                  background: activeIndex === idx ? 'rgba(240, 128, 32, 0.18)' : 'rgba(255,255,255,0.06)',
+                  color: activeIndex === idx ? '#F08020' : '#ffffff',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.04em',
+                  cursor: 'pointer',
+                  backdropFilter: 'blur(8px)',
+                  transition: 'all 0.25s ease',
+                }}
+              >
+                0{idx + 1}. {s.badge}
+              </button>
+            ))}
+          </motion.div>
+
+          {/* Hero Performance Overview Grid */}
           <div
             className="services-hero-stats"
             style={{
               display: 'grid',
-              gap: '24px',
-              marginTop: '44px',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '18px',
+              marginTop: '20px',
             }}
           >
             {[
-              ['EPC', 'Execution'],
-              ['AMC', 'Support'],
-              ['24×7', 'Monitoring'],
-              ['Pan India', 'Service'],
-            ].map(([value, label], i) => (
+              { val: 'Full EPC', lbl: 'Electrical & Mechanical' },
+              { val: '24×7 Live', lbl: 'System Monitoring' },
+              { val: '100% Safe', lbl: 'Verified Standards' },
+              { val: 'Pan India', lbl: 'Quick Support' },
+            ].map((stat, i) => (
               <motion.div
-                key={label}
+                key={stat.lbl}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 + i * 0.08 }}
+                transition={{ duration: 0.45, delay: 0.35 + i * 0.08 }}
               >
-                <TiltPanel
-                  maxTilt={5}
+                <div
                   style={{
-                    padding: '22px',
-                    borderRadius: '18px',
-                    background: 'linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05))',
-                    border: '1px solid rgba(255,255,255,.14)',
-                    backdropFilter: 'blur(14px)',
+                    padding: '20px',
+                    borderRadius: '16px',
+                    background: 'linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    backdropFilter: 'blur(12px)',
                   }}
                 >
-                  <div
-                    style={{
-                      color: '#fff',
-                      fontWeight: 800,
-                      fontSize: value === 'Pan India' ? '1.3rem' : '2rem',
-                    }}
-                  >
-                    {value}
+                  <div style={{ color: '#F08020', fontWeight: 800, fontSize: '1.45rem', letterSpacing: '-0.02em' }}>
+                    {stat.val}
                   </div>
-
-                  <div
-                    style={{
-                      marginTop: '8px',
-                      color: '#dbe5df',
-                      fontSize: '.8rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: '.12em',
-                    }}
-                  >
-                    {label}
+                  <div style={{ marginTop: '6px', color: '#cad8d1', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
+                    {stat.lbl}
                   </div>
-                </TiltPanel>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* SERVICES LIST — a scroll-tracked spec index, each entry a rich, tactile panel */}
-      <section className="section services-list-bg" style={{ overflow: 'hidden' }}>
+      {/* =========================================================
+          SERVICES LIST — Simple & Clear Cards
+      ========================================================= */}
+      <section className="section services-list-bg" style={{ overflow: 'hidden', padding: '90px 0' }}>
         <div ref={listRef} className="container services-list-content" style={{ display: 'flex', flexDirection: 'column', gap: '80px' }}>
           {services.map((s, i) => (
             <div key={s.id} ref={(el) => (panelRefs.current[i] = el)}>
@@ -327,8 +468,8 @@ export default function Services() {
                   style={{
                     padding: '2px',
                     borderRadius: 'var(--radius-lg)',
-                    background: 'linear-gradient(135deg, #FF9933 0%, rgba(255,153,51,.35) 45%, rgba(255,153,51,0) 72%)',
-                    boxShadow: 'var(--shadow-sm)',
+                    background: 'linear-gradient(135deg, #FF9933 0%, rgba(255,153,51,0.3) 45%, rgba(0,96,48,0.15) 100%)',
+                    boxShadow: '0 20px 45px -20px rgba(0,96,48,0.15)',
                     position: 'relative',
                   }}
                 >
@@ -336,195 +477,205 @@ export default function Services() {
                     className="service-panel-inner"
                     style={{
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
-                      gap: 'clamp(28px, 4vw, 80px)',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
+                      gap: 'clamp(32px, 5vw, 70px)',
                       alignItems: 'center',
-                      background: 'var(--color-white)',
-                      padding: 'clamp(22px, 4vw, 48px)',
+                      background: '#ffffff',
+                      padding: 'clamp(26px, 4vw, 48px)',
                       borderRadius: 'calc(var(--radius-lg) - 2px)',
                       position: 'relative',
                       overflow: 'hidden',
                     }}
                   >
-
-                  {/* Abstract engineering ring — a quiet nod to national institutional trust, not a literal emblem */}
-                  <svg
-                    className="service-ring-motif"
-                    viewBox="0 0 200 200"
-                    style={{
-                      position: 'absolute',
-                      right: '-60px',
-                      bottom: '-60px',
-                      width: '260px',
-                      height: '260px',
-                      opacity: 0.05,
-                      pointerEvents: 'none',
-                      zIndex: 0,
-                    }}
-                  >
-                    <circle cx="100" cy="100" r="90" fill="none" stroke="#0B2447" strokeWidth="2" />
-                    <circle cx="100" cy="100" r="6" fill="#0B2447" />
-                    {Array.from({ length: 16 }).map((_, spoke) => {
-                      const angle = (spoke / 16) * 2 * Math.PI;
-                      const x2 = 100 + 90 * Math.cos(angle);
-                      const y2 = 100 + 90 * Math.sin(angle);
-                      return (
-                        <line
-                          key={spoke}
-                          x1="100"
-                          y1="100"
-                          x2={x2}
-                          y2={y2}
-                          stroke="#0B2447"
-                          strokeWidth="2"
-                        />
-                      );
-                    })}
-                  </svg>
-
-                  {/* Soft diagonal tricolor bands — fade out toward the photo, stay quiet behind the text */}
-                  <div
-                    aria-hidden="true"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      pointerEvents: 'none',
-                      zIndex: 0,
-                      backgroundImage: `
-                        linear-gradient(${i % 2 === 0 ? 105 : 75}deg,
-                          transparent 0%,
-                          rgba(255,153,51,.04) 4%,
-                          rgba(255,153,51,.16) 9%,
-                          rgba(255,153,51,.16) 21%,
-                          rgba(255,153,51,.04) 26%,
-                          transparent 30%,
-                          transparent 34%,
-                          rgba(18,136,7,.04) 38%,
-                          rgba(18,136,7,.14) 43%,
-                          rgba(18,136,7,.14) 55%,
-                          rgba(18,136,7,.04) 60%,
-                          transparent 64%,
-                          transparent 100%
-                        ),
-                        linear-gradient(${i % 2 === 0 ? 90 : 270}deg,
-                          rgba(255,255,255,0) 0%,
-                          rgba(255,255,255,.55) 55%,
-                          #ffffff 75%
-                        )
-                      `,
-                    }}
-                  />
-
-                  {/* Service index tag — reinforces the "engineering spec sheet" identity */}
-                  <span
-                    style={{
-                      position: 'absolute',
-                      top: '24px',
-                      right: '28px',
-                      fontSize: '.75rem',
-                      fontWeight: 700,
-                      letterSpacing: '.16em',
-                      textTransform: 'uppercase',
-                      color: 'var(--color-text-muted)',
-                      opacity: 0.6,
-                      zIndex: 1,
-                    }}
-                  >
-                    Service {String(i + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
-                  </span>
-
-                  <div
-                    className="service-panel-image-wrap"
-                    style={{
-                      borderRadius: 'var(--radius-md)',
-                      overflow: 'hidden',
-                      boxShadow: 'var(--shadow-md)',
-                      height: '380px',
-                      position: 'relative',
-                      zIndex: 1,
-                    }}
-                  >
-                    <img
-                      src={s.image}
-                      alt={s.title}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        display: 'block',
-                        transition: 'transform var(--transition-med)',
-                      }}
-                      className="service-panel-image"
-                    />
+                    {/* Background subtle watermark */}
                     <div
+                      aria-hidden="true"
                       style={{
                         position: 'absolute',
-                        inset: 0,
-                        background: 'linear-gradient(to top, rgba(0, 96, 48, 0.2) 0%, transparent 60%)',
+                        right: i % 2 === 0 ? '5%' : 'auto',
+                        left: i % 2 === 1 ? '5%' : 'auto',
+                        bottom: '5%',
+                        fontSize: '9rem',
+                        fontWeight: 900,
+                        color: 'rgba(0, 96, 48, 0.025)',
                         pointerEvents: 'none',
-                      }}
-                    />
-                  </div>
-
-                  <div className="service-panel-info" style={{ position: 'relative', zIndex: 1 }}>
-                    <motion.div
-                      whileHover={{ scale: 1.08, rotate: -4 }}
-                      transition={{ type: 'spring', stiffness: 300 }}
-                      style={{
-                        width: '76px',
-                        height: '76px',
-                        borderRadius: '20px',
-                        background: 'linear-gradient(135deg, var(--color-primary-glow), rgba(0, 96, 48, 0.03))',
-                        color: 'var(--color-primary)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginBottom: '24px',
+                        userSelect: 'none',
+                        lineHeight: 1,
                       }}
                     >
-                      {iconMap[s.id] || <FiCpu size={32} />}
-                    </motion.div>
+                      0{i + 1}
+                    </div>
 
-                    <h3 style={{ fontSize: 'clamp(1.8rem,2vw,2.2rem)', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '18px', lineHeight: 1.3 }}>
-                      {s.title}
-                    </h3>
-
-                    <p style={{ color: 'var(--color-text-muted)', fontSize: '1.08rem', lineHeight: 1.7, marginBottom: '28px' }}>
-                      {s.text}
-                    </p>
-
-                    {s.bullets && (
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '12px' }}>
-                        {s.bullets.map((bullet, bi) => (
-                          <motion.div
-                            key={bullet}
-                            initial={{ opacity: 0, x: -10 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.4, delay: bi * 0.06 }}
-                            whileHover={{ x: 3 }}
-                            style={{ display: 'flex', gap: '10px', alignItems: 'center' }}
-                          >
-                            <div
-                              style={{
-                                width: '20px',
-                                height: '20px',
-                                borderRadius: '50%',
-                                background: bi % 2 === 0 ? 'var(--color-primary-glow)' : 'rgba(255,153,51,.14)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexShrink: 0,
-                              }}
-                            >
-                              <FiCheck style={{ color: bi % 2 === 0 ? 'var(--color-primary)' : '#E08018', fontSize: '0.8rem' }} />
-                            </div>
-                            <span style={{ fontSize: '0.92rem', fontWeight: 500, color: 'var(--color-text-body)' }}>{bullet}</span>
-                          </motion.div>
-                        ))}
+                    {/* Image Showcase */}
+                    <div
+                      className="service-panel-image-wrap"
+                      style={{
+                        borderRadius: '16px',
+                        overflow: 'hidden',
+                        boxShadow: '0 15px 35px rgba(0,0,0,0.08)',
+                        height: 'clamp(260px, 32vw, 390px)',
+                        position: 'relative',
+                        zIndex: 1,
+                        border: '1px solid rgba(0, 96, 48, 0.1)',
+                      }}
+                    >
+                      <img
+                        src={s.image}
+                        alt={s.title}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          display: 'block',
+                          transition: 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
+                        }}
+                        className="service-panel-image"
+                      />
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'linear-gradient(to top, rgba(3, 22, 12, 0.45) 0%, transparent 60%)',
+                          pointerEvents: 'none',
+                        }}
+                      />
+                      {/* Top Corner Tag */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '16px',
+                          left: '16px',
+                          background: 'rgba(3, 22, 12, 0.85)',
+                          backdropFilter: 'blur(8px)',
+                          padding: '6px 14px',
+                          borderRadius: '8px',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          color: '#F08020',
+                          fontSize: '0.7rem',
+                          fontWeight: 800,
+                          letterSpacing: '0.1em',
+                        }}
+                      >
+                        SERVICE 0{i + 1}
                       </div>
-                    )}
-                  </div>
+                    </div>
+
+                    {/* Service Content */}
+                    <div className="service-panel-info" style={{ position: 'relative', zIndex: 1 }}>
+                      {/* Header Badge */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+                        <span className="svc-radar-dot" />
+                        <span
+                          style={{
+                            color: '#006030',
+                            fontSize: '0.74rem',
+                            fontWeight: 800,
+                            letterSpacing: '0.12em',
+                            textTransform: 'uppercase',
+                          }}
+                        >
+                          {s.badge}
+                        </span>
+                      </div>
+
+                      {/* Icon + Title */}
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '18px' }}>
+                        <div
+                          style={{
+                            width: '54px',
+                            height: '54px',
+                            borderRadius: '14px',
+                            background: 'linear-gradient(135deg, rgba(0, 96, 48, 0.12), rgba(240, 128, 32, 0.08))',
+                            color: '#006030',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                            border: '1px solid rgba(0, 96, 48, 0.15)',
+                          }}
+                        >
+                          {iconMap[s.id] || <FiCpu size={28} />}
+                        </div>
+                        <h3 style={{ fontSize: 'clamp(1.5rem, 2vw, 1.95rem)', fontWeight: 800, color: '#102219', lineHeight: 1.25, margin: 0 }}>
+                          {s.title}
+                        </h3>
+                      </div>
+
+                      <p style={{ color: '#4a6356', fontSize: '1.02rem', lineHeight: 1.65, marginBottom: '24px' }}>
+                        {s.text}
+                      </p>
+
+                      {/* KPI Highlights */}
+                      {s.kpis && (
+                        <div
+                          style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
+                            gap: '10px',
+                            marginBottom: '26px',
+                          }}
+                        >
+                          {s.kpis.map((kpi) => (
+                            <div key={kpi.label} className="svc-kpi-badge">
+                              <span>{kpi.label}</span>
+                              <strong>{kpi.value}</strong>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Capabilities Check List */}
+                      {s.bullets && (
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 190px), 1fr))', gap: '10px', marginBottom: '28px' }}>
+                          {s.bullets.map((bullet) => (
+                            <div
+                              key={bullet}
+                              style={{ display: 'flex', gap: '8px', alignItems: 'center' }}
+                            >
+                              <div
+                                style={{
+                                  width: '18px',
+                                  height: '18px',
+                                  borderRadius: '50%',
+                                  background: 'rgba(0, 96, 48, 0.1)',
+                                  color: '#006030',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0,
+                                  fontSize: '0.72rem',
+                                }}
+                              >
+                                <FiCheck />
+                              </div>
+                              <span style={{ fontSize: '0.88rem', fontWeight: 600, color: '#273f32' }}>{bullet}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Action Button */}
+                      <MagneticButton style={{ display: 'inline-block' }}>
+                        <Link
+                          to="/contact"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            padding: '12px 24px',
+                            borderRadius: '999px',
+                            background: '#006030',
+                            color: '#ffffff',
+                            fontWeight: 700,
+                            fontSize: '0.84rem',
+                            textDecoration: 'none',
+                            transition: 'all 0.25s ease',
+                          }}
+                        >
+                          Talk to our Team <FiArrowRight />
+                        </Link>
+                      </MagneticButton>
+                    </div>
                   </div>
                 </TiltPanel>
               </ScrollReveal>
@@ -532,7 +683,7 @@ export default function Services() {
           ))}
         </div>
 
-        {/* Overall read progress of the services list — small, honest, and ties to the rail dots above */}
+        {/* Scroll Progress Bar */}
         <motion.div
           style={{
             position: 'fixed',
@@ -542,13 +693,172 @@ export default function Services() {
             width: '100%',
             transformOrigin: 'left',
             scaleX: scrollYProgress,
-            background: 'linear-gradient(90deg, var(--color-primary), var(--color-secondary))',
+            background: 'linear-gradient(90deg, #006030, #F08020)',
             zIndex: 50,
           }}
         />
       </section>
 
-      {/* CALL TO ACTION */}
+      {/* =========================================================
+          SECTION: How We Work (Our 4-Step Process)
+      ========================================================= */}
+      <section className="section" style={{ background: '#f2f6f3', padding: '90px 0' }}>
+        <div className="container">
+          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 60px' }}>
+            <span
+              style={{
+                color: '#F08020',
+                fontSize: '0.78rem',
+                fontWeight: 800,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginBottom: '10px',
+              }}
+            >
+              HOW WE WORK
+            </span>
+            <h2 style={{ fontSize: 'clamp(2.2rem, 3.8vw, 3.4rem)', fontWeight: 800, color: '#0c1e15', lineHeight: 1.15, margin: '0 0 16px' }}>
+              Our 4-Step <span style={{ color: '#006030' }}>Process</span>
+            </h2>
+            <p style={{ color: '#557262', fontSize: '1.05rem', margin: 0 }}>
+              A straightforward, transparent approach that ensures your projects are finished on schedule and run safely.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))',
+              gap: '24px',
+            }}
+          >
+            {lifecycleStages.map((stage, idx) => (
+              <ScrollReveal key={stage.step} delay={idx * 0.1}>
+                <div className="svc-stage-card">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '22px' }}>
+                    <div
+                      style={{
+                        width: '46px',
+                        height: '46px',
+                        borderRadius: '12px',
+                        background: 'rgba(0, 96, 48, 0.08)',
+                        color: '#006030',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {stage.icon}
+                    </div>
+                    <span style={{ fontSize: '1.8rem', fontWeight: 900, color: 'rgba(240, 128, 32, 0.45)', lineHeight: 1 }}>
+                      {stage.step}
+                    </span>
+                  </div>
+
+                  <span style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#F08020', display: 'block', marginBottom: '8px' }}>
+                    {stage.tag}
+                  </span>
+
+                  <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0b1d14', marginBottom: '12px' }}>
+                    {stage.title}
+                  </h3>
+
+                  <p style={{ color: '#587465', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
+                    {stage.desc}
+                  </p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================
+          SECTION: Our Commitments to You
+      ========================================================= */}
+      <section className="section" style={{ background: '#07180f', color: '#ffffff', padding: '95px 0' }}>
+        <div className="container">
+          <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 60px' }}>
+            <span
+              style={{
+                color: '#F08020',
+                fontSize: '0.78rem',
+                fontWeight: 800,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginBottom: '10px',
+              }}
+            >
+              OUR PROMISE
+            </span>
+            <h2 style={{ fontSize: 'clamp(2.2rem, 3.8vw, 3.4rem)', fontWeight: 800, color: '#ffffff', lineHeight: 1.15, margin: '0 0 16px' }}>
+              Service Standards You Can <span style={{ color: '#F08020' }}>Count On</span>
+            </h2>
+            <p style={{ color: '#9bb8a8', fontSize: '1.05rem', margin: 0 }}>
+              Backed by experienced engineers, dependable equipment, and round-the-clock support.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))',
+              gap: '24px',
+            }}
+          >
+            {serviceStandards.map((std, idx) => (
+              <ScrollReveal key={std.title} delay={idx * 0.1}>
+                <div className="svc-standard-card">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                    <div
+                      style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '12px',
+                        background: 'rgba(240, 128, 32, 0.15)',
+                        color: '#F08020',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: '1px solid rgba(240, 128, 32, 0.3)',
+                      }}
+                    >
+                      {std.icon}
+                    </div>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        fontWeight: 800,
+                        padding: '4px 10px',
+                        borderRadius: '6px',
+                        background: 'rgba(0, 96, 48, 0.4)',
+                        color: '#8fe3b2',
+                        border: '1px solid rgba(0, 96, 48, 0.8)',
+                      }}
+                    >
+                      {std.metric}
+                    </span>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', marginBottom: '12px' }}>
+                    {std.title}
+                  </h3>
+
+                  <p style={{ color: '#94b2a2', fontSize: '0.9rem', lineHeight: 1.6, margin: 0 }}>
+                    {std.desc}
+                  </p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================
+          CALL TO ACTION
+      ========================================================= */}
       <ContactCTA />
     </>
   );

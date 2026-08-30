@@ -1,24 +1,58 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FiSearch, FiX, FiArrowRight, FiCheckCircle, FiShield, FiCpu, FiServer, FiTrendingUp } from 'react-icons/fi';
 import { clients } from '../data/clients';
 import ScrollReveal from '../components/ScrollReveal';
-import ScrollStagger from '../components/ScrollStagger';
-import ScrollText from '../components/ScrollText';
+import ContactCTA from '../components/ContactCTA';
+import '../styles/clients.css';
 
 // Dynamic categorization helper
 const getCategory = (client) => {
-  const name = client.name.toLowerCase();
-  
-  if (name.includes('rail') || name.includes('metro') || name.includes('coach') || name.includes('port') || name.includes('jnpt')) {
+  const name = (client.name + ' ' + (client.desc || '')).toLowerCase();
+
+  if (name.includes('rail') || name.includes('metro') || name.includes('coach') || name.includes('port') || name.includes('jnpt') || name.includes('railtel')) {
     return 'transport';
   }
-  if (name.includes('parliament') || name.includes('pwd') || name.includes('bis') || name.includes('aiims') || name.includes('army') || name.includes('barc') || name.includes('mcgm') || name.includes('neigrihms') || name.includes('cpwd') || name.includes('bureau')) {
+  if (
+    name.includes('parliament') ||
+    name.includes('pwd') ||
+    name.includes('bis') ||
+    name.includes('aiims') ||
+    name.includes('army') ||
+    name.includes('barc') ||
+    name.includes('mcgm') ||
+    name.includes('neigrihms') ||
+    name.includes('cpwd') ||
+    name.includes('bureau') ||
+    name.includes('iucaa')
+  ) {
     return 'government';
   }
-  if (name.includes('bank') || name.includes('fund') || name.includes('lic') || name.includes('edelweiss') || name.includes('saraswat')) {
+  if (
+    name.includes('bank') ||
+    name.includes('fund') ||
+    name.includes('lic') ||
+    name.includes('edelweiss') ||
+    name.includes('saraswat') ||
+    name.includes('boi') ||
+    name.includes('idbi')
+  ) {
     return 'banking';
   }
   return 'corporate';
+};
+
+const getCategoryLabel = (catId) => {
+  switch (catId) {
+    case 'transport':
+      return 'Infrastructure & Transport';
+    case 'government':
+      return 'Government & Defence';
+    case 'banking':
+      return 'Banking & Finance';
+    default:
+      return 'Data Centres & Corporate';
+  }
 };
 
 const categories = [
@@ -38,227 +72,393 @@ function Counter({ end, duration = 1500 }) {
     let start = 0;
     const endNum = parseInt(end.toString().replace(/\D/g, ''), 10);
     if (start === endNum) return;
-    
-    let totalMiliseconds = duration;
-    let incrementTime = Math.abs(Math.floor(totalMiliseconds / endNum));
-    
-    let timer = setInterval(() => {
+
+    const totalMilliseconds = duration;
+    const incrementTime = Math.abs(Math.floor(totalMilliseconds / endNum));
+
+    const timer = setInterval(() => {
       start += 1;
       setCount(start);
       if (start === endNum) clearInterval(timer);
     }, Math.max(incrementTime, 30));
-    
+
     return () => clearInterval(timer);
   }, [end, duration, started]);
 
   return (
-    <motion.span
-      onViewportEnter={() => setStarted(true)}
-      viewport={{ once: true }}
-    >
-      {count}{end.toString().includes('+') ? '+' : ''}
+    <motion.span onViewportEnter={() => setStarted(true)} viewport={{ once: true }}>
+      {count}
+      {end.toString().includes('+') ? '+' : ''}
     </motion.span>
   );
 }
 
 export default function Clients() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedClient, setSelectedClient] = useState(null);
 
-  const filteredClients = activeFilter === 'all' 
-    ? clients 
-    : clients.filter(c => getCategory(c) === activeFilter);
+  // Sector counts computation
+  const categoryCounts = useMemo(() => {
+    const counts = { all: clients.length, transport: 0, government: 0, banking: 0, corporate: 0 };
+    clients.forEach((c) => {
+      const cat = getCategory(c);
+      if (counts[cat] !== undefined) counts[cat]++;
+    });
+    return counts;
+  }, []);
 
-  // Marquee clients (select 12 notable logos for marquee)
-  const marqueeClients = clients.slice(0, 12);
+  // Filter & Search combined
+  const filteredClients = useMemo(() => {
+    return clients.filter((client) => {
+      const matchesFilter = activeFilter === 'all' || getCategory(client) === activeFilter;
+      const q = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        !q ||
+        client.name.toLowerCase().includes(q) ||
+        (client.desc && client.desc.toLowerCase().includes(q));
+      return matchesFilter && matchesSearch;
+    });
+  }, [activeFilter, searchQuery]);
+
+  // Featured Marquee Clients
+  const marqueeRow1 = clients.slice(0, 16);
+  const marqueeRow2 = clients.slice(16, 32);
 
   return (
     <>
-      {/* PAGE HEADER */}
-      <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: '140px 0 80px', color: '#fff', position: 'relative', overflow: 'hidden' }}>
-        <div
-          style={{
-            position: 'absolute',
-            width: '400px',
-            height: '400px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(240, 128, 32, 0.1) 0%, transparent 70%)',
-            top: '-20%',
-            right: '-10%',
-          }}
-        />
-        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-          <span className="eyebrow" style={{ color: 'var(--color-secondary)' }}>Our Clients</span>
-          <ScrollText
-            as="h1"
-            text="Trusted by Industry Leaders"
-            style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}
-            amount={0}
-          />
-          <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '640px', margin: '0' }}>
-            From national railways and defence establishments to banks and data-driven
-            enterprises — 49+ projects delivered across India.
+      {/* =========================================================
+          1. MODERN ENTERPRISE HERO
+      ========================================================= */}
+      <section className="clients-hero">
+        <div className="clients-hero-grid" />
+        <div className="clients-hero-glow-1" />
+        <div className="clients-hero-glow-2" />
+
+        <div className="container" style={{ position: 'relative', zIndex: 3 }}>
+          <div className="clients-eyebrow-badge">
+            <span
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                background: '#f08020',
+                display: 'inline-block',
+                boxShadow: '0 0 8px #f08020',
+              }}
+            />
+            CLIENT SHOWCASE & PARTNERSHIPS
+          </div>
+
+          <h1 className="clients-hero-title">
+            Trusted by India’s Leading <span>Institutions & Enterprises</span>
+          </h1>
+
+          <p className="clients-hero-lead">
+            From national railways, airports, and defence facilities to major banking headquarters and Tier-III/IV data centres across India.
           </p>
+
+          {/* Interactive Search Box */}
+          <div className="clients-search-wrapper">
+            <div className="clients-search-box">
+              <FiSearch style={{ color: '#006030', fontSize: '1.25rem', marginRight: '12px', flexShrink: 0 }} />
+              <input
+                type="text"
+                className="clients-search-input"
+                placeholder="Search by client name, project type, or city..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  className="clients-search-clear"
+                  onClick={() => setSearchQuery('')}
+                  aria-label="Clear search"
+                >
+                  <FiX />
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* CONTINUOUS LOGO MARQUEE */}
-      <section className="marquee-section" style={{ padding: '40px 0', background: '#ffffff', borderBottom: '1px solid var(--color-gray-100)', overflow: 'hidden' }}>
-        <div className="container" style={{ marginBottom: '16px' }}>
-          <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600, color: 'var(--color-text-muted)', display: 'block', textAlign: 'center' }}>
-            Featured Partnerships
-          </span>
-        </div>
-        <div className="logo-marquee-container" style={{ overflow: 'hidden', whiteSpace: 'nowrap', width: '100%', position: 'relative' }}>
-          <div className="logo-marquee-track" style={{ display: 'inline-flex', gap: '48px', animation: 'marquee 30s linear infinite' }}>
-            {marqueeClients.map((client, idx) => (
-              <div key={`m1-${idx}`} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '120px', height: '64px', background: 'var(--color-light)', borderRadius: '12px', padding: '10px' }}>
-                <img src={client.logo} alt={client.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', filter: 'grayscale(100%) opacity(70%)' }} />
+      {/* =========================================================
+          2. CONTINUOUS DUAL-TRACK LOGO MARQUEE
+      ========================================================= */}
+      <section className="clients-marquee-section">
+        <div className="clients-marquee-track-container">
+          <div className="clients-marquee-row">
+            {[...marqueeRow1, ...marqueeRow1].map((client, idx) => (
+              <div
+                key={`m1-${idx}`}
+                className="clients-marquee-pill"
+                onClick={() => setSelectedClient(client)}
+                role="button"
+                tabIndex={0}
+              >
+                <img src={client.logo} alt={client.name} loading="lazy" />
+                <span>{client.name}</span>
               </div>
             ))}
-            {marqueeClients.map((client, idx) => (
-              <div key={`m2-${idx}`} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '120px', height: '64px', background: 'var(--color-light)', borderRadius: '12px', padding: '10px' }}>
-                <img src={client.logo} alt={client.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', filter: 'grayscale(100%) opacity(70%)' }} />
+          </div>
+        </div>
+
+        <div className="clients-marquee-track-container" style={{ marginTop: '12px' }}>
+          <div className="clients-marquee-row" style={{ animationDirection: 'reverse' }}>
+            {[...marqueeRow2, ...marqueeRow2].map((client, idx) => (
+              <div
+                key={`m2-${idx}`}
+                className="clients-marquee-pill"
+                onClick={() => setSelectedClient(client)}
+                role="button"
+                tabIndex={0}
+              >
+                <img src={client.logo} alt={client.name} loading="lazy" />
+                <span>{client.name}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* STATS STRIP */}
-      <section className="section stats-strip" style={{ background: 'var(--color-light)', padding: '60px 0', borderBottom: '1px solid var(--color-gray-100)' }}>
+      {/* =========================================================
+          3. INSTITUTIONAL IMPACT METRICS
+      ========================================================= */}
+      <section className="client-stats-section">
         <div className="container">
-          <ScrollStagger
-            variant="rise-blur-3d"
-            stagger={0.1}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '32px', textAlign: 'center' }}
-          >
+          <div className="stats-grid-4">
             {[
-              { label: 'Total Projects', value: '49+' },
-              { label: 'Railways Divisions', value: '8+' },
-              { label: 'Major Data Centres', value: '12+' },
-              { label: 'State & Central Govt', value: '15+' },
+              { label: 'Enterprise & PSU Clients', value: '50+' },
+              { label: 'Indian Railways Divisions', value: '8+' },
+              { label: 'Central & State Govt Bodies', value: '15+' },
+              { label: 'Critical Facility Projects', value: '60+' },
             ].map((stat) => (
-              <div key={stat.label}>
-                <h3 style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--color-primary)', margin: '0 0 4px' }}>
+              <div key={stat.label} className="stat-box-card">
+                <div className="stat-number-val">
                   <Counter end={stat.value} />
-                </h3>
-                <span style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>{stat.label}</span>
+                </div>
+                <div className="stat-label-txt">{stat.label}</div>
               </div>
             ))}
-          </ScrollStagger>
+          </div>
         </div>
       </section>
 
-      {/* FILTERABLE LISTING */}
-      <section className="section" style={{ background: '#ffffff' }}>
+      {/* =========================================================
+          4. FILTERABLE CLIENT PORTFOLIO GRID
+      ========================================================= */}
+      <section className="client-listing-section">
         <div className="container">
-          {/* Sector Filters */}
+          {/* Sector Category Filters */}
           <ScrollReveal variant="fade-up">
-            <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '48px' }}>
+            <div className="filter-bar">
               {categories.map((cat) => (
                 <button
                   key={cat.id}
-                  className="filter-button"
+                  className={`filter-tab ${activeFilter === cat.id ? 'active' : ''}`}
                   onClick={() => setActiveFilter(cat.id)}
-                  style={{
-                    padding: '10px 24px',
-                    borderRadius: '999px',
-                    fontSize: '0.9rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    border: 'none',
-                    background: activeFilter === cat.id ? 'var(--color-primary)' : 'var(--color-gray-100)',
-                    color: activeFilter === cat.id ? 'var(--color-white)' : 'var(--color-text-muted)',
-                    transition: 'all 0.3s ease',
-                    boxShadow: activeFilter === cat.id ? '0 4px 12px rgba(0, 96, 48, 0.15)' : 'none',
-                  }}
+                  type="button"
                 >
-                  {cat.label}
+                  <span>{cat.label}</span>
+                  <span className="filter-tab-count">{categoryCounts[cat.id]}</span>
                 </button>
               ))}
             </div>
           </ScrollReveal>
 
-          {/* Client Grid — kept on plain AnimatePresence/layout, not wrapped
-              in ScrollStagger/ScrollReveal, since it already animates on
-              filter change; stacking scroll-triggered variants on top of
-              filter-driven layout animation causes flicker on re-filter. */}
-          <motion.div 
-            layout
-            className="client-grid" 
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '32px' }}
-          >
-            <AnimatePresence mode="popLayout">
-              {filteredClients.map((client) => (
-                <motion.div
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4 }}
-                  className="client-card"
-                  key={client.name}
-                  style={{
-                    background: '#ffffff',
-                    borderRadius: 'var(--radius-lg)',
-                    padding: '36px 28px',
-                    textAlign: 'center',
-                    boxShadow: 'var(--shadow-sm)',
-                    border: '1px solid var(--color-gray-300)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    height: '100%',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '4px',
-                      background: 'linear-gradient(90deg, var(--color-primary), var(--color-secondary))',
-                    }}
-                  />
+          {/* Results Status Bar */}
+          <div className="results-meta">
+            <span className="results-count">
+              Showing <strong>{filteredClients.length}</strong> of {clients.length} Clients
+              {searchQuery && ` for "${searchQuery}"`}
+            </span>
+            {(activeFilter !== 'all' || searchQuery) && (
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveFilter('all');
+                  setSearchQuery('');
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#006030',
+                  fontWeight: 700,
+                  fontSize: '0.84rem',
+                  cursor: 'pointer',
+                }}
+              >
+                Reset Filters
+              </button>
+            )}
+          </div>
 
-                  <div>
-                    <div
-                      className="client-card-logo"
-                      style={{
-                        width: '100px',
-                        height: '100px',
-                        borderRadius: '20px',
-                        background: 'var(--color-gray-100)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        overflow: 'hidden',
-                        padding: '16px',
-                        marginBottom: '24px',
-                        transition: 'transform var(--transition-fast)',
-                      }}
+          {/* Client Cards Grid */}
+          {filteredClients.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '60px 20px', background: '#f8faf9', borderRadius: '20px' }}>
+              <FiSearch size={40} style={{ color: '#94a3b8', marginBottom: '14px' }} />
+              <h3 style={{ fontSize: '1.3rem', color: '#1e293b', marginBottom: '8px' }}>No clients found</h3>
+              <p style={{ color: '#64748b', fontSize: '0.95rem', marginBottom: '20px' }}>
+                We couldn’t find any matches for &quot;{searchQuery}&quot;. Try adjusting your search query.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveFilter('all');
+                  setSearchQuery('');
+                }}
+                style={{
+                  padding: '10px 22px',
+                  borderRadius: '999px',
+                  background: '#006030',
+                  color: '#fff',
+                  fontWeight: 700,
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                Show All Clients
+              </button>
+            </div>
+          ) : (
+            <motion.div layout className="clients-grid">
+              <AnimatePresence mode="popLayout">
+                {filteredClients.map((client) => {
+                  const catId = getCategory(client);
+                  const catLabel = getCategoryLabel(catId);
+
+                  return (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.3 }}
+                      key={client.name}
+                      className="client-card-creative"
+                      onClick={() => setSelectedClient(client)}
                     >
-                      <img src={client.logo} alt={client.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} loading="lazy" />
-                    </div>
+                      {/* Top Bar with Category Badge */}
+                      <div className="client-card-top">
+                        <span className="client-category-tag">{catLabel}</span>
+                        <FiCheckCircle style={{ color: '#006030', fontSize: '1.1rem' }} />
+                      </div>
 
-                    <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-text-dark)', marginBottom: '8px', lineHeight: 1.3 }}>
-                      {client.name}
-                    </h4>
-                  </div>
+                      {/* Clean Logo Box */}
+                      <div className="client-card-logo-wrap">
+                        <img src={client.logo} alt={client.name} loading="lazy" />
+                      </div>
 
-                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.88rem', margin: 0, lineHeight: 1.5, marginTop: '8px' }}>
-                    {client.desc}
-                  </p>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.div>
+                      {/* Client Name & Project Scope */}
+                      <div>
+                        <h3 className="client-card-name">{client.name}</h3>
+                        <p className="client-card-desc">{client.desc}</p>
+                      </div>
+
+                      {/* Interactive Bottom Action */}
+                      <div className="client-card-action">
+                        <span>View Project Scope</span>
+                        <FiArrowRight />
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </motion.div>
+          )}
         </div>
       </section>
+
+      {/* =========================================================
+          5. INTERACTIVE CLIENT DETAILS MODAL
+      ========================================================= */}
+      <AnimatePresence>
+        {selectedClient && (
+          <motion.div
+            className="modal-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedClient(null)}
+          >
+            <motion.div
+              className="modal-card"
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                className="modal-close-btn"
+                onClick={() => setSelectedClient(null)}
+                aria-label="Close modal"
+              >
+                <FiX size={20} />
+              </button>
+
+              <div className="modal-logo-wrap">
+                <img src={selectedClient.logo} alt={selectedClient.name} />
+              </div>
+
+              <div style={{ textAlign: 'center', marginBottom: '12px' }}>
+                <span className="client-category-tag">
+                  {getCategoryLabel(getCategory(selectedClient))}
+                </span>
+              </div>
+
+              <h3 className="modal-client-name">{selectedClient.name}</h3>
+              <p className="modal-client-desc">{selectedClient.desc}</p>
+
+              <div className="modal-details-grid">
+                <div className="modal-detail-item">
+                  <span className="modal-detail-label">Service Type</span>
+                  <span className="modal-detail-value">Turnkey EPC & Maintenance</span>
+                </div>
+                <div className="modal-detail-item">
+                  <span className="modal-detail-label">Execution Status</span>
+                  <span className="modal-detail-value">Delivered & Operational</span>
+                </div>
+                <div className="modal-detail-item">
+                  <span className="modal-detail-label">Standards</span>
+                  <span className="modal-detail-value">NBC / NFPA Compliant</span>
+                </div>
+                <div className="modal-detail-item">
+                  <span className="modal-detail-label">Support Protocol</span>
+                  <span className="modal-detail-value">24×7 Operations SLA</span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedClient(null)}
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  borderRadius: '12px',
+                  background: '#006030',
+                  color: '#ffffff',
+                  fontWeight: 700,
+                  fontSize: '0.92rem',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'background 0.2s ease',
+                }}
+              >
+                Close Project Overview
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* =========================================================
+          6. CALL TO ACTION
+      ========================================================= */}
+      <ContactCTA />
     </>
   );
 }
