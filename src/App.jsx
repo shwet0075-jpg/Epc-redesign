@@ -46,7 +46,7 @@ function AppRoutes() {
   const mode = getCurtainMode(location.pathname);
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence initial={false}>
       <CurtainTransition key={location.pathname} mode={mode}>
         <Routes location={location}>
           <Route path="/" element={<Home />} />

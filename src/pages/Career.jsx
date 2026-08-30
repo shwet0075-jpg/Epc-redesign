@@ -1,54 +1,532 @@
-import { useMemo, useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { FiArrowUpRight, FiBriefcase, FiChevronDown, FiClock, FiCode, FiCompass, FiMapPin, FiSearch, FiSend, FiShield, FiSliders, FiTrendingUp, FiUsers, FiX, FiZap } from 'react-icons/fi';
+import { useState, useMemo, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  FiSearch,
+  FiX,
+  FiArrowUpRight,
+  FiMapPin,
+  FiClock,
+  FiBriefcase,
+  FiShield,
+  FiCpu,
+  FiUsers,
+  FiZap,
+  FiTrendingUp,
+  FiCheckCircle,
+  FiSend,
+  FiSliders,
+} from 'react-icons/fi';
 import ScrollReveal from '../components/ScrollReveal';
-import ScrollStagger from '../components/ScrollStagger';
-import ScrollText from '../components/ScrollText';
-import MagneticButton from '../components/animations/MagneticButton';
+import ContactCTA from '../components/ContactCTA';
+import '../styles/careers.css';
 
-const jobs = [
-  { id: 1, title: 'Project Engineer — Fire & Life Safety', department: 'Project Delivery', location: 'Mumbai', type: 'Full-time', level: 'Mid', teaser: 'Lead site coordination for high-stakes fire detection and suppression programmes.', tags: ['Urgent hiring', 'Onsite project'], icon: FiShield, featured: true },
-  { id: 2, title: 'Design Engineer — ELV Systems', department: 'Design Engineering', location: 'Pune', type: 'Full-time', level: 'Mid', teaser: 'Translate complex building requirements into intelligent security and IBMS designs.', tags: ['AutoCAD', 'Design studio'], icon: FiCode },
-  { id: 3, title: 'Senior Project Manager', department: 'Project Delivery', location: 'Mumbai', type: 'Full-time', level: 'Senior', teaser: 'Own cross-functional delivery from project plan through an assured handover.', tags: ['Leadership role', 'Client-facing'], icon: FiCompass },
-  { id: 4, title: 'Service Engineer — Critical Infrastructure', department: 'Operations', location: 'Delhi NCR', type: 'Full-time', level: 'Entry', teaser: 'Keep mission-critical life-safety and monitoring systems performing at their best.', tags: ['Field role', 'Training provided'], icon: FiSliders },
-  { id: 5, title: 'BIM / CAD Coordinator', department: 'Design Engineering', location: 'Pune', type: 'Contract', level: 'Mid', teaser: 'Build the precise coordination models that help construction teams execute with confidence.', tags: ['BIM', 'Hybrid'], icon: FiBriefcase },
-];
-const benefits = [
-  { icon: FiTrendingUp, title: 'Grow with intent', desc: 'Structured technical training, site exposure and leadership mentoring that keeps your next chapter in view.' },
-  { icon: FiZap, title: 'Make visible impact', desc: 'Work on safety, security and infrastructure systems that protect people and keep essential operations running.' },
-  { icon: FiUsers, title: 'Built as one team', desc: 'A transparent, hands-on culture where ideas move quickly from the drawing board to the site.' },
+const jobsData = [
+  {
+    id: 1,
+    title: 'Project Engineer — Fire & Life Safety',
+    department: 'Project Delivery',
+    location: 'Mumbai / Pan India',
+    type: 'Full-time',
+    level: 'Mid to Senior (3-6 Yrs)',
+    teaser: 'Lead on-site project execution, technical coordination, and statutory compliance for critical fire detection & suppression systems.',
+    featured: true,
+    responsibilities: [
+      'Supervise installation, testing, and commissioning of turnkey fire alarm and gas suppression systems.',
+      'Liaise with clients, architects, MEP consultants, and site contractors to ensure on-time delivery.',
+      'Enforce strict quality assurance and safety standards across mission-critical project sites.',
+    ],
+    requirements: [
+      'B.E. / B.Tech in Fire & Safety, Mechanical, or Electrical Engineering.',
+      '3+ years hands-on experience in fire protection / EPC projects.',
+      'Proficiency in AutoCAD, site documentation, and project schedules.',
+    ],
+  },
+  {
+    id: 2,
+    title: 'Design Engineer — ELV & IBMS Systems',
+    department: 'Design Engineering',
+    location: 'Pune / Mumbai',
+    type: 'Full-time',
+    level: 'Mid (2-5 Yrs)',
+    teaser: 'Design intelligent building management, integrated security, CCTV, and smart automation systems for modern enterprise facilities.',
+    featured: false,
+    responsibilities: [
+      'Prepare technical drawings, schematics, cable schedules, and BOQs for ELV and automation packages.',
+      'Conduct vendor evaluations and select compliant equipment for data centers and commercial towers.',
+      'Collaborate with site teams to resolve design discrepancies during installation phases.',
+    ],
+    requirements: [
+      'Degree / Diploma in Electrical, Electronics, or Instrumentation Engineering.',
+      'Experience in IBMS, Access Control, CCTV, and Public Address systems.',
+      'Proficient in AutoCAD and Revit / BIM tools is a plus.',
+    ],
+  },
+  {
+    id: 3,
+    title: 'Senior Project Manager — Critical Infrastructure',
+    department: 'Project Delivery',
+    location: 'Mumbai / Delhi NCR',
+    type: 'Full-time',
+    level: 'Senior (7-12 Yrs)',
+    teaser: 'Own end-to-end turnkey project lifecycle from initial engineering and procurement to successful final testing & handover.',
+    featured: true,
+    responsibilities: [
+      'Direct cross-functional engineering teams across multi-location high-stakes EPC projects.',
+      'Manage project budget, procurement timelines, client invoicing, and resource allocation.',
+      'Lead high-level stakeholder reviews and assure adherence to NFPA, NBC, and ISO standards.',
+    ],
+    requirements: [
+      'B.Tech / M.Tech in Engineering with strong project management track record.',
+      '7+ years experience managing complex infrastructure or industrial EPC projects.',
+      'PMP / PRINCE2 certification is an added advantage.',
+    ],
+  },
+  {
+    id: 4,
+    title: 'Service & Maintenance Engineer',
+    department: 'Operations',
+    location: 'Pan India Sites',
+    type: 'Full-time',
+    level: 'Entry to Mid (1-3 Yrs)',
+    teaser: 'Ensure 24/7 uptime and peak operational performance for installed fire protection, security, and IBMS systems.',
+    featured: false,
+    responsibilities: [
+      'Execute preventive maintenance schedules and rapid breakdown support for client facilities.',
+      'Perform system health checks, battery replacements, calibration, and sensor audits.',
+      'Provide technical training and operation guidance to client facility managers.',
+    ],
+    requirements: [
+      'Diploma / Degree in Electrical or Electronics Engineering.',
+      'Hands-on troubleshooting aptitude for life-safety systems.',
+      'Willingness to travel across regional project locations.',
+    ],
+  },
+  {
+    id: 5,
+    title: 'BIM / CAD Coordination Specialist',
+    department: 'Design Engineering',
+    location: 'Pune (Hybrid)',
+    type: 'Full-time / Contract',
+    level: 'Mid (2-4 Yrs)',
+    teaser: 'Build clash-free 3D building models and detailed shop drawings to empower smooth on-site construction execution.',
+    featured: false,
+    responsibilities: [
+      'Develop coordinated 3D BIM models for fire fighting, ELV, and containment systems.',
+      'Perform clash detection and coordination runs with architectural and MEP trades.',
+      'Generate accurate as-built drawings and material take-offs.',
+    ],
+    requirements: [
+      'Expertise in Autodesk Revit, Navisworks, and AutoCAD MEP.',
+      '2+ years experience in MEP / EPC BIM coordination.',
+      'Strong eye for detail and spatial coordination.',
+    ],
+  },
 ];
 
-const processSteps = [['01', 'Apply', 'Share the work you are proud of and tell us where you want to make an impact.'], ['02', 'Connect', 'A focused conversation about your experience, interests and the role ahead.'], ['03', 'Meet the team', 'Explore technical and leadership challenges with the people you would work alongside.'], ['04', 'Build what matters', 'Start with a thoughtful onboarding plan and a real project to own.']];
-function Level({ value }) { const active = value === 'Senior' ? 3 : value === 'Mid' ? 2 : 1; return <div className="career-level" aria-label={`${value} experience level`}><span>{value}</span><i className={active >= 1 ? 'active' : ''} /><i className={active >= 2 ? 'active' : ''} /><i className={active >= 3 ? 'active' : ''} /></div>; }
+const pillars = [
+  {
+    icon: FiTrendingUp,
+    num: '01',
+    title: 'High-Impact Projects',
+    desc: 'Work on landmark data centers, rail infrastructure, defense facilities, and smart towers that safeguard lives every single day.',
+  },
+  {
+    icon: FiZap,
+    num: '02',
+    title: 'Fast-Track Growth',
+    desc: 'We promote from within based on merit and capability. Gain hands-on leadership ownership and direct mentorship from industry veterans.',
+  },
+  {
+    icon: FiUsers,
+    num: '03',
+    title: 'Culture of Excellence',
+    desc: 'Join a collaborative, transparent team that values precision engineering, continuous learning, and on-time project pride.',
+  },
+];
+
+const hiringSteps = [
+  { num: '01', title: 'Submit Profile', desc: 'Send your CV highlighting your technical projects and career aspirations.' },
+  { num: '02', title: 'Technical Dialogue', desc: 'Engage in a practical discussion with our engineering leads on real challenges.' },
+  { num: '03', title: 'Culture Alignment', desc: 'Meet our leadership team to ensure mutual values, vision, and role fit.' },
+  { num: '04', title: 'Fast Onboarding', desc: 'Receive your offer and kick off with a structured site & project roadmap.' },
+];
 
 export default function Career() {
-  const [query, setQuery] = useState('');
-  const [department, setDepartment] = useState('All teams');
-  const [location, setLocation] = useState('All locations');
-  const [level, setLevel] = useState('All levels');
-  const reduceMotion = useReducedMotion();
-  const departments = ['All teams', ...new Set(jobs.map((job) => job.department))];
-  const locations = ['All locations', ...new Set(jobs.map((job) => job.location))];
-  const levels = ['All levels', 'Entry', 'Mid', 'Senior'];
-  const filteredJobs = useMemo(() => jobs.filter((job) => (
-    (department === 'All teams' || job.department === department)
-    && (location === 'All locations' || job.location === location)
-    && (level === 'All levels' || job.level === level)
-    && `${job.title} ${job.department} ${job.location}`.toLowerCase().includes(query.toLowerCase())
-  )), [department, location, level, query]);
-  const clearFilters = () => { setQuery(''); setDepartment('All teams'); setLocation('All locations'); setLevel('All levels'); };
+  const [selectedDept, setSelectedDept] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeModalJob, setActiveModalJob] = useState(null);
+
+  const yearsExp = Math.max(1, new Date().getFullYear() - 2019);
+
+  // Lock body scroll when modal is active so mouse wheel scrolls the modal
+  useEffect(() => {
+    if (activeModalJob) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [activeModalJob]);
+
+  // Departments list with counts
+  const departments = useMemo(() => {
+    const counts = { all: jobsData.length };
+    jobsData.forEach((j) => {
+      counts[j.department] = (counts[j.department] || 0) + 1;
+    });
+    return [
+      { id: 'all', label: 'All Teams', count: counts.all },
+      { id: 'Project Delivery', label: 'Project Delivery', count: counts['Project Delivery'] || 0 },
+      { id: 'Design Engineering', label: 'Design Engineering', count: counts['Design Engineering'] || 0 },
+      { id: 'Operations', label: 'Operations & Maintenance', count: counts['Operations'] || 0 },
+    ];
+  }, []);
+
+  // Filtered jobs
+  const filteredJobs = useMemo(() => {
+    return jobsData.filter((job) => {
+      const matchesDept = selectedDept === 'all' || job.department === selectedDept;
+      const q = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        !q ||
+        job.title.toLowerCase().includes(q) ||
+        job.department.toLowerCase().includes(q) ||
+        job.location.toLowerCase().includes(q) ||
+        job.teaser.toLowerCase().includes(q);
+      return matchesDept && matchesSearch;
+    });
+  }, [selectedDept, searchQuery]);
+
   return (
     <div className="careers-page">
-      <section className="careers-hero"><div className="careers-hero__grid" aria-hidden="true" /><div className="careers-hero__structure" aria-hidden="true"><i /><i /><i /><i /><i /></div><div className="container careers-hero__content"><motion.p className="career-signal" initial={{ opacity: 0, x: -18 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: .5 }}><span /> CAREERS AT PRUDENT EPC</motion.p><h1><ScrollText as="span" text="Build what" amount={0} /><br /><ScrollText as="span" text="matters." wordClassName="career-hero-em" amount={0} delay={0.25} /></h1><motion.p className="careers-hero__lede" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .62, delay: .15 }}>Join the people engineering safer, smarter spaces across India—from the first line on a drawing to the final site handover.</motion.p><motion.a href="#open-roles" className="career-hero__cta" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .55, delay: .22 }}>Explore open roles <FiArrowUpRight /></motion.a></div><div className="career-hero__index" aria-hidden="true"><span>01</span><i /> 05 &nbsp; • &nbsp; ENGINEERING FUTURES</div></section>
-      <section className="career-culture"><div className="container career-culture__inner"><ScrollReveal variant="fade-up"><p>Momentum with purpose</p></ScrollReveal><ScrollReveal variant="fade-up" delay={0.08}><div className="career-culture__statement">We make room for sharp thinking, site-first learning and the kind of ownership that leaves every system better than we found it.</div></ScrollReveal><ScrollStagger variant="rise-blur-3d" stagger={0.1} className="career-stats"><div><strong>40<span>+</span></strong><small>direct team members</small></div><div><strong>15<span>+</span></strong><small>years shaping critical infrastructure</small></div><div><strong>250<span>+</span></strong><small>projects delivered nationwide</small></div></ScrollStagger></div></section>
+      {/* 1. Hero Section */}
+      <section className="careers-hero">
+        <div className="careers-hero-grid" aria-hidden="true" />
+        <div className="careers-hero-glow-1" aria-hidden="true" />
+        <div className="careers-hero-glow-2" aria-hidden="true" />
 
-      <section className="career-openings section" id="open-roles"><div className="container"><ScrollReveal variant="fade-up"><div className="career-section-head"><div><p className="career-kicker">OPEN OPPORTUNITIES <span>({filteredJobs.length.toString().padStart(2, '0')})</span></p><h2>Find your next<br />great <em>build.</em></h2></div><p>Every role has a tangible line to the safety and intelligence of the spaces we deliver.</p></div></ScrollReveal><div className="career-filter-bar" aria-label="Filter open roles"><label className="career-search"><FiSearch /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search roles or teams" aria-label="Search roles" />{query && <button onClick={() => setQuery('')} aria-label="Clear search"><FiX /></button>}</label><label>Team<select value={department} onChange={(event) => setDepartment(event.target.value)}>{departments.map((item) => <option key={item}>{item}</option>)}</select><FiChevronDown /></label><label>Location<select value={location} onChange={(event) => setLocation(event.target.value)}>{locations.map((item) => <option key={item}>{item}</option>)}</select><FiChevronDown /></label><label>Level<select value={level} onChange={(event) => setLevel(event.target.value)}>{levels.map((item) => <option key={item}>{item}</option>)}</select><FiChevronDown /></label></div><motion.div className="career-jobs-grid" layout><AnimatePresence mode="popLayout">{filteredJobs.map((job, index) => { const Icon = job.icon; return <motion.article className={`career-job-card ${job.featured ? 'career-job-card--featured' : ''}`} key={job.id} layout initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: .96 }} transition={{ duration: reduceMotion ? 0 : .38, delay: reduceMotion ? 0 : index * .055 }} whileHover={reduceMotion ? undefined : { y: -7, rotateX: 1.5, rotateY: -1 }}>{job.featured && <span className="career-featured">Featured opportunity <FiZap /></span>}<div className="career-job-card__top"><span className="career-job-icon"><Icon /></span><span className="career-job-number">0{job.id}</span></div><p className="career-job-department">{job.department}</p><h3>{job.title}</h3><p className="career-job-teaser">{job.teaser}</p><div className="career-tags">{job.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><div className="career-job-meta"><span><FiMapPin />{job.location}</span><span><FiClock />{job.type}</span><Level value={job.level} /></div><MagneticButton className="career-apply-wrap"><a className="career-apply" href={`mailto:careers@prudentepc.com?subject=${encodeURIComponent(`Application: ${job.title}`)}`}>Apply now <FiArrowUpRight /></a></MagneticButton></motion.article>; })}</AnimatePresence>{!filteredJobs.length && <div className="career-empty"><FiSearch /><h3>No matching roles yet.</h3><p>Try a different team, location or experience level.</p><button onClick={clearFilters}>Clear filters</button></div>}</motion.div></div></section>
+        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+          <span className="careers-eyebrow-badge">⚡ CAREERS AT PRUDENT EPC</span>
 
-      <section className="career-benefits section"><div className="container"><ScrollReveal variant="fade-up"><div className="career-section-head career-section-head--light"><div><p className="career-kicker">WHY PRUDENT EPC</p><h2>Bring your full<br /><em>ambition.</em></h2></div><p>Our best work happens when capable people are trusted with real responsibility.</p></div></ScrollReveal><ScrollStagger variant="rise-3d" stagger={0.12} className="career-benefit-grid">{benefits.map((benefit, index) => { const Icon = benefit.icon; return <article className="career-benefit" key={benefit.title}><span><Icon /></span><h3>{benefit.title}</h3><p>{benefit.desc}</p><b>0{index + 1}</b></article>; })}</ScrollStagger></div></section>
+          <h1 className="careers-hero-title">
+            Build <em>Mission-Critical</em> Infrastructure With Us.
+          </h1>
 
-      <section className="career-process section"><div className="container"><ScrollReveal variant="fade-up"><div className="career-process__header"><p className="career-kicker">THE APPLICATION PATH</p><h2>Clarity from<br />first <em>hello.</em></h2></div></ScrollReveal><ScrollStagger variant="rise-blur-3d" stagger={0.1} className="career-process__steps">{processSteps.map(([number, title, copy]) => <article key={number}><span>{number}</span><i /><h3>{title}</h3><p>{copy}</p></article>)}</ScrollStagger></div></section>
-      <section className="career-general"><div className="container"><ScrollReveal variant="scale-in"><div className="career-general__card"><div><p className="career-kicker">STAY IN OUR ORBIT</p><h2>Don't see the right role?</h2><p>Tell us where your expertise can make a difference. We are always looking for people who care about the details.</p></div><MagneticButton className="career-general__button"><a href="mailto:careers@prudentepc.com?subject=General Application">Submit a general application <FiSend /></a></MagneticButton><div className="career-general__orbit" aria-hidden="true" /></div></ScrollReveal></div></section>
+          <p className="careers-hero-desc">
+            Join the forward-thinking engineers and leaders shaping fire safety, building automation,
+            and turnkey industrial infrastructure across India.
+          </p>
+
+          {/* Quick Stats Bar */}
+          <div className="careers-stats-bar">
+            <div className="careers-stat-item">
+              <div className="careers-stat-num">
+                {yearsExp}
+                <span>+</span>
+              </div>
+              <div className="careers-stat-label">Years of Engineering</div>
+            </div>
+
+            <div className="careers-stat-item">
+              <div className="careers-stat-num">
+                250<span>+</span>
+              </div>
+              <div className="careers-stat-label">Turnkey Deliveries</div>
+            </div>
+
+            <div className="careers-stat-item">
+              <div className="careers-stat-num">
+                Pan <span>India</span>
+              </div>
+              <div className="careers-stat-label">Active Project Sites</div>
+            </div>
+
+            <div className="careers-stat-item">
+              <div className="careers-stat-num">
+                100<span>%</span>
+              </div>
+              <div className="careers-stat-label">On-Time Execution</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. Open Roles Explorer (Current Opportunities) */}
+      <section className="careers-roles-section" id="open-positions">
+        <div className="container">
+          <div className="careers-section-header">
+            <span className="careers-section-kicker">CURRENT OPPORTUNITIES</span>
+            <h2 className="careers-section-title">Explore Open Roles</h2>
+            <p className="careers-section-subtitle">
+              Discover opportunities across our Project Delivery, Design Engineering, and Operations teams.
+            </p>
+          </div>
+
+          {/* Filters & Search */}
+          <div className="careers-filter-controls">
+            <div className="careers-search-wrap">
+              <FiSearch className="careers-search-icon" />
+              <input
+                type="text"
+                className="careers-search-input"
+                placeholder="Search by role, team, or location..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {searchQuery && (
+                <button
+                  className="careers-search-clear"
+                  onClick={() => setSearchQuery('')}
+                  aria-label="Clear search"
+                >
+                  <FiX />
+                </button>
+              )}
+            </div>
+
+            {/* Department Pills */}
+            <div className="careers-tabs">
+              {departments.map((dept) => (
+                <button
+                  key={dept.id}
+                  className={`careers-tab-btn ${selectedDept === dept.id ? 'is-active' : ''}`}
+                  onClick={() => setSelectedDept(dept.id)}
+                >
+                  <span>{dept.label}</span>
+                  <span className="careers-tab-count">{dept.count}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Job Cards Grid */}
+          <div className="careers-jobs-grid">
+            <AnimatePresence mode="popLayout">
+              {filteredJobs.map((job) => (
+                <motion.div
+                  key={job.id}
+                  className={`careers-job-card ${job.featured ? 'is-featured' : ''}`}
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div>
+                    <div className="careers-job-top">
+                      <span className="careers-job-dept-badge">{job.department}</span>
+                      {job.featured && (
+                        <span className="careers-job-featured-badge">
+                          <FiZap /> Featured Role
+                        </span>
+                      )}
+                    </div>
+
+                    <h3 className="careers-job-title">{job.title}</h3>
+                    <p className="careers-job-desc">{job.teaser}</p>
+                  </div>
+
+                  <div>
+                    <div className="careers-job-meta-row">
+                      <div className="careers-job-meta-item">
+                        <FiMapPin /> {job.location}
+                      </div>
+                      <div className="careers-job-meta-item">
+                        <FiClock /> {job.type}
+                      </div>
+                      <div className="careers-job-meta-item">
+                        <FiBriefcase /> {job.level}
+                      </div>
+                    </div>
+
+                    <div className="careers-job-actions">
+                      <button
+                        className="careers-view-btn"
+                        onClick={() => setActiveModalJob(job)}
+                      >
+                        View Details
+                      </button>
+                      <a
+                        className="careers-apply-btn"
+                        href={`mailto:careers@prudentepc.com?subject=${encodeURIComponent(`Application: ${job.title}`)}`}
+                      >
+                        Apply <FiArrowUpRight />
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+
+            {filteredJobs.length === 0 && (
+              <div className="careers-empty-state">
+                <FiBriefcase className="careers-empty-icon" />
+                <h3>No matching roles found</h3>
+                <p>Try clearing your search or selecting another team filter.</p>
+                <button
+                  className="careers-empty-btn"
+                  onClick={() => {
+                    setSelectedDept('all');
+                    setSearchQuery('');
+                  }}
+                >
+                  Reset Filters
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Core Pillars & Culture */}
+      <section className="careers-culture-section">
+        <div className="container">
+          <div className="careers-section-header">
+            <span className="careers-section-kicker">WHY WORK WITH US</span>
+            <h2 className="careers-section-title">Where Engineering Ambition Meets Real Impact</h2>
+            <p className="careers-section-subtitle">
+              We empower capable professionals with the autonomy, resources, and trust needed to lead
+              landmark national infrastructure.
+            </p>
+          </div>
+
+          <div className="careers-pillars-grid">
+            {pillars.map((pillar, idx) => {
+              const Icon = pillar.icon;
+              return (
+                <ScrollReveal key={pillar.num} variant="fade-up" delay={idx * 0.1}>
+                  <div className="careers-pillar-card">
+                    <span className="careers-pillar-num">{pillar.num}</span>
+                    <div className="careers-pillar-icon">
+                      <Icon />
+                    </div>
+                    <h3>{pillar.title}</h3>
+                    <p>{pillar.desc}</p>
+                  </div>
+                </ScrollReveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Hiring Process Timeline */}
+      <section className="careers-process-section">
+        <div className="container">
+          <div className="careers-section-header">
+            <span className="careers-section-kicker" style={{ color: '#f08020' }}>
+              HOW WE HIRE
+            </span>
+            <h2 className="careers-section-title" style={{ color: '#ffffff' }}>
+              A Transparent, Respectful Process
+            </h2>
+            <p className="careers-section-subtitle" style={{ color: 'rgba(255, 255, 255, 0.75)' }}>
+              From initial connect to site onboarding, here is what you can expect when you apply.
+            </p>
+          </div>
+
+          <div className="careers-process-grid">
+            {hiringSteps.map((step) => (
+              <div key={step.num} className="careers-process-step">
+                <div className="careers-process-num">{step.num}</div>
+                <h4>{step.title}</h4>
+                <p>{step.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Job Details Modal */}
+      <AnimatePresence>
+        {activeModalJob && (
+          <div
+            className="careers-modal-backdrop"
+            onClick={() => setActiveModalJob(null)}
+            data-lenis-prevent="true"
+          >
+            <motion.div
+              className="careers-modal-box"
+              data-lenis-prevent="true"
+              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, scale: 0.94, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 20 }}
+              transition={{ duration: 0.25 }}
+            >
+              <div className="careers-modal-header">
+                <button
+                  className="careers-modal-close"
+                  onClick={() => setActiveModalJob(null)}
+                  aria-label="Close modal"
+                >
+                  <FiX />
+                </button>
+                <span className="careers-job-dept-badge">{activeModalJob.department}</span>
+                <h3 className="careers-job-title" style={{ marginTop: 12, marginBottom: 8 }}>
+                  {activeModalJob.title}
+                </h3>
+                <div style={{ display: 'flex', gap: 16, fontSize: '0.86rem', color: '#64748b', fontWeight: 600 }}>
+                  <span><FiMapPin style={{ color: '#f08020' }} /> {activeModalJob.location}</span>
+                  <span><FiClock style={{ color: '#f08020' }} /> {activeModalJob.type}</span>
+                  <span><FiBriefcase style={{ color: '#f08020' }} /> {activeModalJob.level}</span>
+                </div>
+              </div>
+
+              <div className="careers-modal-body">
+                <p style={{ fontSize: '0.98rem', color: '#334155', lineHeight: 1.6, marginBottom: 20 }}>
+                  {activeModalJob.teaser}
+                </p>
+
+                <div className="careers-modal-section-title">Key Responsibilities</div>
+                <ul className="careers-modal-list">
+                  {activeModalJob.responsibilities.map((resp, i) => (
+                    <li key={i}>
+                      <FiCheckCircle />
+                      <span>{resp}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="careers-modal-section-title">Requirements & Qualifications</div>
+                <ul className="careers-modal-list">
+                  {activeModalJob.requirements.map((req, i) => (
+                    <li key={i}>
+                      <FiCheckCircle />
+                      <span>{req}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="careers-modal-footer">
+                <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
+                  Ready to apply? Send us your resume.
+                </span>
+                <a
+                  className="careers-apply-btn"
+                  href={`mailto:careers@prudentepc.com?subject=${encodeURIComponent(`Application: ${activeModalJob.title}`)}`}
+                >
+                  Apply for this Role <FiArrowUpRight />
+                </a>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* 6. Unified Contact / General Application CTA */}
+      <ContactCTA
+        tagline="JOIN OUR TALENT NETWORK"
+        title="Don't See The Exact Role For You?"
+        description="We are constantly expanding our engineering and site leadership teams. Send us your profile and let's explore opportunities together."
+        primaryButtonText="Submit General Application"
+        primaryButtonLink="mailto:careers@prudentepc.com?subject=General%20Application%20-%20Prudent%20EPC"
+        secondaryButtonText="Contact Us"
+        secondaryButtonLink="/contact"
+      />
     </div>
   );
 }

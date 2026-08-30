@@ -16,17 +16,13 @@ export default function CustomCursor() {
   const pulseTimeoutRef = useRef(null);
   const isInitializedRef = useRef(false);
 
-  // Raw mouse position
+  // Raw mouse position — instant 1:1 hardware tracking with zero latency
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
-  // Dot follows almost instantly — extremely tight spring for precise tracking
-  const dotX = useSpring(mouseX, { stiffness: 2000, damping: 55, mass: 0.05 });
-  const dotY = useSpring(mouseY, { stiffness: 2000, damping: 55, mass: 0.05 });
-
-  // Ring trails behind with a responsive spring
-  const ringX = useSpring(mouseX, { stiffness: 550, damping: 30, mass: 0.32 });
-  const ringY = useSpring(mouseY, { stiffness: 550, damping: 30, mass: 0.32 });
+  // High-speed snappy spring for the trailing ring
+  const ringX = useSpring(mouseX, { stiffness: 1400, damping: 50, mass: 0.1 });
+  const ringY = useSpring(mouseY, { stiffness: 1400, damping: 50, mass: 0.1 });
 
   // Direct DOM class manipulation — zero React re-renders
   const setHoverState = useCallback((hovering, isInput) => {
@@ -165,11 +161,11 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Orange Pointer Cursor — true cursor position */}
+      {/* Orange Pointer Cursor — true 1:1 instantaneous hardware cursor position */}
       <motion.div
         ref={dotRef}
         className="custom-cursor-pointer"
-        style={{ left: dotX, top: dotY }}
+        style={{ left: mouseX, top: mouseY }}
       >
         <svg
           width="22"

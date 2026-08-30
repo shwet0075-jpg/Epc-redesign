@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { FiArrowRight, FiCheck, FiClock, FiMail, FiMapPin, FiPhone, FiSend } from 'react-icons/fi';
@@ -16,8 +16,28 @@ const solutions = [
 export default function Footer() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [footerHeight, setFooterHeight] = useState(0);
   const footerRef = useRef(null);
+  const contentRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
+
+  // Dynamically measure exact footer height so reveal container fits with 0px dead space
+  useEffect(() => {
+    if (!contentRef.current) return;
+    const updateHeight = () => {
+      if (contentRef.current) {
+        setFooterHeight(contentRef.current.offsetHeight);
+      }
+    };
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(contentRef.current);
+    window.addEventListener('resize', updateHeight);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: footerRef,
@@ -25,7 +45,7 @@ export default function Footer() {
   });
 
   // Parallax Y offset for internal content unveiling as the user scrolls
-  const contentY = useTransform(scrollYProgress, [0, 1], [-60, 0]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [-70, 0]);
 
   const subscribe = (event) => {
     event.preventDefault();
@@ -33,9 +53,22 @@ export default function Footer() {
   };
 
   return (
-    <div ref={footerRef} className="footer-reveal-container">
-      <div className="footer-fixed-wrap">
+    <div
+      ref={footerRef}
+      className="footer-reveal-container"
+      style={{
+        height: footerHeight > 0 ? `${footerHeight}px` : undefined,
+      }}
+    >
+      <div
+        className="footer-fixed-wrap"
+        style={{
+          height: footerHeight > 0 ? `${footerHeight}px` : undefined,
+        }}
+      >
         <motion.div
+          ref={contentRef}
+          className="footer-motion-inner"
           style={
             shouldReduceMotion
               ? undefined

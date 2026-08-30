@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom';
 import { FiArrowRight, FiMail } from 'react-icons/fi';
 import ScrollReveal from './ScrollReveal';
-import SplitHeading from "./animations/SplitHeading";
 
-export default function ContactCTA() {
+export default function ContactCTA({
+  tagline = "Build With Us",
+  title = "Have a project in mind? Let's engineer it together.",
+  description = "From high-capacity fire safety networks and IP-CCTV security grids to robust TIER-III data centres, we bring engineering trust to every critical system.",
+  primaryButtonText = "Get In Touch",
+  primaryButtonLink = "/contact",
+  secondaryButtonText = "Write Email",
+  secondaryButtonLink = "mailto:info@prudentepc.com",
+}) {
   return (
-    <section className="cta-section" style={{ padding: '80px 0', background: 'var(--color-light)' }}>
+    <section className="cta-section" style={{ padding: '24px 0 42px', background: 'var(--color-light)' }}>
       <div className="container">
         <ScrollReveal variant="scale-in">
           <div
@@ -13,7 +20,7 @@ export default function ContactCTA() {
             style={{
               background: '#ffffff',
               borderRadius: 'var(--radius-lg)',
-              padding: '60px 48px',
+              padding: '44px 44px',
               boxShadow: 'var(--shadow-md)',
               border: '1px solid var(--color-gray-100)',
               position: 'relative',
@@ -22,7 +29,7 @@ export default function ContactCTA() {
               alignItems: 'center',
               justifyContent: 'space-between',
               flexWrap: 'wrap',
-              gap: '40px',
+              gap: '32px',
             }}
           >
             {/* Subtle green gradient background accent */}
@@ -52,13 +59,13 @@ export default function ContactCTA() {
               }}
             />
 
-            <div style={{ flex: '1 1 500px', position: 'relative', zIndex: 2 }}>
-              <span className="eyebrow" style={{ marginBottom: '8px' }}>Build With Us</span>
-              <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 800, margin: '0 0 16px', color: 'var(--color-text-dark)' }}>
-                Have a project in mind? Let's engineer it together.
+            <div style={{ flex: '1 1 480px', position: 'relative', zIndex: 2 }}>
+              <span className="eyebrow" style={{ marginBottom: '8px', display: 'inline-block' }}>{tagline}</span>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 2.8vw, 2.1rem)', fontWeight: 700, margin: '0 0 12px', color: 'var(--color-text-dark)', lineHeight: 1.2 }}>
+                {title}
               </h2>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', margin: 0, maxWidth: '580px' }}>
-                From high-capacity fire safety networks and IP-CCTV security grids to robust TIER-III data centres, we bring engineering trust to every critical system.
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.98rem', margin: 0, maxWidth: '580px', lineHeight: 1.55 }}>
+                {description}
               </p>
             </div>
 
@@ -66,21 +73,37 @@ export default function ContactCTA() {
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
-                gap: '16px',
+                gap: '14px',
                 position: 'relative',
                 zIndex: 2,
               }}
             >
-              <Link to="/contact" className="btn btn-primary">
-                Get In Touch <FiArrowRight />
-              </Link>
-              <a
-                href="mailto:info@prudentepc.com"
-                className="btn btn-outline"
-                style={{ background: '#fff' }}
-              >
-                <FiMail /> Write Email
-              </a>
+              {primaryButtonLink.startsWith('mailto:') ? (
+                <a href={primaryButtonLink} className="btn btn-primary">
+                  {primaryButtonText} <FiArrowRight />
+                </a>
+              ) : (
+                <Link to={primaryButtonLink} className="btn btn-primary">
+                  {primaryButtonText} <FiArrowRight />
+                </Link>
+              )}
+              {secondaryButtonLink.startsWith('mailto:') ? (
+                <a
+                  href={secondaryButtonLink}
+                  className="btn btn-outline"
+                  style={{ background: '#fff' }}
+                >
+                  <FiMail /> {secondaryButtonText}
+                </a>
+              ) : (
+                <Link
+                  to={secondaryButtonLink}
+                  className="btn btn-outline"
+                  style={{ background: '#fff' }}
+                >
+                  {secondaryButtonText}
+                </Link>
+              )}
             </div>
           </div>
         </ScrollReveal>
