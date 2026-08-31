@@ -139,10 +139,23 @@ export default function Home() {
   const heroRef = useRef(null);
 
   useEffect(() => {
-    slides.forEach(({ image }) => {
-      const preloadImage = new Image();
-      preloadImage.src = image;
-    });
+    // Defer non-critical carousel images until after initial render completes
+    if ('requestIdleCallback' in window) {
+      const handle = window.requestIdleCallback(() => {
+        slides.forEach(({ image }) => {
+          const preloadImage = new Image();
+          preloadImage.src = image;
+        });
+      }, { timeout: 2500 });
+      return () => window.cancelIdleCallback(handle);
+    }
+    const timer = setTimeout(() => {
+      slides.forEach(({ image }) => {
+        const preloadImage = new Image();
+        preloadImage.src = image;
+      });
+    }, 1500);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {

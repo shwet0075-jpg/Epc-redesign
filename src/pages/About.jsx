@@ -1,6 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { FiCheckCircle, FiAward, FiUsers, FiCpu, FiTrendingUp, FiMapPin } from 'react-icons/fi';
+import {
+  FiCheckCircle,
+  FiAward,
+  FiUsers,
+  FiCpu,
+  FiTrendingUp,
+  FiMapPin,
+  FiBriefcase,
+  FiShield,
+  FiTarget,
+  FiZap,
+  FiFileText,
+} from 'react-icons/fi';
+import { Scale } from 'lucide-react';
 import { solutionsOverview } from '../data/solutions';
 import ScrollReveal from '../components/ScrollReveal';
 import ScrollStagger from '../components/ScrollStagger';
@@ -76,9 +89,23 @@ const timelineData = [
   }
 ];
 
-// Director's credentials, split out so the paragraph text stays the
-// original bio copy while these render as a distinct chip row.
-const directorCredentials = ['BE — Production', 'MBA — Marketing', 'LLB'];
+// Director's credentials with distinct domain specializations
+const directorCredentials = [
+  { icon: FiCpu, degree: 'BE — Production', domain: 'Engineering & Industrial Operations' },
+  { icon: FiTrendingUp, degree: 'MBA — Marketing', domain: 'Strategic Growth & Enterprise Alliances' },
+  { icon: Scale, degree: 'LLB — Law', domain: 'Corporate, Contract & Constitutional Law' },
+];
+
+const directorPartners = [
+  'Valrack',
+  'Emerson',
+  'Xerox',
+  'JNPT Port',
+  'MAHATRANSCO',
+  'MIDC',
+  'CPWD',
+  'Indian Railways',
+];
 
 // Icons cycle through the timeline nodes for visual variety — no new
 // data needed, just reusing the icon set already imported for the
@@ -239,15 +266,92 @@ function AboutStyles() {
       .cert-cards-row {
         grid-template-columns: 1fr 1fr;
       }
-      @media (max-width: 760px) {
-        .cert-cards-row {
-          grid-template-columns: 1fr !important;
-        }
+      .director-executive-wrapper {
+        position: relative;
+        background: linear-gradient(145deg, #ffffff 0%, #f6faf7 100%);
+        border: 1px solid rgba(0, 96, 48, 0.12);
+        border-radius: 32px;
+        padding: 48px;
+        box-shadow: 0 25px 70px -20px rgba(0, 40, 20, 0.08);
+        overflow: hidden;
+      }
+      .director-portrait-stage {
+        position: relative;
+        border-radius: 26px;
+        overflow: hidden;
+        background: #08170f;
+        border: 1px solid rgba(0, 96, 48, 0.2);
+        box-shadow: 0 30px 60px rgba(0, 20, 10, 0.18);
+      }
+      .director-floating-stat-badge {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        right: 24px;
+        background: rgba(5, 20, 13, 0.88);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(240, 128, 32, 0.35);
+        border-radius: 18px;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 3;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+      }
+      .director-pillar-card {
+        background: #ffffff;
+        border: 1px solid rgba(0, 96, 48, 0.1);
+        border-radius: 18px;
+        padding: 22px 24px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .director-pillar-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(240, 128, 32, 0.4);
+        box-shadow: 0 16px 36px rgba(0, 40, 20, 0.09);
+      }
+      .director-cred-chip {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 18px;
+        background: #ffffff;
+        border: 1px solid rgba(0, 96, 48, 0.12);
+        border-radius: 16px;
+        transition: all 0.25s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      }
+      .director-cred-chip:hover {
+        transform: translateY(-2px);
+        border-color: var(--color-primary);
+        box-shadow: 0 8px 20px rgba(0, 96, 48, 0.1);
+      }
+      .director-partner-pill {
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(0, 96, 48, 0.06);
+        border: 1px solid rgba(0, 96, 48, 0.14);
+        color: #006030;
+        font-size: 0.82rem;
+        font-weight: 700;
+        transition: all 0.2s ease;
+      }
+      .director-partner-pill:hover {
+        background: var(--color-primary);
+        color: #ffffff;
+        transform: translateY(-2px);
+      }
+      @media (max-width: 992px) {
+        .director-executive-wrapper { padding: 32px 24px; border-radius: 24px; }
       }
       @media (prefers-reduced-motion: reduce) {
         .about-blueprint-bg, .about-shimmer-badge, .about-dot-active, .director-ring-motif { animation: none !important; }
         .about-tilt-card { transition: none !important; }
         .cert-card-pro, .cert-card-pro .cert-card-image img { transition: none !important; }
+        .director-pillar-card, .director-cred-chip, .director-partner-pill { transition: none !important; }
       }
     `}</style>
   );
@@ -937,177 +1041,279 @@ export default function About() {
         </div>
       </section>
 
-      {/* Mr. Avinash Patil Profile — layered portrait frame, a floating
-          "Director" badge, credential chips, and icon-led highlight
-          tiles instead of a flat image + plain text + bare numbers. */}
-      <section className="section director-section" style={{ background: 'var(--color-light)', overflow: 'hidden' }}>
+      {/* Mr. Avinash Patil Profile — Modern Executive Leadership Showcase */}
+      <section className="section director-section" style={{ background: 'var(--color-light)', padding: '100px 0', overflow: 'hidden' }}>
         <div className="container">
-          <div className="director-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '90px', alignItems: 'center' }}>
-            <ScrollReveal variant="fade-right">
-              <div style={{ position: 'relative' }}>
-                {/* Offset ghost panel behind the portrait — gives the
-                    frame a stacked, physical-card sense of depth */}
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: 'absolute',
-                    inset: '18px -18px -18px 18px',
-                    borderRadius: '24px',
-                    background: 'linear-gradient(135deg, rgba(0,96,48,.14), rgba(240,128,32,.1))',
-                    border: '1px solid rgba(0,96,48,.1)',
-                    zIndex: 0,
-                  }}
-                />
+          <div className="director-executive-wrapper">
+            {/* Ambient Background Blueprint Motif */}
+            <div
+              className="about-blueprint-bg"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                opacity: 0.28,
+                pointerEvents: 'none',
+              }}
+            />
 
-                {/* Slow-rotating engineering ring motif, echoing the
-                    same motif used on the Services page */}
-                <svg
-                  className="director-ring-motif"
-                  viewBox="0 0 200 200"
-                  aria-hidden="true"
-                  style={{
-                    position: 'absolute',
-                    top: '-70px',
-                    left: '-70px',
-                    width: '220px',
-                    height: '220px',
-                    opacity: 0.06,
-                    pointerEvents: 'none',
-                    zIndex: 0,
-                  }}
-                >
-                  <circle cx="100" cy="100" r="90" fill="none" stroke="var(--color-primary)" strokeWidth="2" />
-                  <circle cx="100" cy="100" r="6" fill="var(--color-primary)" />
-                  {Array.from({ length: 16 }).map((_, spoke) => {
-                    const angle = (spoke / 16) * 2 * Math.PI;
-                    const x2 = 100 + 90 * Math.cos(angle);
-                    const y2 = 100 + 90 * Math.sin(angle);
-                    return <line key={spoke} x1="100" y1="100" x2={x2} y2={y2} stroke="var(--color-primary)" strokeWidth="2" />;
-                  })}
-                </svg>
-
-                <TiltCard
-                  maxTilt={4}
-                  style={{
-                    position: 'relative',
-                    zIndex: 1,
-                    borderRadius: '24px',
-                    overflow: 'hidden',
-                    border: '1px solid rgba(0,96,48,.08)',
-                    boxShadow: '0 35px 80px rgba(0,0,0,.14)',
-                  }}
-                >
-                  {/* Floating "Director" badge on the portrait itself */}
+            <div
+              className="director-grid"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+                gap: '60px',
+                alignItems: 'center',
+                position: 'relative',
+                zIndex: 2,
+              }}
+            >
+              {/* Left Column: Architectural Executive Portrait Frame */}
+              <ScrollReveal variant="fade-right">
+                <div style={{ position: 'relative' }}>
+                  {/* Glowing Laser Border Underlay */}
                   <div
+                    aria-hidden="true"
                     style={{
                       position: 'absolute',
-                      top: '24px',
-                      left: '24px',
-                      zIndex: 2,
-                      padding: '8px 18px',
-                      borderRadius: '999px',
-                      background: 'rgba(10, 20, 15, .55)',
-                      backdropFilter: 'blur(10px)',
-                      WebkitBackdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255,255,255,.18)',
-                      fontSize: '.78rem',
-                      fontWeight: 700,
-                      letterSpacing: '.14em',
-                      textTransform: 'uppercase',
+                      inset: '-12px',
+                      borderRadius: '32px',
+                      background: 'radial-gradient(circle at 80% 20%, rgba(240, 128, 32, 0.25) 0%, rgba(0, 96, 48, 0.15) 50%, transparent 80%)',
+                      filter: 'blur(16px)',
+                      zIndex: 0,
+                    }}
+                  />
+
+                  <TiltCard
+                    maxTilt={4}
+                    className="director-portrait-stage"
+                    style={{
+                      position: 'relative',
+                      zIndex: 1,
                     }}
                   >
-                    <span className="about-shimmer-badge">Director</span>
-                  </div>
-
-                  <img
-                    src="/assets/images/director.jpg"
-                    alt="Mr. Avinash Patil, Director"
-                    style={{
-                      width: '100%',
-                      height: '620px',
-                      objectFit: 'cover',
-                      display: 'block',
-                      transition: 'transform .6s ease',
-                    }}
-                    className="director-profile-img"
-                  />
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'linear-gradient(to top, rgba(18, 24, 21, 0.4) 0%, transparent 60%)',
-                      pointerEvents: 'none',
-                    }}
-                  />
-                </TiltCard>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal variant="fade-left">
-              <div className="director-text">
-                <span className="eyebrow" style={{ color: 'var(--color-primary)' }}>Leadership</span>
-                <ScrollText
-                  as="h2"
-                  text="Director's Profile"
-                  style={{ fontSize: 'clamp(2.4rem, 3.8vw, 3rem)', fontWeight: 800, margin: '8px 0 4px', color: 'var(--color-text-dark)' }}
-                  amount={0.4}
-                />
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--color-secondary)', margin: '0 0 18px' }}>Mr. Avinash Patil</h3>
-
-                {/* Credential chips — same qualifications, now scannable at a glance */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '26px' }}>
-                  {directorCredentials.map((cred) => (
-                    <span
-                      key={cred}
+                    {/* Top Floating Badge: Founder & Managing Director */}
+                    <div
                       style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '7px 14px',
+                        position: 'absolute',
+                        top: '20px',
+                        left: '20px',
+                        zIndex: 3,
+                        padding: '8px 18px',
                         borderRadius: '999px',
-                        background: 'rgba(0,96,48,.08)',
-                        color: 'var(--color-primary)',
-                        fontSize: '.82rem',
+                        background: 'rgba(5, 20, 13, 0.75)',
+                        backdropFilter: 'blur(12px)',
+                        WebkitBackdropFilter: 'blur(12px)',
+                        border: '1px solid rgba(240, 128, 32, 0.4)',
+                        fontSize: '.75rem',
                         fontWeight: 700,
+                        letterSpacing: '.14em',
+                        textTransform: 'uppercase',
+                        color: '#f08020',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '7px',
+                        boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
                       }}
                     >
-                      <FiCheckCircle size={14} />
-                      {cred}
-                    </span>
-                  ))}
+                      <FiZap size={13} style={{ color: '#f08020' }} />
+                      <span>Founder & Director</span>
+                    </div>
+
+                    {/* Portrait Image */}
+                    <img
+                      src="/assets/images/director.jpg"
+                      alt="Mr. Avinash Patil, Director"
+                      style={{
+                        width: '100%',
+                        height: '560px',
+                        objectFit: 'cover',
+                        objectPosition: 'center 15%',
+                        display: 'block',
+                        transition: 'transform .6s ease',
+                      }}
+                      className="director-profile-img"
+                    />
+
+                    {/* Gradient Vignette */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'linear-gradient(to top, rgba(3, 15, 9, 0.85) 0%, rgba(3, 15, 9, 0.1) 40%, transparent 100%)',
+                        pointerEvents: 'none',
+                      }}
+                    />
+
+                    {/* Floating Bottom Glass Stat Badge */}
+                    <div className="director-floating-stat-badge">
+                      <div>
+                        <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff', lineHeight: 1.1 }}>
+                          22<span style={{ color: '#f08020' }}>+</span> Years
+                        </div>
+                        <div style={{ fontSize: '.72rem', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: '#9ec3ae', marginTop: '3px' }}>
+                          Visionary Industry Leadership
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '50%',
+                          background: 'rgba(240, 128, 32, 0.18)',
+                          border: '1px solid #f08020',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#f08020',
+                        }}
+                      >
+                        <FiTrendingUp size={16} />
+                      </div>
+                    </div>
+                  </TiltCard>
                 </div>
+              </ScrollReveal>
 
-                <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.7, marginBottom: '16px' }}>
-                  Director of Prudent Controls Pvt. Ltd. and Prudent EPC Pvt. Ltd. With a
-                  qualification of BE in Production, MBA (Marketing) and LLB, Mr. Avinash Patil has
-                  worked with well-acclaimed firms including Valrack, Emerson, Xerox, JNPT,
-                  MAHATRANSCO, MIDC, CPWD, and Indian Railways for 22 years.
-                </p>
-                <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.7, margin: 0 }}>
-                  He currently leads business in the data centre and fire safety industry across
-                  Pune, Mumbai and Delhi, with the business directly employing 40+ people. He
-                  specializes in business development, finance management, and efficient business
-                  set-up, with keen interest in contract, business and constitutional law.
-                </p>
+              {/* Right Column: Executive Narrative, Credentials & Highlights */}
+              <ScrollReveal variant="fade-left">
+                <div className="director-text">
+                  <span
+                    className="eyebrow"
+                    style={{
+                      color: 'var(--color-secondary)',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    <span style={{ width: '22px', height: '2px', background: 'var(--color-secondary)' }} />
+                    Executive Leadership
+                  </span>
 
-                <ScrollStagger
-                  variant="rise-blur-3d"
-                  stagger={0.1}
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(2,1fr)',
-                    gap: '18px',
-                    marginTop: '36px',
-                  }}
-                  className="director-highlights"
-                >
-                  <HighlightTile icon={<FiTrendingUp size={20} />} value="22+" label="Years Experience" />
-                  <HighlightTile icon={<FiUsers size={20} />} value="40+" label="Professionals" />
-                  <HighlightTile icon={<FiCpu size={20} />} value="60+" label="IBMS Projects" />
-                  <HighlightTile icon={<FiMapPin size={20} />} value="Pan India" label="Operations" />
-                </ScrollStagger>
-              </div>
-            </ScrollReveal>
+                  <ScrollText
+                    as="h2"
+                    text="Mr. Avinash Patil"
+                    style={{
+                      fontSize: 'clamp(2.4rem, 4vw, 3.2rem)',
+                      fontWeight: 800,
+                      margin: '6px 0 6px',
+                      color: 'var(--color-text-dark)',
+                      letterSpacing: '-0.02em',
+                    }}
+                    amount={0.4}
+                  />
+
+                  <p style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--color-primary)', margin: '0 0 24px', lineHeight: 1.4 }}>
+                    Director — Prudent Controls Pvt. Ltd. & Prudent EPC Pvt. Ltd.
+                  </p>
+
+                  {/* Academic & Legal Credentials Row */}
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                      gap: '12px',
+                      marginBottom: '26px',
+                    }}
+                  >
+                    {directorCredentials.map((cred, idx) => {
+                      const Icon = cred.icon;
+                      return (
+                        <div key={idx} className="director-cred-chip">
+                          <div
+                            style={{
+                              width: '36px',
+                              height: '36px',
+                              borderRadius: '10px',
+                              background: 'rgba(0, 96, 48, 0.08)',
+                              color: 'var(--color-primary)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              flexShrink: 0,
+                            }}
+                          >
+                            <Icon size={18} />
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '.88rem', fontWeight: 800, color: 'var(--color-text-dark)', lineHeight: 1.2 }}>
+                              {cred.degree}
+                            </div>
+                            <div style={{ fontSize: '.72rem', color: '#64748b', marginTop: '2px', lineHeight: 1.2 }}>
+                              {cred.domain}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* 2 Strategic Leadership Dimension Cards */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '26px' }}>
+                    <div className="director-pillar-card">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                        <FiBriefcase style={{ color: 'var(--color-secondary)' }} size={17} />
+                        <h4 style={{ margin: 0, fontSize: '0.98rem', fontWeight: 700, color: 'var(--color-text-dark)' }}>
+                          Career Foundations & National Infrastructure Alliances
+                        </h4>
+                      </div>
+                      <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
+                        With 22 years of hands-on electro-mechanical leadership, Mr. Avinash Patil has spearheaded
+                        mission-critical projects and strategic partnerships with esteemed industry leaders including{' '}
+                        <strong>Valrack, Emerson, Xerox, JNPT Port, MAHATRANSCO, MIDC, CPWD, and Indian Railways</strong>.
+                      </p>
+                    </div>
+
+                    <div className="director-pillar-card">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                        <FiTarget style={{ color: 'var(--color-primary)' }} size={17} />
+                        <h4 style={{ margin: 0, fontSize: '0.98rem', fontWeight: 700, color: 'var(--color-text-dark)' }}>
+                          Enterprise Scale & Multi-City Governance
+                        </h4>
+                      </div>
+                      <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
+                        He currently directs national operations in high-hazard fire protection, TIER-III data centres,
+                        and building automation across <strong>Mumbai, Pune, and Delhi</strong>, leading an active workforce
+                        of <strong>40+ direct professionals</strong> with deep mastery in business development, EPC financial governance,
+                        and commercial contract law.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Trusted Enterprise Partners & Bodies */}
+                  <div style={{ marginBottom: '28px' }}>
+                    <div style={{ fontSize: '.72rem', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: '#64748b', marginBottom: '10px' }}>
+                      Key Engagements & Strategic Infrastructure Partners
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                      {directorPartners.map((partner, idx) => (
+                        <span key={idx} className="director-partner-pill">
+                          {partner}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 4 Impact Metric Highlights */}
+                  <ScrollStagger
+                    variant="rise-blur-3d"
+                    stagger={0.08}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(2, 1fr)',
+                      gap: '16px',
+                    }}
+                    className="director-highlights"
+                  >
+                    <HighlightTile icon={<FiTrendingUp size={20} />} value="22+" label="Years Industry Leadership" />
+                    <HighlightTile icon={<FiUsers size={20} />} value="40+" label="Direct Professionals" />
+                    <HighlightTile icon={<FiCpu size={20} />} value="60+" label="IBMS Projects Delivered" />
+                    <HighlightTile icon={<FiMapPin size={20} />} value="Pan India" label="Multi-City Operations" />
+                  </ScrollStagger>
+                </div>
+              </ScrollReveal>
+            </div>
           </div>
 
           {/* Certificate Cards — Certified Licensee (moved from Solutions.jsx)

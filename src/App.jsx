@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 import ScrollToTop from "./components/ScrollToTop";
 import Navbar from "./components/Navbar";
@@ -11,17 +11,19 @@ import ContinuityThread from "./components/ContinuityThread";
 
 import PremiumLoader from "./components/Loading/PremiumLoader";
 import CustomCursor from "./components/CustomCursor";
-
 import CurtainTransition from "./components/animations/CurtainTransition";
 
+// Critical landing page: Direct import for instant FCP / LCP
 import Home from "./pages/Home";
-import About from "./pages/About";
-import Solutions from "./pages/Solutions";
-import Services from "./pages/Services";
-import Clients from "./pages/Clients";
-import Gallery from "./pages/Gallery";
-import Career from "./pages/Career";
-import Contact from "./pages/Contact";
+
+// Route Code-Splitting: Lazy-load non-critical pages on demand
+const About = lazy(() => import("./pages/About"));
+const Solutions = lazy(() => import("./pages/Solutions"));
+const Services = lazy(() => import("./pages/Services"));
+const Clients = lazy(() => import("./pages/Clients"));
+const Gallery = lazy(() => import("./pages/Gallery"));
+const Career = lazy(() => import("./pages/Career"));
+const Contact = lazy(() => import("./pages/Contact"));
 
 import "./App.css";
 import "./styles/loader.css";
@@ -48,16 +50,18 @@ function AppRoutes() {
   return (
     <AnimatePresence initial={false}>
       <CurtainTransition key={location.pathname} mode={mode}>
-        <Routes location={location}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/solutions/*" element={<Solutions />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/clients" element={<Clients />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/career" element={<Career />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes location={location}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/solutions/*" element={<Solutions />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/clients" element={<Clients />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/career" element={<Career />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </Suspense>
       </CurtainTransition>
     </AnimatePresence>
   );
@@ -87,11 +91,13 @@ export default function App() {
   return (
     <BrowserRouter>
       <CustomCursor />
-      {loading ? (
-        <PremiumLoader onComplete={() => setLoading(false)} />
-      ) : (
-        <Website />
-      )}
+      {/* Website renders underneath so React and browser tree are warm and ready */}
+      <Website />
+      <AnimatePresence>
+        {loading && (
+          <PremiumLoader onComplete={() => setLoading(false)} />
+        )}
+      </AnimatePresence>
     </BrowserRouter>
   );
 }
