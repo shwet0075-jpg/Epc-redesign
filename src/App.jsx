@@ -1,6 +1,6 @@
 import { useState, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import ScrollToTop from "./components/ScrollToTop";
 import Navbar from "./components/Navbar";
@@ -48,7 +48,7 @@ function AppRoutes() {
   const mode = getCurtainMode(location.pathname);
 
   return (
-    <AnimatePresence initial={false}>
+    <AnimatePresence mode="wait">
       <CurtainTransition key={location.pathname} mode={mode}>
         <Suspense fallback={null}>
           <Routes location={location}>
@@ -91,11 +91,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <CustomCursor />
-      {/* Website renders underneath so React and browser tree are warm and ready */}
-      <Website />
-      <AnimatePresence>
-        {loading && (
-          <PremiumLoader onComplete={() => setLoading(false)} />
+      <AnimatePresence mode="wait">
+        {loading ? (
+          <PremiumLoader key="loader" onComplete={() => setLoading(false)} />
+        ) : (
+          <Website key="website" />
         )}
       </AnimatePresence>
     </BrowserRouter>

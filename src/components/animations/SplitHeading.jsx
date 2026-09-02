@@ -15,7 +15,7 @@ const SplitHeading = ({
       key={index}
       initial={{ y: "110%", opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
-      viewport={{ once: true, amount: 0.6 }}
+      viewport={{ once: false, amount: 0.4 }}
       transition={{
         duration: 0.8,
         delay: delay + index * 0.12,

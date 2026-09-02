@@ -52,14 +52,14 @@ export default function OurExpertise() {
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: false }}
         >
           <div className="header-left">
              <motion.span
     className="section-tag"
     initial={{ opacity: 0, y: 10 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
+    viewport={{ once: false }}
     transition={{ duration: 0.5 }}
   >
     OUR EXPERTISE
@@ -275,7 +275,7 @@ Solutions`}
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: false }}
         >
           {expertiseStats.map((stat) => (
             <div

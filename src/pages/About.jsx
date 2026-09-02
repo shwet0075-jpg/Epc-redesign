@@ -419,7 +419,8 @@ function Counter({ end, duration = 1500 }) {
   return (
     <motion.span
       onViewportEnter={() => setStarted(true)}
-      viewport={{ once: true }}
+      onViewportLeave={() => { setStarted(false); setCount(0); }}
+      viewport={{ once: false }}
     >
       {count}{end.toString().includes('+') ? '+' : ''}
     </motion.span>

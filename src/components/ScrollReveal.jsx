@@ -187,7 +187,7 @@ export default function ScrollReveal({
   delay = 0,
   duration = 0.7,
   className = "",
-  viewportOnce = true,
+  viewportOnce = false,
   amount = 0.15,
 }) {
   const shouldReduceMotion = useReducedMotion();

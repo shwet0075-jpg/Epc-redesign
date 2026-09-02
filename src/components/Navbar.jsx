@@ -100,6 +100,9 @@ export default function Navbar() {
           </NavLink>
 
           <nav className="navbar-links">
+            {/* Continuous rail track spanning across all page names */}
+            <div className="nav-rail-track" aria-hidden="true" />
+
             {navLinks.map((link) => (
               <div
                 key={link.path}
@@ -119,15 +122,28 @@ export default function Navbar() {
                 >
                   {({ isActive }) => (
                     <>
-                      {isActive && (
-                        <motion.span
-                          layoutId="navbar-active-pill"
-                          className="navbar-active-pill"
-                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                        />
-                      )}
                       <span className="nav-label-text">{link.label}</span>
                       {link.children && <ChevronDown className="chevron" size={14} />}
+                      {isActive && (
+                        <motion.span
+                          layout
+                          layoutId="navbar-rail-pointer"
+                          className="navbar-rail-pointer"
+                          transition={{
+                            type: 'spring',
+                            stiffness: 250,
+                            damping: 27,
+                            mass: 0.9,
+                          }}
+                        >
+                          <span className="nav-pointer-beam" />
+                          <span className="nav-pointer-beacon">
+                            <span className="nav-pointer-halo" />
+                            <span className="nav-pointer-core" />
+                            <span className="nav-pointer-arrow" />
+                          </span>
+                        </motion.span>
+                      )}
                     </>
                   )}
                 </NavLink>

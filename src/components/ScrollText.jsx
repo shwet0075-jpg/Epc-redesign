@@ -16,7 +16,7 @@ export default function ScrollText({
   wordClassName = "",
   stagger = 0.045,
   delay = 0,
-  once = true,
+  once = false,
   amount = 0.4,
 }) {
   const shouldReduceMotion = useReducedMotion();

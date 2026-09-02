@@ -26,7 +26,7 @@ export default function SectionTitle({
           className="eyebrow"
           initial={shouldReduceMotion ? false : { opacity: 0, x: -10 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: false, amount: 0.1 }}
           transition={{ duration: 0.42 }}
         >
           {eyebrow}
@@ -46,7 +46,7 @@ export default function SectionTitle({
         }}
         initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.1 }}
+        viewport={{ once: false, amount: 0.1 }}
         transition={{ duration: 0.52, delay: shouldReduceMotion ? 0 : 0.06 }}
       >
         {title}
@@ -64,7 +64,7 @@ export default function SectionTitle({
           }}
           initial={shouldReduceMotion ? false : { opacity: 0, scaleX: 0.2 }}
           whileInView={{ opacity: 1, scaleX: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: false, amount: 0.1 }}
           transition={{ duration: 0.38, delay: shouldReduceMotion ? 0 : 0.14 }}
         />
       </motion.h2>
@@ -83,7 +83,7 @@ export default function SectionTitle({
           }}
           initial={shouldReduceMotion ? false : { opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: false, amount: 0.1 }}
           transition={{ duration: 0.45, delay: shouldReduceMotion ? 0 : 0.12 }}
         >
           {subtitle}

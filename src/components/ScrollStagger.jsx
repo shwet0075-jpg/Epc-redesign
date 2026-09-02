@@ -19,7 +19,7 @@ export default function ScrollStagger({
   duration = 0.7,
   className = "",
   style,
-  viewportOnce = true,
+  viewportOnce = false,
   amount = 0.15,
 }) {
   const shouldReduceMotion = useReducedMotion();

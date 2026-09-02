@@ -199,8 +199,12 @@ export default function Home() {
           <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '60px', alignItems: 'start', position: 'relative' }}>
             <motion.div
               initial="hidden"
-              animate="visible"
-              variants={{ visible: { transition: { staggerChildren: shouldReduceMotion ? 0 : 0.12 } } }}
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.1 }}
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: shouldReduceMotion ? 0 : 0.12 } },
+              }}
               style={{
                 position: 'relative',
                 zIndex: 1,

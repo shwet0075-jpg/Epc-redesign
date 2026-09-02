@@ -41,7 +41,7 @@ export default function EngineeringIntelligence() {
           className="ei-header"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: .7 }}
         >
 
@@ -49,7 +49,7 @@ export default function EngineeringIntelligence() {
   className="section-label"
   initial={{ opacity: 0, y: 10 }}
   whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
+  viewport={{ once: false }}
   transition={{ duration: 0.5 }}
 >
   Engineering Intelligence
@@ -65,7 +65,7 @@ Not Just Installing Systems.`}
          <motion.p
   initial={{ opacity: 0, y: 20 }}
   whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
+  viewport={{ once: false }}
   transition={{ duration: 0.6, delay: 0.4 }}
 >
    Prudent EPC integrates fire protection, security, building
@@ -79,7 +79,7 @@ Not Just Installing Systems.`}
   className="ei-ecosystem"
   initial={{ opacity: 0, y: 40 }}
   whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
+  viewport={{ once: false }}
   transition={{ duration: 0.8 }}
 >   
 
@@ -178,7 +178,7 @@ Not Just Installing Systems.`}
   className="ei-card ei-top"
   initial={{ opacity: 0, y: 30 }}
   whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
+  viewport={{ once: false }}
   transition={{ duration: 0.6, delay: 0.1 }}
   whileHover={{
     x: 20,

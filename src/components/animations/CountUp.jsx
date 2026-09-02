@@ -11,8 +11,8 @@ export default function AnimatedCount({
   const ref = useRef(null);
 
   const isInView = useInView(ref, {
-    once: true,
-    amount: 0.5,
+    once: false,
+    amount: 0.1,
   });
 
   return (

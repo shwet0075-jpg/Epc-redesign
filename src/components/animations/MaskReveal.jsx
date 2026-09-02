@@ -4,7 +4,7 @@ const MaskReveal = ({
   children,
   delay = 0,
   duration = 1,
-  once = true,
+  once = false,
   amount = 0.3,
 }) => {
   return (
