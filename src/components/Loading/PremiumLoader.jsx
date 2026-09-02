@@ -8,13 +8,14 @@ export default function PremiumLoader({ onComplete }) {
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    // Natural animation timeline (adjusted for cinematic logo presentation)
+    // Natural animation timeline tuned to logo assembly completion (~2.1s)
+    const duration = shouldReduceMotion ? 300 : 2100;
     const timer = setTimeout(() => {
       onComplete?.();
-    }, 4200);
+    }, duration);
 
     return () => clearTimeout(timer);
-  }, [onComplete]);
+  }, [onComplete, shouldReduceMotion]);
 
   return (
     <motion.div

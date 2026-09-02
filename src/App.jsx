@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from "react";
+import { useState, useRef, useEffect, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -46,22 +46,37 @@ function getCurtainMode(pathname) {
 function AppRoutes() {
   const location = useLocation();
   const mode = getCurtainMode(location.pathname);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    // After the initial page mounts, allow curtain transitions for subsequent route changes
+    isFirstRender.current = false;
+  }, []);
+
+  const routeTree = (
+    <Suspense fallback={null}>
+      <Routes location={location}>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/solutions/*" element={<Solutions />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/clients" element={<Clients />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/career" element={<Career />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </Suspense>
+  );
+
+  // On first mount (initial page load / hot reload), render directly without double-curtain overlay
+  if (isFirstRender.current) {
+    return routeTree;
+  }
 
   return (
     <AnimatePresence mode="wait">
       <CurtainTransition key={location.pathname} mode={mode}>
-        <Suspense fallback={null}>
-          <Routes location={location}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/solutions/*" element={<Solutions />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/clients" element={<Clients />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/career" element={<Career />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
-        </Suspense>
+        {routeTree}
       </CurtainTransition>
     </AnimatePresence>
   );
@@ -86,14 +101,28 @@ function Website() {
 }
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
+  // On hot-reload or subsequent opens in the same session, load immediately with zero freeze
+  const [loading, setLoading] = useState(() => {
+    try {
+      return !sessionStorage.getItem('prudent_session_loaded');
+    } catch {
+      return true;
+    }
+  });
+
+  const handleComplete = () => {
+    try {
+      sessionStorage.setItem('prudent_session_loaded', 'true');
+    } catch {}
+    setLoading(false);
+  };
 
   return (
     <BrowserRouter>
       <CustomCursor />
       <AnimatePresence mode="wait">
         {loading ? (
-          <PremiumLoader key="loader" onComplete={() => setLoading(false)} />
+          <PremiumLoader key="loader" onComplete={handleComplete} />
         ) : (
           <Website key="website" />
         )}

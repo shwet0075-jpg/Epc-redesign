@@ -140,21 +140,19 @@ export default function Home() {
 
   useEffect(() => {
     // Defer non-critical carousel images until after initial render completes
-    if ('requestIdleCallback' in window) {
-      const handle = window.requestIdleCallback(() => {
-        slides.forEach(({ image }) => {
-          const preloadImage = new Image();
-          preloadImage.src = image;
-        });
-      }, { timeout: 2500 });
-      return () => window.cancelIdleCallback(handle);
-    }
-    const timer = setTimeout(() => {
+    const preload = () => {
       slides.forEach(({ image }) => {
         const preloadImage = new Image();
+        preloadImage.decoding = 'async';
         preloadImage.src = image;
       });
-    }, 1500);
+    };
+
+    if ('requestIdleCallback' in window) {
+      const handle = window.requestIdleCallback(preload, { timeout: 3000 });
+      return () => window.cancelIdleCallback(handle);
+    }
+    const timer = setTimeout(preload, 2000);
     return () => clearTimeout(timer);
   }, []);
 

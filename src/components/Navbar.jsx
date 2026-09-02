@@ -168,9 +168,9 @@ export default function Navbar() {
                           className="navbar-rail-pointer"
                           transition={{
                             type: 'spring',
-                            stiffness: 250,
-                            damping: 27,
-                            mass: 0.9,
+                            stiffness: 140,
+                            damping: 20,
+                            mass: 1.1,
                           }}
                         >
                           <span className="nav-pointer-beam" />
