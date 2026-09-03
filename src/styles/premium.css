@@ -689,6 +689,26 @@ main {
 
 }
 
+.back-to-top-3d-arrow-svg{
+    display:block;
+    overflow:visible;
+}
+
+.back-to-top-booster{
+    animation:boosterEnergyPulse 2.2s infinite ease-in-out;
+}
+
+@keyframes boosterEnergyPulse{
+    0%,100%{
+        opacity:0.6;
+        transform:translateY(0);
+    }
+    50%{
+        opacity:1;
+        transform:translateY(1px);
+    }
+}
+
 @media (max-width:768px){
 
     .back-to-top{
