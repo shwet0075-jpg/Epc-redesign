@@ -93,17 +93,34 @@
 }
 
 /* --------------------------------------------------------------------------
-   Saisei-Style Landmark Project Showcase Slideshow
+   Motion.dev Inspired Autoplay Carousel & Progress Bar Indicator
    -------------------------------------------------------------------------- */
-.saisei-slideshow-section {
+.motion-carousel-section {
   position: relative;
-  padding: 70px 0 50px;
-  background: #020f08;
+  padding: 72px 0 64px;
+  background: radial-gradient(circle at 50% -20%, rgba(0, 96, 48, 0.14) 0%, transparent 60%), #0c0f0d;
   overflow: hidden;
-  border-bottom: 1px solid rgba(0, 96, 48, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.saisei-slideshow-header-row {
+.motion-carousel-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.motion-carousel-root {
+  position: relative;
+  width: 100%;
+}
+
+.motion-carousel-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -112,231 +129,451 @@
   gap: 16px;
 }
 
-.saisei-slideshow-container {
-  position: relative;
-  border-radius: 32px;
-  overflow: hidden;
-  background: #05180e;
-  border: 1px solid rgba(0, 96, 48, 0.35);
-  box-shadow: 0 35px 80px -20px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 96, 48, 0.12);
+.motion-carousel-eyebrow {
+  color: #f08020;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
-.saisei-slideshow-stage {
+.motion-carousel-eyebrow-icon {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.18); }
+}
+
+.motion-carousel-title {
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.motion-carousel-counter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(22, 28, 25, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+  color: #e2f0e8;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* Viewport and Drag Track */
+.motion-carousel-viewport {
   position: relative;
-  height: 560px;
   width: 100%;
+  overflow: hidden;
+  padding: 16px 0 28px;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+}
+
+.motion-carousel-track {
   display: flex;
   align-items: center;
-  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
+  will-change: transform;
 }
 
-.saisei-slide-bg-img {
+.motion-carousel-track:active {
+  cursor: grabbing;
+}
+
+/* Individual Carousel Card */
+.motion-carousel-card {
+  position: relative;
+  height: 470px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #151b18;
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.95), 0 0 1px rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
+}
+
+.motion-carousel-card.is-active {
+  border-color: rgba(240, 128, 32, 0.85);
+  box-shadow: 0 30px 80px -10px rgba(0, 0, 0, 0.96), 0 0 35px rgba(0, 163, 76, 0.25), 0 0 14px rgba(240, 128, 32, 0.35);
+}
+
+.motion-carousel-card.is-flanking {
+  cursor: pointer;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.motion-carousel-card.is-flanking:hover {
+  border-color: rgba(0, 163, 76, 0.6);
+  opacity: 0.85 !important;
+}
+
+/* Card Media */
+.motion-card-media-wrapper {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+}
+
+.motion-card-img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
+  filter: brightness(0.86) contrast(1.05);
   transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-  filter: brightness(0.65) contrast(1.1);
 }
 
-.saisei-slideshow-stage:hover .saisei-slide-bg-img {
-  transform: scale(1.04);
+.motion-carousel-card:hover .motion-card-img {
+  transform: scale(1.05);
 }
 
-.saisei-slide-gradient-overlay {
+.motion-card-scrim {
   position: absolute;
   inset: 0;
   background: 
-    linear-gradient(90deg, rgba(2, 16, 9, 0.96) 0%, rgba(2, 16, 9, 0.75) 45%, rgba(2, 16, 9, 0.25) 100%),
-    linear-gradient(0deg, rgba(2, 16, 9, 0.88) 0%, transparent 60%);
-  z-index: 2;
+    linear-gradient(180deg, rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.08) 35%, rgba(0, 0, 0, 0.92) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.45) 0%, transparent 55%);
   pointer-events: none;
 }
 
-.saisei-slide-content {
-  position: relative;
-  z-index: 3;
-  padding: 50px 60px;
-  max-width: 720px;
-  color: #ffffff;
-}
-
-.saisei-slide-index {
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #f08020;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.saisei-slide-title {
-  font-size: clamp(2rem, 3.6vw, 3.1rem);
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1.16;
-  margin: 0 0 16px;
-  letter-spacing: -0.02em;
-}
-
-.saisei-slide-desc {
-  font-size: 1rem;
-  color: #c5ded1;
-  line-height: 1.6;
-  margin: 0 0 24px;
-}
-
-.saisei-slide-meta-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 30px;
-}
-
-.saisei-slide-meta-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 16px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #e2f0e8;
-}
-
-.saisei-slide-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.saisei-slide-cta-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 13px 28px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #006030 0%, #008242 100%);
-  color: #ffffff;
-  font-size: 0.92rem;
-  font-weight: 700;
-  border: 1px solid rgba(94, 234, 212, 0.35);
-  box-shadow: 0 10px 25px rgba(0, 96, 48, 0.4);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.saisei-slide-cta-btn:hover {
-  background: linear-gradient(135deg, #f08020 0%, #d66c13 100%);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 14px 30px rgba(240, 128, 32, 0.4);
-}
-
-/* Navigation Controls on the bottom right */
-.saisei-slideshow-nav-dock {
+/* Tech Corner Decals */
+.motion-card-corner {
   position: absolute;
-  bottom: 36px;
-  right: 40px;
-  z-index: 4;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.motion-corner-tl { top: 16px; left: 16px; border-top: 2px solid rgba(240, 128, 32, 0.7); border-left: 2px solid rgba(240, 128, 32, 0.7); }
+.motion-corner-tr { top: 16px; right: 16px; border-top: 2px solid rgba(0, 163, 76, 0.7); border-right: 2px solid rgba(0, 163, 76, 0.7); }
+.motion-corner-bl { bottom: 16px; left: 16px; border-bottom: 2px solid rgba(0, 163, 76, 0.7); border-left: 2px solid rgba(0, 163, 76, 0.7); }
+.motion-corner-br { bottom: 16px; right: 16px; border-bottom: 2px solid rgba(240, 128, 32, 0.7); border-right: 2px solid rgba(240, 128, 32, 0.7); }
+
+/* Card Content Overlay */
+.motion-card-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 34px 38px;
+  pointer-events: none;
+}
+
+.motion-card-top-pills {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.motion-card-code-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(3, 19, 12, 0.85);
+  border: 1px solid rgba(240, 128, 32, 0.45);
+  backdrop-filter: blur(8px);
+  color: #f08020;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.motion-card-cat-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  color: #e3f2ea;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.motion-card-bottom-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.motion-card-heading {
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.motion-card-desc {
+  font-size: 0.92rem;
+  color: #c4ded0;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.motion-card-meta-row {
   display: flex;
   align-items: center;
   gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 4px;
 }
 
-.saisei-nav-arrow-btn {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: rgba(5, 20, 13, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.motion-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #d1e7dc;
+  font-weight: 600;
+}
+
+.motion-card-actions {
+  margin-top: 8px;
+  pointer-events: auto;
+}
+
+.motion-card-inspect-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #006030 0%, #008f48 100%);
   color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  border: 1px solid rgba(94, 234, 212, 0.35);
+  box-shadow: 0 8px 20px rgba(0, 96, 48, 0.4);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.motion-card-inspect-btn:hover {
+  background: linear-gradient(135deg, #f08020 0%, #d86d14 100%);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(240, 128, 32, 0.45);
+}
+
+/* Motion.dev Signature Controls Dock with Animated Progress Capsule */
+.motion-carousel-controls-dock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.motion-carousel-arrow-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(4, 20, 12, 0.85);
+  border: 1px solid rgba(0, 163, 76, 0.35);
+  backdrop-filter: blur(10px);
+  color: #e2f0e8;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
 }
 
-.saisei-nav-arrow-btn:hover {
+.motion-carousel-arrow-btn:hover {
   background: #f08020;
   border-color: #f08020;
+  color: #ffffff;
   transform: scale(1.08);
-  box-shadow: 0 10px 25px rgba(240, 128, 32, 0.5);
+  box-shadow: 0 8px 24px rgba(240, 128, 32, 0.5);
 }
 
-/* Progress bar along the bottom of the container */
-.saisei-progress-track {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  z-index: 5;
-}
-
-.saisei-progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #008242 0%, #f08020 100%);
-  transition: width 0.3s ease;
-}
-
-/* Slide Indicator Dots / Thumbnails */
-.saisei-thumbnail-strip {
+/* The Animated Progress Capsule */
+.motion-carousel-progress-box {
+  width: 220px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: rgba(3, 19, 11, 0.85);
+  border: 1px solid rgba(0, 163, 76, 0.35);
+  backdrop-filter: blur(12px);
   display: flex;
-  gap: 8px;
-  position: absolute;
-  bottom: 40px;
-  left: 60px;
-  z-index: 4;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
 }
 
-.saisei-thumbnail-dot {
+.motion-carousel-progress-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.motion-carousel-progress-fill {
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  background: linear-gradient(90deg, #008242 0%, #f08020 100%);
+  box-shadow: 0 0 10px rgba(240, 128, 32, 0.6);
+  border-radius: 999px;
+}
+
+.motion-carousel-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.motion-dot {
+  width: 6px;
   height: 6px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.25);
   border: none;
   cursor: pointer;
-  transition: all 0.35s ease;
+  padding: 0;
+  transition: all 0.3s ease;
 }
 
-.saisei-thumbnail-dot.is-active {
-  width: 36px;
+.motion-dot.is-active {
+  width: 20px;
   background: #f08020;
-  box-shadow: 0 0 10px rgba(240, 128, 32, 0.7);
+  box-shadow: 0 0 8px rgba(240, 128, 32, 0.8);
 }
 
-.saisei-thumbnail-dot:not(.is-active) {
-  width: 10px;
+/* Play/Pause Toggle */
+.motion-carousel-play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(4, 20, 12, 0.85);
+  border: 1px solid rgba(0, 163, 76, 0.35);
+  backdrop-filter: blur(10px);
+  color: #e2f0e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
+.motion-carousel-play-btn:hover {
+  border-color: #f08020;
+  color: #f08020;
+  transform: scale(1.08);
+}
+
+.motion-carousel-play-btn.is-paused {
+  color: #f08020;
+  border-color: rgba(240, 128, 32, 0.6);
+}
+
+/* Responsive Breakpoints */
 @media (max-width: 992px) {
-  .saisei-slideshow-stage { height: 500px; }
-  .saisei-slide-content { padding: 40px 30px; }
-  .saisei-slideshow-nav-dock { bottom: 24px; right: 24px; }
-  .saisei-thumbnail-strip { left: 30px; bottom: 28px; }
+  .motion-carousel-card {
+    height: 410px;
+  }
+  .motion-card-overlay {
+    padding: 26px 28px;
+  }
+  .motion-carousel-progress-box {
+    width: 180px;
+  }
 }
 
 @media (max-width: 640px) {
-  .saisei-slideshow-stage { height: 540px; }
-  .saisei-slide-content { padding: 28px 20px; }
-  .saisei-thumbnail-strip { display: none; }
-  .saisei-slide-meta-row { gap: 8px; }
-  .saisei-slideshow-nav-dock { bottom: 18px; right: 18px; }
-  .saisei-nav-arrow-btn { width: 42px; height: 42px; }
+  .motion-carousel-section {
+    padding: 54px 0 46px;
+  }
+  .motion-carousel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .motion-carousel-title {
+    font-size: 1.6rem;
+    line-height: 1.25;
+  }
+  .motion-carousel-counter-badge {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+  .motion-carousel-card {
+    height: 380px;
+    border-radius: 22px;
+  }
+  .motion-card-overlay {
+    padding: 20px 18px;
+  }
+  .motion-card-desc {
+    display: none;
+  }
+  .motion-card-heading {
+    font-size: 1.25rem;
+  }
+  .motion-card-actions {
+    margin-top: 4px;
+  }
+  .motion-card-inspect-btn {
+    padding: 8px 18px;
+    font-size: 0.78rem;
+  }
+  .motion-carousel-controls-dock {
+    gap: 10px;
+  }
+  .motion-carousel-arrow-btn,
+  .motion-carousel-play-btn {
+    width: 38px;
+    height: 38px;
+  }
+  .motion-carousel-progress-box {
+    width: 150px;
+    height: 36px;
+    padding: 0 12px;
+  }
+  .motion-carousel-viewport {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
 }
 
 /* --------------------------------------------------------------------------

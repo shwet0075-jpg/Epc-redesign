@@ -19,6 +19,7 @@ import {
 import ScrollReveal from '../components/ScrollReveal';
 import ScrollText from '../components/ScrollText';
 import ContactCTA from '../components/ContactCTA';
+import MotionCarouselAutoplay from '../components/Gallery/MotionCarouselAutoplay';
 
 const categories = [
   { id: 'all', label: 'All Projects', icon: FiLayers },
@@ -296,32 +297,7 @@ export default function Gallery() {
   const [filter, setFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [lightboxIndex, setLightboxIndex] = useState(null);
-  const [slideIndex, setSlideIndex] = useState(0);
-  const [isSlideHovered, setIsSlideHovered] = useState(false);
   const shouldReduceMotion = useReducedMotion();
-
-  const currentSlide = featuredSlides[slideIndex] || featuredSlides[0];
-
-  // Auto-advance slideshow every 5.5 seconds unless user hovers
-  useEffect(() => {
-    if (shouldReduceMotion || isSlideHovered) return undefined;
-
-    const timer = setInterval(() => {
-      setSlideIndex((prev) => (prev + 1) % featuredSlides.length);
-    }, 5500);
-
-    return () => clearInterval(timer);
-  }, [shouldReduceMotion, isSlideHovered]);
-
-  const handleSlideNext = (e) => {
-    e?.stopPropagation();
-    setSlideIndex((prev) => (prev + 1) % featuredSlides.length);
-  };
-
-  const handleSlidePrev = (e) => {
-    e?.stopPropagation();
-    setSlideIndex((prev) => (prev - 1 + featuredSlides.length) % featuredSlides.length);
-  };
 
   const filteredItems = galleryProjects.filter((item) => {
     const matchesFilter = filter === 'all' || item.category === filter;
@@ -461,163 +437,16 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* SAISEI-STYLE LANDMARK PROJECT SHOWCASE SLIDESHOW (ABOVE NORMAL CARDS) */}
-      <section
-        className="saisei-slideshow-section"
-        onMouseEnter={() => setIsSlideHovered(true)}
-        onMouseLeave={() => setIsSlideHovered(false)}
-      >
+      {/* MOTION.DEV INSPIRED AUTOPLAY CAROUSEL WITH PROGRESS BAR INDICATOR */}
+      <section className="motion-carousel-section">
         <div className="container">
-          <div className="saisei-slideshow-header-row">
-            <div>
-              <span
-                style={{
-                  color: '#f08020',
-                  fontSize: '.78rem',
-                  fontWeight: 700,
-                  letterSpacing: '.14em',
-                  textTransform: 'uppercase',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  marginBottom: '6px',
-                }}
-              >
-                <FiZap size={14} />
-                Featured Landmark Showcase
-              </span>
-              <h2 style={{ fontSize: 'clamp(1.6rem, 2.6vw, 2.2rem)', fontWeight: 800, color: '#ffffff', margin: 0 }}>
-                High-Stakes Engineering Portfolio
-              </h2>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#9ec3ae', fontSize: '.84rem', fontWeight: 600 }}>
-              <span className="gallery-live-pulse-dot" />
-              <span>
-                Slide {String(slideIndex + 1).padStart(2, '0')} of {String(featuredSlides.length).padStart(2, '0')}
-              </span>
-            </div>
-          </div>
-
-          {/* Panoramic Slide Container */}
-          <div className="saisei-slideshow-container">
-            <div className="saisei-slideshow-stage">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={currentSlide.image}
-                  src={currentSlide.image}
-                  alt={currentSlide.name}
-                  className="saisei-slide-bg-img"
-                  initial={{ opacity: 0, scale: 1.08 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-                />
-              </AnimatePresence>
-
-              {/* Gradient Scrim */}
-              <div className="saisei-slide-gradient-overlay" />
-
-              {/* Corner HUD Brackets */}
-              <span className="gallery-corner-bracket corner-tl" style={{ top: 24, left: 24, width: 22, height: 22 }} />
-              <span className="gallery-corner-bracket corner-tr" style={{ top: 24, right: 24, width: 22, height: 22 }} />
-              <span className="gallery-corner-bracket corner-bl" style={{ bottom: 24, left: 24, width: 22, height: 22 }} />
-              <span className="gallery-corner-bracket corner-br" style={{ bottom: 24, right: 24, width: 22, height: 22 }} />
-
-              {/* Content Panel with Kinetic Animation */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentSlide.id}
-                  className="saisei-slide-content"
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 30 }}
-                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <div className="saisei-slide-index">
-                    <span className="gallery-live-pulse-dot" />
-                    <span>{currentSlide.code} // {currentSlide.categoryLabel}</span>
-                  </div>
-
-                  <h3 className="saisei-slide-title">{currentSlide.name}</h3>
-
-                  <p className="saisei-slide-desc">{currentSlide.desc}</p>
-
-                  <div className="saisei-slide-meta-row">
-                    <span className="saisei-slide-meta-pill">
-                      <FiMapPin size={14} style={{ color: '#f08020' }} />
-                      {currentSlide.location}
-                    </span>
-                    <span className="saisei-slide-meta-pill">
-                      <FiCheckCircle size={14} style={{ color: '#22c55e' }} />
-                      {currentSlide.status}
-                    </span>
-                    <span className="saisei-slide-meta-pill">
-                      <FiShield size={14} style={{ color: '#f08020' }} />
-                      {currentSlide.compliance}
-                    </span>
-                  </div>
-
-                  <div className="saisei-slide-actions">
-                    <button
-                      type="button"
-                      className="saisei-slide-cta-btn"
-                      onClick={() => {
-                        const origIdx = galleryProjects.findIndex((p) => p.id === currentSlide.id);
-                        setLightboxIndex(origIdx !== -1 ? origIdx : 0);
-                      }}
-                    >
-                      <FiMaximize2 size={16} />
-                      <span>Inspect Project Details</span>
-                    </button>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Slide Selector Thumbnail Strip */}
-              <div className="saisei-thumbnail-strip">
-                {featuredSlides.map((_, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    className={`saisei-thumbnail-dot ${idx === slideIndex ? 'is-active' : ''}`}
-                    onClick={() => setSlideIndex(idx)}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
-
-              {/* Navigation Arrows Dock */}
-              <div className="saisei-slideshow-nav-dock">
-                <button
-                  type="button"
-                  className="saisei-nav-arrow-btn"
-                  onClick={handleSlidePrev}
-                  title="Previous Slide"
-                  aria-label="Previous Slide"
-                >
-                  <FiArrowLeft size={20} />
-                </button>
-                <button
-                  type="button"
-                  className="saisei-nav-arrow-btn"
-                  onClick={handleSlideNext}
-                  title="Next Slide"
-                  aria-label="Next Slide"
-                >
-                  <FiArrowRight size={20} />
-                </button>
-              </div>
-
-              {/* Progress Line */}
-              <div className="saisei-progress-track">
-                <div
-                  className="saisei-progress-bar"
-                  style={{ width: `${((slideIndex + 1) / featuredSlides.length) * 100}%` }}
-                />
-              </div>
-            </div>
-          </div>
+          <MotionCarouselAutoplay
+            slides={featuredSlides}
+            onSelectProject={(project) => {
+              const origIdx = galleryProjects.findIndex((p) => p.id === project.id);
+              setLightboxIndex(origIdx !== -1 ? origIdx : 0);
+            }}
+          />
         </div>
       </section>
 
