@@ -1,155 +1,85 @@
 /* ==========================================================
-   CUSTOM CURSOR — Premium Engineering Orange Cursor
-   Sleek orange pointer arrow + smooth green trailing ring
-   with magnetic hover interaction and refined click feedback.
-   Only active on fine-pointer (mouse) devices; HTML has
-   .custom-cursor-active to instantly hide the native cursor.
-========================================================== */
+   CUSTOM CURSOR — Ultra-Responsive Precision Cursor
+   120fps / 144fps GPU Accelerated | Zero Lag | Calibrated Tip
+   ========================================================== */
 
-/* ---- Hide native cursor immediately on desktop/fine-pointer devices ---- */
+/* ---- Hide native cursor only when custom cursor is active on desktop ---- */
 @media (pointer: fine) {
-  html, body, *, *::before, *::after {
+  html.custom-cursor-active,
+  html.custom-cursor-active body,
+  html.custom-cursor-active a,
+  html.custom-cursor-active button,
+  html.custom-cursor-active [role="button"] {
     cursor: none !important;
   }
 }
 
-.custom-cursor-active,
-.custom-cursor-active * {
-  cursor: none !important;
-}
-
-/* ---- Shared base for pointer & ring ---- */
-.custom-cursor-pointer,
-.custom-cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10000;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-  will-change: transform, opacity;
+/* ---- Always preserve native text cursor on inputs for natural typing & selection ---- */
+html.custom-cursor-active input,
+html.custom-cursor-active textarea,
+html.custom-cursor-active select,
+html.custom-cursor-active [contenteditable="true"] {
+  cursor: text !important;
 }
 
 /* ==========================================================
-   POINTER — Precision engineered orange arrow cursor
-========================================================== */
+   POINTER ARROW — Instant 1:1 Hardware Tracking
+   ========================================================== */
 .custom-cursor-pointer {
-  transform: translate(0, 0);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+  /* Direct positioning via RAF loop — no transition lag on movement */
+  transition: opacity 0.15s ease;
 }
 
 .cursor-arrow-svg {
   display: block;
-  width: 26px;
-  height: 26px;
-  filter: none;
-  transform: rotate(20deg);
-  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), filter 0.25s ease;
+  width: 22px;
+  height: 22px;
+  /* Path starts at (3, 3) — offset by -3px so the tip is exactly at the mouse coordinate */
+  margin-top: -3px;
+  margin-left: -3px;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
 }
 
-/* Hover state: arrow scales and glows over clickable elements */
+/* Hover over buttons/links: subtle energetic scale and warm glow */
 .custom-cursor-pointer.is-hovering .cursor-arrow-svg {
-  transform: scale(1.16);
-  filter: drop-shadow(0 0 12px rgba(240, 128, 32, 0.9)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transform: scale(1.12);
+  filter: drop-shadow(0 0 10px rgba(240, 128, 32, 0.85)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
 }
 
-/* Minimal scale for text inputs */
-.custom-cursor-pointer.is-input .cursor-arrow-svg {
+/* Click press: tactile micro-pinch */
+.custom-cursor-pointer.is-pressed .cursor-arrow-svg {
   transform: scale(0.9);
 }
 
 /* ==========================================================
-   RING — Smooth green trailing ring
-========================================================== */
-.custom-cursor-ring {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  border: 1.5px solid rgba(0, 96, 48, 0.5);
-  background: rgba(0, 96, 48, 0.04);
-  transition:
-    width 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    height 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.32s ease,
-    background 0.32s ease,
-    box-shadow 0.32s ease;
-}
-
-/* ---- Hover state: ring grows and accent shifts to orange ---- */
-.custom-cursor-ring.is-hovering {
-  width: 56px;
-  height: 56px;
-  border-color: rgba(240, 128, 32, 0.55);
-  background: rgba(240, 128, 32, 0.06);
-  box-shadow:
-    0 0 24px rgba(240, 128, 32, 0.15),
-    inset 0 0 12px rgba(240, 128, 32, 0.04);
-}
-
-/* Input hover — tighter, subtler ring for text fields */
-.custom-cursor-ring.is-input {
-  width: 24px;
-  height: 24px;
-  border-color: rgba(0, 96, 48, 0.35);
-  background: rgba(0, 96, 48, 0.03);
-  box-shadow: none;
-}
-
-/* ==========================================================
-   CLICK / PRESS — Physical feedback
-========================================================== */
-.custom-cursor-pointer.is-pressed .cursor-arrow-svg {
-  transform: scale(0.88);
-}
-
-.custom-cursor-ring.is-pressed {
-  width: 28px;
-  height: 28px;
-  border-color: rgba(240, 128, 32, 0.7);
-  background: rgba(240, 128, 32, 0.08);
-}
-
-/* ---- Click pulse — brief outward pulse on mouse release ---- */
-.custom-cursor-pointer.is-click-pulse .cursor-arrow-svg {
-  transform: scale(1.18);
-}
-
-.custom-cursor-ring.is-click-pulse {
-  width: 40px;
-  height: 40px;
-  border-color: rgba(0, 96, 48, 0.6);
-  background: rgba(0, 96, 48, 0.05);
-  box-shadow: 0 0 18px rgba(0, 96, 48, 0.12);
-}
-
-/* ==========================================================
-   COARSE / TOUCH — Never show on touch devices (defensive)
-========================================================== */
+   COARSE / TOUCH SCREENS — Fully Defensive
+   ========================================================== */
 @media (pointer: coarse) {
-  .custom-cursor-pointer,
-  .custom-cursor-ring {
+  .custom-cursor-pointer {
     display: none !important;
   }
 
   html, body, *, *::before, *::after,
-  .custom-cursor-active,
-  .custom-cursor-active * {
+  html.custom-cursor-active,
+  html.custom-cursor-active body,
+  html.custom-cursor-active * {
     cursor: auto !important;
   }
 }
 
 /* ==========================================================
-   REDUCED MOTION — Strip transitions for accessibility
-========================================================== */
+   REDUCED MOTION
+   ========================================================== */
 @media (prefers-reduced-motion: reduce) {
-  .custom-cursor-pointer,
-  .custom-cursor-ring,
   .cursor-arrow-svg {
     transition: none !important;
   }
-}
-
-.custom-cursor-ring {
-  display: none !important;
 }

@@ -10,6 +10,7 @@ import EngineeringIntelligence from '../components/EngineeringIntelligence';
 import FeaturedProjects from '../components/FeaturedProjects/FeaturedProjects';
 import CountUp from '../components/animations/CountUp';
 import MagneticButton from '../components/animations/MagneticButton';
+import HeroEyebrow from '../components/animations/HeroEyebrow';
 import { useTilt3D } from '../animations/parallaxVariants';
 
 // motion(Link) so the primary CTA gets a real spring/tap interaction
@@ -209,9 +210,7 @@ export default function Home() {
                 ...(shouldReduceMotion ? {} : { scale: heroCopyScale, opacity: heroCopyOpacity }),
               }}
             >
-              <motion.span className="epc-hero-eyebrow" variants={heroCopy} transition={{ duration: 0.45 }}>
-                {companyInfo.eyebrow}
-              </motion.span>
+              <HeroEyebrow text={companyInfo.eyebrow} delay={0.06} />
 
               <h1 className="epc-hero-title-v2">
                 <ScrollText as="span" text={heroLine1} className="epc-hero-title-line" amount={0} delay={0.1} />

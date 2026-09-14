@@ -1495,6 +1495,179 @@
   display: inline-block;
 }
 
+/* ==========================================================================
+   Hero Eyebrow - Signature Precision Engineering Reveal
+   ========================================================================== */
+.epc-hero-eyebrow-animated {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: default;
+  user-select: none;
+}
+
+.epc-hero-eyebrow-animated::before {
+  display: none !important;
+}
+
+/* Precision engineered line track */
+.epc-eyebrow-line-track {
+  position: relative;
+  width: 32px;
+  height: 2.5px;
+  background: rgba(240, 128, 32, 0.16);
+  border-radius: 2px;
+  overflow: visible;
+  flex-shrink: 0;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.epc-hero-eyebrow-animated:hover .epc-eyebrow-line-track {
+  width: 46px;
+}
+
+/* Laser-drawn orange fill */
+.epc-eyebrow-line-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-secondary) 0%, #ffa24e 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(240, 128, 32, 0.45);
+  display: block;
+}
+
+/* Bright laser head at the leading edge of the line */
+.epc-eyebrow-laser-head {
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 6px;
+  border-radius: 2px;
+  background: #ffffff;
+  box-shadow: 0 0 8px 2px rgba(240, 128, 32, 0.95), 0 0 14px 4px rgba(255, 162, 78, 0.6);
+}
+
+/* Content container */
+.epc-eyebrow-content-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  overflow: hidden;
+  padding: 4px 2px;
+  perspective: 900px;
+}
+
+/* Word Mask & Word */
+.epc-eyebrow-word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: 1.15;
+}
+
+.epc-eyebrow-word {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 750;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  will-change: transform, opacity, filter;
+  transition: color 0.3s ease, letter-spacing 0.3s ease;
+}
+
+.epc-hero-eyebrow-animated:hover .epc-eyebrow-word {
+  color: var(--color-primary-dark);
+}
+
+/* Dot separator / beacon */
+.epc-eyebrow-dot-mask {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+.epc-eyebrow-beacon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 9px;
+  height: 9px;
+}
+
+.epc-eyebrow-beacon-core {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 8px rgba(0, 96, 48, 0.6);
+  display: block;
+}
+
+.epc-eyebrow-beacon-ping {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-primary-light);
+  opacity: 0.75;
+  animation: epc-beacon-pulse 2.6s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@keyframes epc-beacon-pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Metallic light sweep across revealed eyebrow */
+.epc-eyebrow-shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 70px;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0) 15%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0) 85%,
+    transparent 100%
+  );
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  z-index: 2;
+  transform: skewX(-25deg);
+}
+
+/* Static fallback for reduced motion */
+.epc-eyebrow-line-static {
+  display: inline-block;
+  width: 26px;
+  height: 2px;
+  background: var(--color-secondary);
+  margin-right: 10px;
+}
+
 .epc-hero-title-v2 {
   font-size: clamp(2.8rem, 5.6vw, 5rem);
   font-weight: 800;
