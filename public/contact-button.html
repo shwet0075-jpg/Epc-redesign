@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Morphing Button</title>
+  
+  <style>
+    /* ==========================================================================
+       RESET & VIEWPORT
+       Clean, minimal off-white canvas with 100% focus on the 3D button
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #FFFFFF 0%, #F9F8F5 55%, #EFECE4 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* ==========================================================================
+       STAGE & PERSPECTIVE
+       ========================================================================== */
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 900px;
+    }
+
+    .hub {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+    }
+
+    /* Soft blurred ground shadow */
+    .cast-shadow {
+      position: absolute;
+      bottom: -24px;
+      left: 50%;
+      width: 86px;
+      height: 24px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(35, 28, 18, 0.42) 0%, rgba(35, 28, 18, 0.12) 55%, transparent 72%);
+      filter: blur(8px);
+      transform: translateX(-50%) translateZ(-25px);
+      transition: all 0.48s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hub.is-open .cast-shadow {
+      width: 120px;
+      height: 30px;
+      filter: blur(12px);
+      opacity: 0.8;
+      transform: translateX(-50%) translateY(6px) translateZ(-25px);
+    }
+
+    /* ==========================================================================
+       CENTRAL 3D TRIGGER BUTTON
+       Matches reference: dark bottom lip, copper ring, porcelain dome, 3 green dots
+       ========================================================================== */
+    .trigger-btn {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: none;
+      background: none;
+      cursor: pointer;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      transform-style: preserve-3d;
+      transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+    }
+
+    .trigger-btn:focus-visible {
+      outline: none;
+    }
+    .trigger-btn:focus-visible .copper-ring {
+      box-shadow: 0 0 0 3px rgba(220, 115, 25, 0.4), 0 0 0 5px #004d26;
+    }
+
+    /* 3D Extruded Dark Bottom Rim / Bevel */
+    .extrusion-cylinder {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #2a2215 0%, #151109 100%);
+      box-shadow:
+        0 3px 0 #3a301d,
+        0 6px 0 #282113,
+        0 11px 0 #1b160b,
+        0 16px 20px -2px rgba(20, 15, 8, 0.52),
+        0 24px 35px -4px rgba(20, 15, 8, 0.32);
+      padding-bottom: 7px; /* Viewing angle showing lower dark crescent lip */
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .trigger-btn:active .extrusion-cylinder {
+      transform: translateY(3px);
+      box-shadow:
+        0 2px 0 #3a301d,
+        0 4px 0 #282113,
+        0 8px 12px rgba(20, 15, 8, 0.45);
+    }
+
+    /* Polished Metallic Copper / Warm Amber Rim */
+    .copper-ring {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 215deg,
+        #cf6f1b 0deg,
+        #fba34a 60deg,
+        #e0791f 120deg,
+        #ffbe78 180deg,
+        #b95d0e 240deg,
+        #f69c41 300deg,
+        #cf6f1b 360deg
+      );
+      padding: 3.8px; /* Thickness of copper chamfer */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        inset 0 1px 1.5px rgba(255, 255, 255, 0.65),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.35),
+        0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Porcelain Convex Face */
+    .porcelain-dome {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(
+        circle at 46% 36%,
+        #FFFFFF 0%,
+        #FAF9F6 40%,
+        #EDE6D9 75%,
+        #DDD4C2 100%
+      );
+      box-shadow:
+        inset 0 2.5px 4px rgba(255, 255, 255, 0.95),
+        inset 0 -2.5px 5px rgba(110, 95, 75, 0.22),
+        0 1px 3px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    /* Soft top specular sweep */
+    .porcelain-dome::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 15%;
+      right: 15%;
+      height: 42%;
+      border-radius: 50% 50% 46% 46%;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.72) 0%,
+        rgba(255, 255, 255, 0.15) 60%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       GLYPH: 3 DEEP GREEN DOTS <--> GREEN X
+       ========================================================================== */
+    .glyph-stage {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    /* 3 Green Dots */
+    .dots-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: absolute;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.28s ease;
+    }
+
+    .dot {
+      width: 6.8px;
+      height: 6.8px;
+      border-radius: 50%;
+      background: #004d26;
+      box-shadow: 0 1px 1.5px rgba(0, 40, 15, 0.35);
+    }
+
+    /* 2 Green Bars Morphing into X */
+    .x-bar {
+      position: absolute;
+      width: 21px;
+      height: 4.2px;
+      border-radius: 999px;
+      background: #004d26;
+      box-shadow: 0 1px 1.5px rgba(0, 40, 15, 0.3);
+      opacity: 0;
+      transform: scale(0) rotate(0deg);
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.24s ease;
+    }
+
+    .x-bar.diag-1 {
+      transform: scale(0) rotate(-45deg);
+    }
+    .x-bar.diag-2 {
+      transform: scale(0) rotate(45deg);
+    }
+
+    /* Morphing to X when open */
+    .hub.is-open .dots-wrap {
+      opacity: 0;
+      transform: scale(0.1) rotate(90deg);
+    }
+
+    .hub.is-open .x-bar.diag-1 {
+      opacity: 1;
+      transform: scale(1) rotate(45deg);
+    }
+
+    .hub.is-open .x-bar.diag-2 {
+      opacity: 1;
+      transform: scale(1) rotate(-45deg);
+    }
+
+    /* ==========================================================================
+       6 SATELLITE BUTTONS
+       5 in Upper Arc: WhatsApp, Phone, Facebook, X, Instagram
+       1 Directly Below: YouTube
+       ========================================================================== */
+    .satellites-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    .satellite-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 56px;
+      height: 56px;
+      margin-top: -28px;
+      margin-left: -28px;
+      border-radius: 50%;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+
+      /* Initial collapsed position inside central button */
+      transform: translate3d(0, 0, 0) scale(0.1);
+      opacity: 0;
+
+      /* Reverse cascade collapse */
+      transition: 
+        transform 0.44s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.28s ease;
+      transition-delay: calc((5 - var(--slot)) * 25ms);
+    }
+
+    /* OPEN STATE: Cascading fan out */
+    .hub.is-open .satellite-btn {
+      pointer-events: auto;
+      opacity: 1;
+      transform: translate3d(var(--tx), var(--ty), 0) scale(1);
+      transition: 
+        transform 0.52s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.3s ease;
+      transition-delay: calc(var(--slot) * 38ms);
+    }
+
+    /* Outer White Bevel Ring + Soft Shadow */
+    .sat-white-rim {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: #FFFFFF;
+      box-shadow: 
+        0 2px 4px rgba(60, 35, 10, 0.15),
+        0 6px 14px rgba(60, 35, 10, 0.22),
+        0 12px 24px rgba(60, 35, 10, 0.14);
+      padding: 2.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .satellite-btn:active .sat-white-rim {
+      transform: translateY(2px) scale(0.94);
+      box-shadow: 
+        0 2px 4px rgba(60, 35, 10, 0.18),
+        0 4px 8px rgba(60, 35, 10, 0.15);
+    }
+
+    /* 3D Glossy Amber / Orange Orb */
+    .sat-amber-dome {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(
+        circle at 38% 28%,
+        #FFA348 0%,
+        #ED7515 45%,
+        #BD5100 82%,
+        #903A00 100%
+      );
+      box-shadow: 
+        inset 0 2px 3px rgba(255, 255, 255, 0.58),
+        inset 0 -2.5px 4px rgba(85, 30, 0, 0.45);
+      overflow: hidden;
+    }
+
+    /* Specular Reflection Sweep on Orb */
+    .sat-amber-dome::before {
+      content: '';
+      position: absolute;
+      top: 1.5px;
+      left: 15%;
+      right: 15%;
+      height: 44%;
+      border-radius: 50% 50% 45% 45%;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.58) 0%,
+        rgba(255, 255, 255, 0.1) 60%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* Crisp White SVGs (Strictly constrained 21x21) */
+    .sat-icon {
+      width: 21px !important;
+      height: 21px !important;
+      max-width: 21px !important;
+      max-height: 21px !important;
+      display: block;
+      fill: #FFFFFF;
+      filter: drop-shadow(0 1px 1px rgba(60, 20, 0, 0.4));
+      position: relative;
+      z-index: 2;
+      transition: transform 0.18s ease;
+    }
+
+    .satellite-btn:hover .sat-icon {
+      transform: scale(1.1);
+    }
+
+    .satellite-btn:focus-visible {
+      outline: none;
+    }
+    .satellite-btn:focus-visible .sat-white-rim {
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9), 0 0 0 5px #ED7515;
+    }
+
+    /* Mobile scaling */
+    @media (max-width: 500px) {
+      .trigger-btn {
+        width: 86px;
+        height: 86px;
+      }
+      .satellite-btn {
+        width: 50px;
+        height: 50px;
+        margin-top: -25px;
+        margin-left: -25px;
+      }
+      .sat-icon {
+        width: 18px !important;
+        height: 18px !important;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+      .trigger-btn {
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="stage" id="stage">
+    
+    <div class="hub" id="hub">
+
+      <!-- Ground shadow beneath button -->
+      <div class="cast-shadow" aria-hidden="true"></div>
+
+      <!-- 6 Satellite Buttons (5 in upper arc + 1 below) -->
+      <nav class="satellites-layer" aria-label="Quick Channels">
+        
+        <!-- 1. WhatsApp (Left) -->
+        <a href="https://wa.me/918369640531" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="satellite-btn" 
+           style="--slot: 0;" 
+           tabindex="-1"
+           aria-label="WhatsApp">
+          <div class="sat-white-rim">
+            <div class="sat-amber-dome">
+              <svg class="sat-icon" width="21" height="21" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- 2. Phone Call (Upper Left) -->
+        <a href="tel:+918369640531" 
+           class="satellite-btn" 
+           style="--slot: 1;" 
+           tabindex="-1"
+           aria-label="Call">
+          <div class="sat-white-rim">
+            <div class="sat-amber-dome">
+              <svg class="sat-icon" width="21" height="21" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- 3. Facebook (Top Center) -->
+        <a href="https://facebook.com/prudentepc" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="satellite-btn" 
+           style="--slot: 2;" 
+           tabindex="-1"
+           aria-label="Facebook">
+          <div class="sat-white-rim">
+            <div class="sat-amber-dome">
+              <svg class="sat-icon" width="21" height="21" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- 4. X / Twitter (Upper Right) -->
+        <a href="https://x.com/prudentepc" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="satellite-btn" 
+           style="--slot: 3;" 
+           tabindex="-1"
+           aria-label="X">
+          <div class="sat-white-rim">
+            <div class="sat-amber-dome">
+              <svg class="sat-icon" width="21" height="21" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- 5. Instagram (Right) -->
+        <a href="https://instagram.com/prudentepc" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="satellite-btn" 
+           style="--slot: 4;" 
+           tabindex="-1"
+           aria-label="Instagram">
+          <div class="sat-white-rim">
+            <div class="sat-amber-dome">
+              <svg class="sat-icon" width="21" height="21" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- 6. YouTube (Directly Below Trigger) -->
+        <a href="https://youtube.com/@prudentepc" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="satellite-btn" 
+           style="--slot: 5;" 
+           tabindex="-1"
+           aria-label="YouTube">
+          <div class="sat-white-rim">
+            <div class="sat-amber-dome">
+              <svg class="sat-icon" width="21" height="21" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+
+      </nav>
+
+      <!-- Central Morph Button -->
+      <button type="button" 
+              class="trigger-btn" 
+              id="triggerBtn"
+              aria-expanded="false" 
+              aria-label="Toggle contact buttons">
+        
+        <!-- 3D Extrusion Cylinder Base -->
+        <div class="extrusion-cylinder">
+          
+          <!-- Polished Metallic Copper Rim -->
+          <div class="copper-ring">
+            
+            <!-- Porcelain Dome Face -->
+            <div class="porcelain-dome">
+              
+              <!-- Morph Glyph -->
+              <div class="glyph-stage" aria-hidden="true">
+                
+                <!-- 3 Brand Green Dots -->
+                <div class="dots-wrap">
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+
+                <!-- Green X Bars -->
+                <span class="x-bar diag-1"></span>
+                <span class="x-bar diag-2"></span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </button>
+
+    </div>
+
+  </main>
+
+  <script>
+    (function() {
+      'use strict';
+
+      const hub = document.getElementById('hub');
+      const trigger = document.getElementById('triggerBtn');
+      const satellites = document.querySelectorAll('.satellite-btn');
+      const stage = document.getElementById('stage');
+
+      let isOpen = false;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ==========================================================================
+         EXACT POSITIONING MATCH:
+         - Upper arc: 5 buttons (WhatsApp, Phone, Facebook, X, Instagram)
+         - Bottom: 1 button (YouTube directly below)
+         ========================================================================== */
+      function layoutSatellites() {
+        const isMobile = window.innerWidth <= 500;
+        const radiusTop = isMobile ? 120 : 148;
+        const radiusBottom = isMobile ? 115 : 142;
+
+        // Angles in degrees for top 5 buttons: 174° (left) to 6° (right)
+        const angles = [174, 132, 90, 48, 6];
+
+        satellites.forEach((btn, index) => {
+          let x = 0;
+          let y = 0;
+
+          if (index < 5) {
+            const rad = (angles[index] * Math.PI) / 180;
+            x = Math.round(radiusTop * Math.cos(rad));
+            y = Math.round(-radiusTop * Math.sin(rad)); // Upwards
+          } else {
+            // YouTube (index 5) directly below
+            x = 0;
+            y = Math.round(radiusBottom); // Downwards
+          }
+
+          btn.style.setProperty('--tx', `${x}px`);
+          btn.style.setProperty('--ty', `${y}px`);
+        });
+      }
+
+      layoutSatellites();
+      window.addEventListener('resize', layoutSatellites, { passive: true });
+
+      /* ==========================================================================
+         TOGGLE OPEN / CLOSE
+         ========================================================================== */
+      function toggle(open) {
+        isOpen = typeof open === 'boolean' ? open : !isOpen;
+        trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+        if (isOpen) {
+          hub.classList.add('is-open');
+          satellites.forEach(btn => btn.setAttribute('tabindex', '0'));
+          resetTilt();
+        } else {
+          hub.classList.remove('is-open');
+          satellites.forEach(btn => btn.setAttribute('tabindex', '-1'));
+        }
+      }
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggle();
+      });
+
+      // Escape key closes
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen) {
+          toggle(false);
+          trigger.focus();
+        }
+      });
+
+      // Click outside closes
+      document.addEventListener('click', (e) => {
+        if (isOpen && !hub.contains(e.target)) {
+          toggle(false);
+        }
+      });
+
+      /* ==========================================================================
+         SUBTLE 3D CURSOR TILT WHEN CLOSED
+         ========================================================================== */
+      let tiltId = null;
+      let targetRotX = 0;
+      let targetRotY = 0;
+      let currentRotX = 0;
+      let currentRotY = 0;
+
+      function updateTilt() {
+        currentRotX += (targetRotX - currentRotX) * 0.15;
+        currentRotY += (targetRotY - currentRotY) * 0.15;
+
+        if (!isOpen && !prefersReducedMotion) {
+          trigger.style.transform = `rotateX(${currentRotX.toFixed(2)}deg) rotateY(${currentRotY.toFixed(2)}deg)`;
+        }
+
+        if (Math.abs(targetRotX - currentRotX) > 0.05 || Math.abs(targetRotY - currentRotY) > 0.05) {
+          tiltId = requestAnimationFrame(updateTilt);
+        } else {
+          tiltId = null;
+        }
+      }
+
+      function resetTilt() {
+        targetRotX = 0;
+        targetRotY = 0;
+        if (!tiltId) {
+          tiltId = requestAnimationFrame(updateTilt);
+        }
+      }
+
+      stage.addEventListener('mousemove', (e) => {
+        if (isOpen || prefersReducedMotion) return;
+
+        const rect = trigger.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const deltaX = e.clientX - centerX;
+        const deltaY = e.clientY - centerY;
+
+        const maxTilt = 12;
+        targetRotX = Math.max(-maxTilt, Math.min(maxTilt, -(deltaY / 22)));
+        targetRotY = Math.max(-maxTilt, Math.min(maxTilt, (deltaX / 22)));
+
+        if (!tiltId) {
+          tiltId = requestAnimationFrame(updateTilt);
+        }
+      });
+
+      stage.addEventListener('mouseleave', resetTilt);
+
+    })();
+  </script>
+</body>
+</html>

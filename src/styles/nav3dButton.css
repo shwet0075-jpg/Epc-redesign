@@ -1,0 +1,426 @@
+/* ==========================================================================
+   3D Morphing Contact Button in Navbar (Beside Contact)
+   Matches the luxury 3D porcelain/copper reference images
+   ========================================================================== */
+
+.nav-3d-morph-hub {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  margin-bottom: 6px;
+  perspective: 700px;
+  transform-style: preserve-3d;
+  z-index: 50;
+  vertical-align: middle;
+}
+
+/* Ground shadow beneath the navbar button */
+.nav-cast-shadow {
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  width: 36px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(25, 20, 10, 0.38) 0%, rgba(25, 20, 10, 0.1) 55%, transparent 72%);
+  filter: blur(4px);
+  transform: translateX(-50%) translateZ(-15px);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.nav-3d-morph-hub.is-open .nav-cast-shadow {
+  width: 52px;
+  height: 14px;
+  filter: blur(6px);
+  opacity: 0.85;
+  transform: translateX(-50%) translateY(3px) translateZ(-15px);
+}
+
+/* Central 3D Trigger Button */
+.nav-trigger-btn {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  transform-style: preserve-3d;
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+  padding: 0;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-trigger-btn:focus-visible {
+  outline: none;
+}
+.nav-trigger-btn:focus-visible .nav-copper-ring {
+  box-shadow: 0 0 0 2.5px rgba(220, 115, 25, 0.4), 0 0 0 4.5px #004d26;
+}
+
+/* 3D Extruded Dark Bottom Rim / Bevel */
+.nav-extrusion-cylinder {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #2a2215 0%, #151109 100%);
+  box-shadow:
+    0 1.5px 0 #3a301d,
+    0 3px 0 #282113,
+    0 5px 0 #1b160b,
+    0 8px 14px -1px rgba(20, 15, 8, 0.45),
+    0 14px 22px -2px rgba(20, 15, 8, 0.25);
+  padding-bottom: 3.5px; /* Slanted extrusion view from above */
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.nav-trigger-btn:hover .nav-extrusion-cylinder {
+  box-shadow:
+    0 1.5px 0 #3a301d,
+    0 3.5px 0 #282113,
+    0 6px 0 #1b160b,
+    0 10px 18px -1px rgba(20, 15, 8, 0.5);
+}
+
+.nav-trigger-btn:active .nav-extrusion-cylinder {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 0 #3a301d,
+    0 2px 0 #282113,
+    0 4px 8px rgba(20, 15, 8, 0.4);
+}
+
+/* Polished Metallic Copper Rim */
+.nav-copper-ring {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 215deg,
+    #cf6f1b 0deg,
+    #fba34a 60deg,
+    #e0791f 120deg,
+    #ffbe78 180deg,
+    #b95d0e 240deg,
+    #f69c41 300deg,
+    #cf6f1b 360deg
+  );
+  padding: 2.4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset 0 0.8px 1.2px rgba(255, 255, 255, 0.7),
+    inset 0 -0.8px 1.2px rgba(0, 0, 0, 0.35),
+    0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Porcelain Convex Face */
+.nav-porcelain-dome {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle at 46% 36%,
+    #FFFFFF 0%,
+    #FAF9F6 40%,
+    #EDE6D9 75%,
+    #DDD4C2 100%
+  );
+  box-shadow:
+    inset 0 1.8px 3px rgba(255, 255, 255, 0.95),
+    inset 0 -1.8px 3px rgba(110, 95, 75, 0.22),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.nav-porcelain-dome::before {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 15%;
+  right: 15%;
+  height: 40%;
+  border-radius: 50% 50% 46% 46%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0.15) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+}
+
+/* Glyph: 3 Green Dots <--> Green X */
+.nav-glyph-stage {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.nav-dots-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5px;
+  position: absolute;
+  transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
+}
+
+.nav-dot {
+  width: 4.4px;
+  height: 4.4px;
+  border-radius: 50%;
+  background: #004d26;
+  box-shadow: 0 1px 1px rgba(0, 40, 15, 0.35);
+}
+
+.nav-x-bar {
+  position: absolute;
+  width: 14px;
+  height: 2.8px;
+  border-radius: 999px;
+  background: #004d26;
+  box-shadow: 0 1px 1px rgba(0, 40, 15, 0.3);
+  opacity: 0;
+  transform: scale(0) rotate(0deg);
+  transition: transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.22s ease;
+}
+
+.nav-x-bar.nav-diag-1 {
+  transform: scale(0) rotate(-45deg);
+}
+.nav-x-bar.nav-diag-2 {
+  transform: scale(0) rotate(45deg);
+}
+
+.nav-3d-morph-hub.is-open .nav-dots-wrap {
+  opacity: 0;
+  transform: scale(0.1) rotate(90deg);
+}
+
+.nav-3d-morph-hub.is-open .nav-x-bar.nav-diag-1 {
+  opacity: 1;
+  transform: scale(1) rotate(45deg);
+}
+
+.nav-3d-morph-hub.is-open .nav-x-bar.nav-diag-2 {
+  opacity: 1;
+  transform: scale(1) rotate(-45deg);
+}
+
+/* ==========================================================================
+   6 SATELLITE BUTTONS (DOWNWARD CASCADE BELOW NAVBAR)
+   ========================================================================== */
+.nav-satellites-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+}
+
+.nav-satellite-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 38px;
+  height: 38px;
+  margin-top: -19px;
+  margin-left: -19px;
+  border-radius: 50%;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transform: translate3d(0, 0, 0) scale(0.1);
+  opacity: 0;
+  transition: 
+    transform 0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.26s ease;
+  transition-delay: calc((5 - var(--slot)) * 22ms);
+}
+
+.nav-3d-morph-hub.is-open .nav-satellite-btn {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translate3d(var(--tx), var(--ty), 0) scale(1);
+  transition: 
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.28s ease;
+  transition-delay: calc(var(--slot) * 32ms);
+}
+
+/* Satellite Outer White Bevel Ring */
+.nav-sat-white-rim {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 
+    0 2px 4px rgba(60, 35, 10, 0.15),
+    0 6px 14px rgba(60, 35, 10, 0.22),
+    0 10px 20px rgba(60, 35, 10, 0.12);
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.18s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.nav-satellite-btn:hover .nav-sat-white-rim {
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 
+    0 4px 8px rgba(60, 35, 10, 0.22),
+    0 10px 22px rgba(60, 35, 10, 0.28),
+    0 16px 30px rgba(60, 35, 10, 0.16);
+}
+
+.nav-satellite-btn:active .nav-sat-white-rim {
+  transform: translateY(1.5px) scale(0.94);
+  box-shadow: 
+    0 2px 3px rgba(60, 35, 10, 0.18),
+    0 4px 8px rgba(60, 35, 10, 0.15);
+}
+
+/* Satellite 3D Amber Orb */
+.nav-sat-amber-dome {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle at 38% 28%,
+    #FFA348 0%,
+    #ED7515 45%,
+    #BD5100 82%,
+    #903A00 100%
+  );
+  box-shadow: 
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 3px rgba(85, 30, 0, 0.45);
+  overflow: hidden;
+}
+
+.nav-sat-amber-dome::before {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 15%;
+  right: 15%;
+  height: 44%;
+  border-radius: 50% 50% 45% 45%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0.1) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+}
+
+.nav-sat-icon {
+  width: 16px !important;
+  height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
+  display: block;
+  fill: #FFFFFF;
+  filter: drop-shadow(0 1px 1px rgba(60, 20, 0, 0.4));
+  position: relative;
+  z-index: 2;
+  transition: transform 0.18s ease;
+}
+
+.nav-satellite-btn:hover .nav-sat-icon {
+  transform: scale(1.12);
+}
+
+.nav-satellite-btn:focus-visible {
+  outline: none;
+}
+.nav-satellite-btn:focus-visible .nav-sat-white-rim {
+  box-shadow: 0 0 0 2.5px rgba(255, 255, 255, 0.9), 0 0 0 4.5px #ED7515;
+}
+
+/* Tooltips - Clean left placement beside each button in the straight column */
+.nav-sat-tooltip {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 12px);
+  left: auto;
+  transform: translateY(-50%) translateX(6px);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #FFFFFF;
+  padding: 0.25rem 0.65rem;
+  border-radius: 5px;
+  background: rgba(22, 18, 12, 0.94);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s cubic-bezier(0.2, 0, 0.2, 1), transform 0.18s cubic-bezier(0.2, 0, 0.2, 1);
+  z-index: 70;
+}
+
+/* Arrow indicator pointing to button */
+.nav-sat-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -4px;
+  transform: translateY(-50%) rotate(45deg);
+  width: 7px;
+  height: 7px;
+  background: rgba(22, 18, 12, 0.94);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.nav-satellite-btn:hover .nav-sat-tooltip,
+.nav-satellite-btn:focus-visible .nav-sat-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Mobile responsive hide if screen is too narrow */
+@media (max-width: 900px) {
+  .nav-3d-morph-hub {
+    display: none;
+  }
+}

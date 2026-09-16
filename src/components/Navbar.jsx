@@ -23,6 +23,7 @@ import {
 import { navLinks, contactInfo } from '../data/navigation';
 import '../styles/navbar.css';
 import { FaFacebookF, FaWhatsapp, FaInstagram, FaYoutube, FaXTwitter } from 'react-icons/fa6';
+import Nav3DMorphButton from './Navbar/Nav3DMorphButton';
 
 const solutionIcons = [Flame, ShieldCheck, Server, Building2];
 
@@ -73,54 +74,30 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setMobileOpen(false);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
+  useEffect(() => {
     if (!mobileOpen) return undefined;
 
     const previousOverflow = document.body.style.overflow;
-    const onKeyDown = (event) => {
-      if (event.key === 'Escape') setMobileOpen(false);
-    };
-
     document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', onKeyDown);
 
     return () => {
       document.body.style.overflow = previousOverflow;
-      document.removeEventListener('keydown', onKeyDown);
     };
   }, [mobileOpen]);
 
   return (
     <>
       <motion.div className="scroll-progress" style={{ scaleX }} aria-hidden="true" />
-      <div className="topbar">
-        <div className="container topbar-inner">
-          <div className="topbar-contacts">
-            <a href={contactInfo.whatsappLink} className="topbar-contact-link" target="_blank" rel="noopener noreferrer">
-              <span className="contact-icon-wrapper whatsapp-icon"><FaWhatsapp size={14} /></span>
-              <span>{contactInfo.whatsapp}</span>
-            </a>
-            <span className="topbar-contact-divider" aria-hidden="true" />
-            <a href={contactInfo.phoneLink} className="topbar-contact-link">
-              <span className="contact-icon-wrapper phone-icon"><Phone size={13} /></span>
-              <span>{contactInfo.phone}</span>
-            </a>
-          </div>
-          <div className="topbar-socials">
-            <a href={contactInfo.social.facebook} aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-              <FaFacebookF size={12} />
-            </a>
-            <a href={contactInfo.social.twitter} aria-label="X" target="_blank" rel="noopener noreferrer">
-              <FaXTwitter size={12} />
-            </a>
-            <a href={contactInfo.social.instagram} aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-              <FaInstagram size={13} />
-            </a>
-            <a href={contactInfo.social.youtube} aria-label="YouTube" target="_blank" rel="noopener noreferrer">
-              <FaYoutube size={13} />
-            </a>
-          </div>
-        </div>
-      </div>
+
 
       <motion.header
         className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}
@@ -223,6 +200,9 @@ export default function Navbar() {
                 )}
               </div>
             ))}
+
+            {/* 3D Morphing Contact Button beside Contact */}
+            <Nav3DMorphButton />
           </nav>
 
           <button
