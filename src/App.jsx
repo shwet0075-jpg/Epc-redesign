@@ -101,19 +101,10 @@ function Website() {
 }
 
 export default function App() {
-  // On hot-reload or subsequent opens in the same session, load immediately with zero freeze
-  const [loading, setLoading] = useState(() => {
-    try {
-      return !sessionStorage.getItem('prudent_session_loaded');
-    } catch {
-      return true;
-    }
-  });
+  // Always run loading animation on every page reload
+  const [loading, setLoading] = useState(true);
 
   const handleComplete = () => {
-    try {
-      sessionStorage.setItem('prudent_session_loaded', 'true');
-    } catch {}
     setLoading(false);
   };
 

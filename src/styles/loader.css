@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Prudent EPC — Pre-loader Stylesheet (Cinematic Dark Splash Intro)
+   Prudent EPC — Pre-loader Stylesheet (Okara AI Kinetic Logo Animation)
    ========================================================================== */
 
 .loader-bg {
@@ -9,13 +9,13 @@
   --loader-accent-rgb: 240, 128, 32;
   --loader-teal: #5eead4;
   --loader-bg: #03130a;
-  --loader-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --loader-ease: cubic-bezier(0.16, 1, 0.3, 1);
 
   --loader-font-display: "Neue Haas Grotesk Display", "Inter", -apple-system,
     BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* Dark Canvas Shell */
+/* Solid White Canvas Shell */
 .loader-bg {
   position: fixed;
   inset: 0;
@@ -28,10 +28,9 @@
 
   width: 100vw;
   height: 100vh;
-  background: 
-    radial-gradient(70% 70% at 50% 50%, rgba(0, 96, 48, 0.16) 0%, transparent 70%),
-    linear-gradient(180deg, #03130a 0%, #020e07 50%, #010805 100%);
-  color: #ffffff;
+  height: 100dvh;
+  background: #ffffff;
+  color: #006030;
   font-family: var(--loader-font-display);
 
   will-change: opacity;
@@ -42,234 +41,266 @@
   pointer-events: none;
 }
 
-/* Structural Engineering Backdrop Grid */
-.loader-grid {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
-  background-position: center;
-
-  -webkit-mask-image: radial-gradient(75% 75% at 50% 50%, #000 40%, transparent 100%);
-  mask-image: radial-gradient(75% 75% at 50% 50%, #000 40%, transparent 100%);
-
-  opacity: 0.85;
-}
-
-/* Ambient Brand Glows */
+.loader-grid,
 .loader-glow {
-  position: absolute;
-  z-index: 1;
-  border-radius: 50%;
-  filter: blur(80px);
-  pointer-events: none;
+  display: none !important;
 }
 
-.loader-glow-green {
-  top: 45%;
-  left: 42%;
-  width: 650px;
-  height: 650px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(
-    circle,
-    rgba(var(--loader-primary-rgb), 0.35) 0%,
-    transparent 70%
-  );
-}
-
-.loader-glow-orange {
-  top: 55%;
-  left: 58%;
-  width: 500px;
-  height: 500px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(
-    circle,
-    rgba(var(--loader-accent-rgb), 0.28) 0%,
-    transparent 70%
-  );
-}
-
-/* Crisp White Card Container Box */
+/* Pure White Kinetic Stage */
 .loader-content {
   position: relative;
   z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90%;
-  max-width: 460px;
-  padding: 52px 36px 44px;
+  justify-content: center;
+  width: 100%;
+  max-width: 640px;
+  min-height: 200px;
+  padding: 20px;
   text-align: center;
-
-  background: #ffffff;
-  border: 1px solid rgba(0, 96, 48, 0.15);
-  border-radius: 28px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-
-  box-shadow:
-    0 26px 75px rgba(0, 0, 0, 0.45),
-    0 0 35px rgba(0, 96, 48, 0.15),
-    0 1px 0 rgba(255, 255, 255, 1) inset;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
-/* Brand Section Layout */
-.loader-brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 32px;
-}
+/* ==========================================================================
+   OKARA AI CHOREOGRAPHY STYLES
+   ========================================================================== */
 
-/* Logo Assembly Container */
-.loader-logo-assembly {
+.okara-loader-container {
   position: relative;
-  width: 80px;
-  height: 125px;
+  width: 100%;
+  min-height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* "Systems Online" Impact Radial Ring */
-.loader-impact-pulse {
+/* Phase 1: Waveform Frequency Pulse */
+.okara-wave-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  position: absolute;
+}
+
+.okara-wave-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  height: 48px;
+}
+
+.okara-wave-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.okara-wave-dot.dot-orange {
+  background: #F08020;
+  box-shadow: 0 0 12px rgba(240, 128, 32, 0.45);
+}
+
+.okara-wave-dot.dot-green {
+  background: #006030;
+  box-shadow: 0 0 12px rgba(0, 96, 48, 0.35);
+}
+
+.okara-wave-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  color: #006030;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+/* Phase 2 & 3: Lockup Stage */
+.okara-lockup-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 120px;
+}
+
+/* Emblem Container: Shifts Left in Lockup Phase */
+.okara-emblem-box {
+  position: absolute;
+  left: calc(50% - 39px);
+  width: 78px;
+  height: 115px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  will-change: transform;
+}
+
+/* Systems Online Impact Radial Wave */
+.okara-impact-ring {
   position: absolute;
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  border: 2px solid rgba(0, 96, 48, 0.85);
+  border: 2px solid rgba(0, 96, 48, 0.25);
   box-shadow:
-    0 0 25px rgba(var(--loader-accent-rgb), 0.7),
-    0 0 50px rgba(var(--loader-primary-rgb), 0.7);
+    0 0 25px rgba(240, 128, 32, 0.2),
+    0 0 45px rgba(0, 96, 48, 0.15);
   pointer-events: none;
   z-index: 1;
 }
 
-/* Motion Trailing Glow Wrappers */
-.loader-piece-wrapper {
+/* Chevrons */
+.okara-piece {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  will-change: transform, opacity;
+  will-change: transform, opacity, filter;
 }
 
-.loader-piece-orange-wrapper {
+.okara-piece--orange {
   z-index: 3;
 }
 
-.loader-piece-green-wrapper {
+.okara-piece--green {
   z-index: 2;
 }
 
-.loader-piece {
+.okara-piece-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-/* Letter-Staggered Typography */
-.loader-text-wrapper {
+/* Liquid Sheen */
+.okara-emblem-sheen {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 35px;
+  height: 120%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.9) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  z-index: 5;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+}
+
+/* Typography Container: Draws Out to the Right */
+.okara-typography-box {
+  position: absolute;
+  left: calc(50% - 80px);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top: 8px;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: visible;
+  will-change: transform, opacity, clip-path;
+  white-space: nowrap;
+}
+
+.okara-title-wrapper {
   overflow: visible;
 }
 
-.loader-title,
-.text-xl {
+.okara-title {
   margin: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.42em;
-  font-size: 2.0rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  line-height: 1.2;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 0.3em;
+  font-size: 2.75rem;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+  line-height: 1;
   overflow: visible;
 }
 
-.loader-title-group {
+.okara-group {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   overflow: visible;
 }
 
-.loader-letter {
+.okara-letter {
   display: inline-block;
-  will-change: transform;
-  transform-origin: 50% 50%;
-  backface-visibility: hidden;
+  will-change: transform, opacity, filter;
   -webkit-font-smoothing: antialiased;
 }
 
-/* "Prudent" Wordmark Color (#006030) */
+/* Letter Colors: Prudent in #006030, E in #F08020, PC in #006030 */
 .letter-prudent {
   color: #006030;
 }
 
-/* "EPC" - "E" Color (#F08020) */
 .letter-orange {
   color: #F08020;
 }
 
-/* "EPC" - "PC" Color (#006030) */
 .letter-green {
   color: #006030;
 }
 
-/* "ENGINEERING INTELLIGENCE" Subtitle Color (#006030) */
-.loader-subtitle {
-  margin: 0;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.3em;
-  color: #006030;
-  opacity: 0.9;
-  text-transform: uppercase;
+/* Static Reduced Motion Mode */
+.okara-loader-lockup.static-mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 
-/* Responsive Adjustments */
+.okara-static-logo {
+  width: 70px;
+  height: auto;
+}
+
+.okara-text-prudent {
+  color: #006030;
+}
+
+.okara-letter-orange {
+  color: #F08020;
+}
+
+.okara-letter-green {
+  color: #006030;
+}
+
+/* Responsive Scaling for Mobile Screens */
 @media (max-width: 640px) {
   .loader-content {
-    max-width: 330px;
-    padding: 42px 24px 36px;
-    border-radius: 22px;
+    max-width: 360px;
+    padding: 20px 10px;
   }
 
-  .loader-logo-assembly {
-    width: 64px;
-    height: 100px;
+  .okara-emblem-box {
+    width: 62px;
+    height: 90px;
   }
 
-  .loader-title,
-  .text-xl {
-    font-size: 1.3rem;
-    letter-spacing: 0.05em;
-    gap: 0.32em;
-  }
-
-  .loader-subtitle {
-    font-size: 0.65rem;
-    letter-spacing: 0.22em;
+  .okara-title {
+    font-size: 1.85rem;
+    gap: 0.25em;
   }
 }
 
 /* Accessibility: Reduced Motion Override */
 @media (prefers-reduced-motion: reduce) {
-  .loader-glow-green,
-  .loader-glow-orange,
-  .loader-impact-pulse {
+  .okara-impact-ring {
     animation: none !important;
   }
-
- 
 }
