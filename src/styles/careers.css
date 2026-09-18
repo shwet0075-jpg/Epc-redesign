@@ -8,7 +8,7 @@
    -------------------------------------------------------------------------- */
 .careers-hero {
   position: relative;
-  padding: 85px 0 28px;
+  padding: 110px 0 32px;
   background: linear-gradient(145deg, #020d07 0%, #004522 55%, #006030 100%);
   color: #ffffff;
   overflow: hidden;
@@ -348,35 +348,353 @@
   color: #0f172a;
 }
 
-.careers-tab-btn.is-active {
-  background: #006030;
-  color: #ffffff;
-  border-color: #006030;
-  box-shadow: 0 4px 14px rgba(0, 96, 48, 0.2);
+.careers-tab-btn.tab-urgent-highlight {
+  border-color: rgba(220, 38, 38, 0.35);
+  background: #fef2f2;
+  color: #dc2626;
+  font-weight: 600;
 }
 
-.careers-tab-count {
+.careers-tab-btn.tab-urgent-highlight:hover {
+  background: #fee2e2;
+  border-color: #dc2626;
+  color: #b91c1c;
+}
+
+.careers-tab-btn.tab-urgent-highlight.is-active {
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  border-color: #dc2626;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
+}
+
+.careers-tab-btn.tab-urgent-highlight .careers-tab-count {
+  background: rgba(220, 38, 38, 0.15);
+  color: #dc2626;
+}
+
+.careers-tab-btn.tab-urgent-highlight.is-active .careers-tab-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   3A. Urgent & Normal Hiring Tiers
+   -------------------------------------------------------------------------- */
+.careers-urgent-tier {
+  margin-bottom: 56px;
+  position: relative;
+}
+
+.careers-tier-header {
+  margin-bottom: 24px;
+}
+
+.urgent-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  color: #dc2626;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.urgent-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #dc2626;
+  box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+  animation: urgentDotPulse 1.8s infinite;
+}
+
+@keyframes urgentDotPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(220, 38, 38, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+  }
+}
+
+.urgent-tier-title {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.01em;
+}
+
+.urgent-tier-desc {
+  font-size: 0.94rem;
+  color: #64748b;
+  margin: 0;
+  max-width: 680px;
+}
+
+/* Normal Tier Header */
+.careers-normal-tier {
+  margin-top: 50px;
+  padding-top: 40px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.normal-tier-kicker {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #006030;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.normal-tier-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.01em;
+}
+
+.normal-tier-desc {
+  font-size: 0.94rem;
+  color: #64748b;
+  margin: 0 0 24px 0;
+  max-width: 680px;
+}
+
+/* --------------------------------------------------------------------------
+   3B. Prudent Job Cards (Exact Image Reference Match & Enhanced)
+   -------------------------------------------------------------------------- */
+.careers-jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1100px) {
+  .careers-jobs-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .careers-jobs-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+.prudent-job-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 22px 20px 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: visible;
+}
+
+.prudent-job-card--urgent {
+  border: 1.8px solid #008744;
+  background: #ffffff;
+}
+
+.prudent-job-card--urgent:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(0, 135, 68, 0.12), 0 4px 12px rgba(220, 38, 38, 0.08);
+  border-color: #006030;
+}
+
+.prudent-job-card--normal {
+  border: 1.5px solid #e2e8f0;
+}
+
+.prudent-job-card--normal:hover {
+  transform: translateY(-4px);
+  border-color: #008744;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
+}
+
+/* Top Ribbon Badge for Urgent Roles - Matching Reference Image */
+.urgent-ribbon-badge {
+  position: absolute;
+  top: -12px;
+  right: 32px;
+  background: #e52525;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 3px 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(229, 37, 37, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 2;
+  user-select: none;
+}
+
+.urgent-ribbon-badge-modal {
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 4px 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.urgent-star {
+  font-size: 0.8rem;
+  color: #ffed4a;
+}
+
+.prudent-card-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.prudent-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.prudent-job-dept-badge {
+  display: inline-block;
+  background: #005a2b;
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+}
+
+.prudent-job-type {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.prudent-job-title {
+  font-size: 1.18rem;
+  font-weight: 750;
+  color: #1e293b;
+  line-height: 1.35;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.01em;
+}
+
+.prudent-job-meta {
+  font-size: 0.86rem;
+  color: #64748b;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.prudent-job-meta .meta-loc {
+  color: #475569;
+}
+
+.prudent-job-meta .meta-dot {
+  color: #94a3b8;
+}
+
+.prudent-job-meta .meta-exp {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.prudent-job-teaser {
+  font-size: 0.86rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+  flex-grow: 1;
+}
+
+.prudent-job-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.prudent-btn-view {
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  background: #ffffff;
+  border: 1.5px solid #2563eb;
+  color: #2563eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 2px 6px;
-  border-radius: 10px;
-  font-size: 0.72rem;
+}
+
+.prudent-btn-view:hover {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: #1d4ed8;
+  color: #1d4ed8;
+}
+
+.prudent-btn-apply {
+  padding: 7px 20px;
+  border-radius: 6px;
+  font-size: 0.84rem;
   font-weight: 600;
-  background: rgba(0, 0, 0, 0.08);
-  color: inherit;
-}
-
-.careers-tab-btn.is-active .careers-tab-count {
-  background: rgba(255, 255, 255, 0.2);
+  background: #2563eb;
+  border: 1.5px solid #2563eb;
   color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
 }
 
-/* Job Cards Grid */
-.careers-jobs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 28px;
+.prudent-btn-apply:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
 }
 
 .careers-job-card {
@@ -769,14 +1087,51 @@
 
 @media (max-width: 640px) {
   .careers-hero {
-    padding: 70px 0 20px;
+    padding: 102px 0 26px !important;
+  }
+  .careers-hero-title {
+    font-size: 1.65rem !important;
+    line-height: 1.22 !important;
+  }
+  .careers-hero-desc {
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
   }
   .careers-stats-bar {
     grid-template-columns: 1fr;
     padding: 12px;
   }
+  .careers-filter-tabs {
+    justify-content: flex-start !important;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .careers-filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
   .careers-jobs-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .prudent-job-card {
+    padding: 22px 18px !important;
+  }
+  .urgent-ribbon-badge {
+    right: 18px !important;
+  }
+  .prudent-job-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  .prudent-btn-view,
+  .prudent-btn-apply {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
   }
   .careers-process-grid {
     grid-template-columns: 1fr;

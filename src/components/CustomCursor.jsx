@@ -26,24 +26,12 @@ export default function CustomCursor() {
 
     document.documentElement.classList.add('custom-cursor-active');
 
-    let mouseX = -100;
-    let mouseY = -100;
     let isVisible = false;
     let isInput = false;
-    let rafId = null;
-
-    const render = () => {
-      if (isVisible) {
-        pointer.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-      }
-      rafId = requestAnimationFrame(render);
-    };
-
-    rafId = requestAnimationFrame(render);
 
     const onPointerMove = (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+      // Instantaneous 0ms hardware update directly on the pointer event for maximum speed
+      pointer.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
 
       if (!isVisible) {
         isVisible = true;
@@ -105,7 +93,6 @@ export default function CustomCursor() {
     document.addEventListener('mouseenter', onMouseEnterWindow);
 
     return () => {
-      cancelAnimationFrame(rafId);
       document.documentElement.classList.remove('custom-cursor-active');
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('mouseover', onMouseOver);
@@ -128,7 +115,7 @@ export default function CustomCursor() {
         className="cursor-arrow-svg"
       >
         <path
-          d="M3 3L10.07 20.97L13.58 13.58L20.97 10.07L3 3Z"
+          d="M3 3L3 20.5L8.5 15.2L15 15L3 3Z"
           fill="#F08020"
           stroke="#006030"
           strokeWidth="1.6"

@@ -1047,7 +1047,28 @@
   }
 }
 
+@media (max-width: 768px) {
+  .gallery-hero {
+    padding: 105px 0 45px !important;
+  }
+  .gallery-hero-title {
+    font-size: 1.85rem !important;
+    line-height: 1.22 !important;
+  }
+  .gallery-controls-bar {
+    padding: 12px 14px !important;
+    gap: 12px !important;
+    border-radius: 20px;
+  }
+}
+
 @media (max-width: 640px) {
+  .gallery-hero {
+    padding: 98px 0 38px !important;
+  }
+  .gallery-hero-title {
+    font-size: 1.65rem !important;
+  }
   .gallery-interactive-grid {
     columns: 1;
   }

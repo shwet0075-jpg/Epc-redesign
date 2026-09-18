@@ -65,219 +65,263 @@
 }
 
 /* ==========================================================================
-   OKARA AI CHOREOGRAPHY STYLES
+   ENVATO T9TMYG8 3D STUDIO CHOREOGRAPHY STYLES
    ========================================================================== */
 
-.okara-loader-container {
+.envato-loader-container {
   position: relative;
   width: 100%;
-  min-height: 140px;
+  max-width: 680px;
+  min-height: 380px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
-/* Phase 1: Waveform Frequency Pulse */
-.okara-wave-stage {
+/* Studio Perspective Floor Grid & Architectural Vector Tracers */
+.envato-studio-grid {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 740px;
+  height: 520px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+}
+
+/* Centered 3D Stage */
+.envato-stage {
+  position: relative;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 22px;
-  position: absolute;
+  gap: 26px;
+  text-align: center;
 }
 
-.okara-wave-track {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  height: 48px;
-}
-
-.okara-wave-dot {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-}
-
-.okara-wave-dot.dot-orange {
-  background: #F08020;
-  box-shadow: 0 0 12px rgba(240, 128, 32, 0.45);
-}
-
-.okara-wave-dot.dot-green {
-  background: #006030;
-  box-shadow: 0 0 12px rgba(0, 96, 48, 0.35);
-}
-
-.okara-wave-label {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.28em;
-  color: #006030;
-  opacity: 0.7;
-  text-transform: uppercase;
-}
-
-/* Phase 2 & 3: Lockup Stage */
-.okara-lockup-stage {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Emblem 3D Isometric Viewport */
+.envato-emblem-box {
   position: relative;
-  width: 100%;
-  height: 120px;
-}
-
-/* Emblem Container: Shifts Left in Lockup Phase */
-.okara-emblem-box {
-  position: absolute;
-  left: calc(50% - 39px);
-  width: 78px;
-  height: 115px;
+  width: 90px;
+  height: 141px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
   will-change: transform;
+  perspective: 1000px;
+  transform-style: preserve-3d;
 }
 
-/* Systems Online Impact Radial Wave */
-.okara-impact-ring {
+/* Directional Soft Studio Floor Shadow under the Emblem */
+.envato-floor-shadow {
   position: absolute;
-  width: 90px;
-  height: 90px;
+  bottom: -28px;
+  left: 50%;
+  width: 150px;
+  height: 34px;
+  margin-left: -75px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.22) 0%,
+    rgba(0, 0, 0, 0.08) 55%,
+    transparent 80%
+  );
   border-radius: 50%;
-  border: 2px solid rgba(0, 96, 48, 0.25);
-  box-shadow:
-    0 0 25px rgba(240, 128, 32, 0.2),
-    0 0 45px rgba(0, 96, 48, 0.15);
+  filter: blur(8px);
+  transform: rotateX(65deg) skewX(-18deg);
   pointer-events: none;
   z-index: 1;
+  will-change: transform, opacity;
 }
 
-/* Chevrons */
-.okara-piece {
+/* Anamorphic Horizontal Lens Flare Streak */
+.envato-lens-flare {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 180px;
+  height: 3.5px;
+  margin-top: -1.75px;
+  margin-left: -90px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(240, 128, 32, 0.95) 20%,
+    #FFFFFF 50%,
+    rgba(16, 185, 129, 0.95) 80%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 16px rgba(255, 255, 255, 1),
+    0 0 32px rgba(240, 128, 32, 0.8),
+    0 0 45px rgba(16, 185, 129, 0.6);
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Radiant Spark Core at contact nexus */
+.envato-spark-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin-top: -11px;
+  margin-left: -11px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #FFFFFF 0%,
+    rgba(255, 220, 140, 0.95) 35%,
+    transparent 70%
+  );
+  box-shadow: 0 0 22px rgba(255, 255, 255, 1);
+  pointer-events: none;
+  z-index: 11;
+}
+
+/* Fusion Shockwave Pulse */
+.envato-shockwave-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  margin-top: -30px;
+  margin-left: -30px;
+  border-radius: 50%;
+  border: 2px solid rgba(240, 128, 32, 0.75);
+  box-shadow:
+    0 0 20px rgba(240, 128, 32, 0.4),
+    0 0 35px rgba(0, 96, 48, 0.25);
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* 3D Perspective Chevrons Container */
+.envato-chevrons-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  z-index: 3;
+}
+
+.envato-chevron-layer {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  will-change: transform, opacity, filter;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  pointer-events: none;
 }
 
-.okara-piece--orange {
-  z-index: 3;
+.envato-chevron-layer--green {
+  z-index: 1;
+  filter: drop-shadow(-8px 14px 18px rgba(0, 96, 48, 0.35));
 }
 
-.okara-piece--green {
+.envato-chevron-layer--orange {
   z-index: 2;
+  filter: drop-shadow(-8px 14px 20px rgba(240, 128, 32, 0.38));
 }
 
-.okara-piece-img {
+.envato-piece-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-/* Liquid Sheen */
-.okara-emblem-sheen {
+/* Liquid Specular Sheen sweep */
+.envato-emblem-sheen {
   position: absolute;
-  top: -10%;
+  top: -15%;
   left: 0;
-  width: 35px;
-  height: 120%;
+  width: 45px;
+  height: 130%;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.9) 50%,
+    rgba(255, 255, 255, 0.95) 50%,
     transparent 100%
   );
-  transform: skewX(-25deg);
-  z-index: 5;
+  transform: skewX(-28deg);
+  z-index: 6;
   pointer-events: none;
-  mix-blend-mode: soft-light;
+  mix-blend-mode: overlay;
 }
 
-/* Typography Container: Draws Out to the Right */
-.okara-typography-box {
-  position: absolute;
-  left: calc(50% - 80px);
+/* Centered Typography Below the Emblem */
+.envato-typography-block {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  overflow: visible;
-  will-change: transform, opacity, clip-path;
-  white-space: nowrap;
+  gap: 10px;
+  will-change: transform, opacity, filter;
 }
 
-.okara-title-wrapper {
-  overflow: visible;
-}
-
-.okara-title {
+.envato-title {
   margin: 0;
   display: flex;
   align-items: baseline;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 0.3em;
-  font-size: 2.75rem;
+  font-size: 2.85rem;
   font-weight: 850;
   letter-spacing: -0.01em;
   line-height: 1;
-  overflow: visible;
 }
 
-.okara-group {
-  display: inline-flex;
-  align-items: baseline;
-  overflow: visible;
-}
-
-.okara-letter {
-  display: inline-block;
-  will-change: transform, opacity, filter;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Letter Colors: Prudent in #006030, E in #F08020, PC in #006030 */
-.letter-prudent {
+.envato-text-prudent {
   color: #006030;
 }
 
-.letter-orange {
+.envato-text-epc {
+  display: inline-flex;
+}
+
+.envato-letter-orange {
   color: #F08020;
 }
 
-.letter-green {
+.envato-letter-green {
   color: #006030;
+}
+
+.envato-tagline {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #006030;
+  text-transform: uppercase;
+  will-change: letter-spacing, opacity;
 }
 
 /* Static Reduced Motion Mode */
-.okara-loader-lockup.static-mode {
+.envato-loader-container.static-mode {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 24px;
 }
 
-.okara-static-logo {
-  width: 70px;
-  height: auto;
-}
-
-.okara-text-prudent {
-  color: #006030;
-}
-
-.okara-letter-orange {
-  color: #F08020;
-}
-
-.okara-letter-green {
-  color: #006030;
+.envato-emblem-box.static-emblem {
+  width: 80px;
+  height: 125px;
+  position: relative;
 }
 
 /* Responsive Scaling for Mobile Screens */
@@ -287,20 +331,17 @@
     padding: 20px 10px;
   }
 
-  .okara-emblem-box {
-    width: 62px;
-    height: 90px;
+  .envato-emblem-box {
+    width: 72px;
+    height: 112px;
   }
 
-  .okara-title {
-    font-size: 1.85rem;
+  .envato-title {
+    font-size: 2rem;
     gap: 0.25em;
   }
-}
 
-/* Accessibility: Reduced Motion Override */
-@media (prefers-reduced-motion: reduce) {
-  .okara-impact-ring {
-    animation: none !important;
+  .envato-tagline {
+    font-size: 0.65rem;
   }
 }

@@ -487,7 +487,7 @@ export default function Gallery() {
               </div>
 
               {/* Quick Search */}
-              <div style={{ position: 'relative', minWidth: '220px' }}>
+              <div style={{ position: 'relative', flex: '1 1 200px', width: '100%' }}>
                 <FiSearch
                   style={{
                     position: 'absolute',

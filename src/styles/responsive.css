@@ -78,13 +78,15 @@
     padding-right: 20px !important;
   }
   .topbar {
-    top: 0;
+    display: none !important;
   }
   .navbar {
-    top: 44px; /* Sits perfectly below topbar */
+    top: 0 !important;
+    padding: 8px 0 !important;
   }
   .navbar-scrolled {
-    top: 0;
+    top: 0 !important;
+    padding: 6px 0 !important;
   }
   .topbar-inner {
     padding: 0 !important;
@@ -93,7 +95,12 @@
     display: none !important;
   }
   .navbar-inner {
-    padding: 0 20px !important;
+    height: 60px !important;
+    padding: 0 16px !important;
+    border-radius: 14px !important;
+  }
+  .navbar-logo img {
+    height: 38px !important;
   }
   
   .hero {
@@ -111,10 +118,20 @@
   }
   
   .page-header {
-    padding: 120px 0 50px !important;
+    padding: 105px 0 45px !important;
+  }
+  .page-header h1 {
+    font-size: 1.85rem !important;
+    line-height: 1.22 !important;
+    margin-bottom: 12px !important;
+  }
+  .page-header .eyebrow {
+    font-size: 0.72rem !important;
+    margin-bottom: 8px !important;
   }
   .page-header p {
-    font-size: 1.05rem !important;
+    font-size: 0.95rem !important;
+    line-height: 1.55 !important;
   }
   
  .footer{
@@ -244,6 +261,16 @@
 
 /* Standard Mobile Screens (up to 480px) */
 @media (max-width: 480px) {
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .page-header {
+    padding: 98px 0 38px !important;
+  }
+  .page-header h1 {
+    font-size: 1.65rem !important;
+  }
   .client-grid {
     grid-template-columns: 1fr !important;
     max-width: 320px;
@@ -270,7 +297,6 @@
   .mobile-menu {
     width: 100vw;
     border-left: none;
-    padding: 30px 20px;
   }
 }
 

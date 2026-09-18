@@ -21,106 +21,170 @@ import ContactCTA from '../components/ContactCTA';
 import '../styles/careers.css';
 
 const jobsData = [
+  // --- URGENT HIRINGS ---
   {
-    id: 1,
-    title: 'Project Engineer — Fire & Life Safety',
-    department: 'Project Delivery',
-    location: 'Mumbai / Pan India',
+    id: 'urg-1',
+    title: 'Estimation Engineer – MEP (Electrical/ELV)',
+    department: 'Pre-Sales & Estimation',
+    location: 'Mumbai',
+    experience: '3–7 years',
     type: 'Full-time',
-    level: 'Mid to Senior (3-6 Yrs)',
-    teaser: 'Lead on-site project execution, technical coordination, and statutory compliance for critical fire detection & suppression systems.',
-    featured: true,
+    isUrgent: true,
+    teaser: 'Lead pre-sales MEP and ELV estimation, bill of quantities (BOQ) preparation, costing analysis, and technical proposal formulation for commercial and industrial EPC bids.',
     responsibilities: [
-      'Supervise installation, testing, and commissioning of turnkey fire alarm and gas suppression systems.',
-      'Liaise with clients, architects, MEP consultants, and site contractors to ensure on-time delivery.',
-      'Enforce strict quality assurance and safety standards across mission-critical project sites.',
+      'Prepare comprehensive MEP, Electrical, ELV, and Fire Safety cost estimations and tender submissions.',
+      'Review technical drawings, specifications, scope matrices, and contract requirements.',
+      'Liaise with equipment OEMs, component suppliers, and sub-contractors for competitive pricing.',
+      'Perform rate analysis, value engineering evaluations, and pre-bid risk assessments.',
+      'Participate in pre-bid technical meetings and client negotiations alongside senior leadership.'
     ],
     requirements: [
-      'B.E. / B.Tech in Fire & Safety, Mechanical, or Electrical Engineering.',
-      '3+ years hands-on experience in fire protection / EPC projects.',
-      'Proficiency in AutoCAD, site documentation, and project schedules.',
-    ],
+      'B.E. / B.Tech / Diploma in Electrical or Mechanical Engineering.',
+      '3–7 years hands-on experience in MEP / ELV estimation within contracting or EPC organizations.',
+      'Deep knowledge of electrical switchgear, ELV systems, fire alarms, and HVAC cabling standards.',
+      'Advanced proficiency in AutoCAD, MS Excel, and estimation workflows.'
+    ]
   },
   {
-    id: 2,
-    title: 'Design Engineer — ELV & IBMS Systems',
-    department: 'Design Engineering',
-    location: 'Pune / Mumbai',
+    id: 'urg-2',
+    title: 'Project Engineer',
+    department: 'Projects',
+    location: 'Mumbai',
+    experience: '3–6 years',
     type: 'Full-time',
-    level: 'Mid (2-5 Yrs)',
-    teaser: 'Design intelligent building management, integrated security, CCTV, and smart automation systems for modern enterprise facilities.',
-    featured: false,
+    isUrgent: true,
+    teaser: 'Drive end-to-end site engineering execution, contractor coordination, quality benchmarking, and statutory compliance for mission-critical turnkey projects.',
     responsibilities: [
-      'Prepare technical drawings, schematics, cable schedules, and BOQs for ELV and automation packages.',
-      'Conduct vendor evaluations and select compliant equipment for data centers and commercial towers.',
-      'Collaborate with site teams to resolve design discrepancies during installation phases.',
+      'Supervise on-site installation, testing, and commissioning of turnkey electrical and life-safety systems.',
+      'Coordinate site progress with clients, architects, MEP consultants, and subcontracted workforce.',
+      'Ensure strict adherence to statutory safety codes, QA/QC checklists, and NBC/NFPA norms.',
+      'Track project milestones against delivery schedules and resolve on-site engineering clashes.',
+      'Maintain daily site logs, material consumption audits, and measurement sheets.'
     ],
     requirements: [
-      'Degree / Diploma in Electrical, Electronics, or Instrumentation Engineering.',
-      'Experience in IBMS, Access Control, CCTV, and Public Address systems.',
-      'Proficient in AutoCAD and Revit / BIM tools is a plus.',
-    ],
+      'B.E. / B.Tech / Diploma in Electrical, Mechanical, or Fire & Safety Engineering.',
+      '3–6 years proven site execution experience across commercial, data center, or industrial facilities.',
+      'Hands-on expertise in reviewing shop drawings and directing technical labor teams.',
+      'Excellent leadership, communication, and milestone-tracking aptitude.'
+    ]
   },
   {
-    id: 3,
-    title: 'Senior Project Manager — Critical Infrastructure',
-    department: 'Project Delivery',
-    location: 'Mumbai / Delhi NCR',
+    id: 'urg-3',
+    title: 'Recruiter Administrator',
+    department: 'HR',
+    location: 'Mumbai',
+    experience: '0 years',
     type: 'Full-time',
-    level: 'Senior (7-12 Yrs)',
-    teaser: 'Own end-to-end turnkey project lifecycle from initial engineering and procurement to successful final testing & handover.',
-    featured: true,
+    isUrgent: true,
+    teaser: 'Drive talent sourcing, candidate coordination, interview pipelines, onboarding administration, and employee record management for our growing team.',
     responsibilities: [
-      'Direct cross-functional engineering teams across multi-location high-stakes EPC projects.',
-      'Manage project budget, procurement timelines, client invoicing, and resource allocation.',
-      'Lead high-level stakeholder reviews and assure adherence to NFPA, NBC, and ISO standards.',
+      'Source and screen prospective engineering and corporate profiles across hiring portals and networks.',
+      'Schedule and coordinate multi-stage technical and behavioral interviews with department heads.',
+      'Manage candidate communications, pre-employment documentation, and onboarding packs.',
+      'Maintain up-to-date applicant tracking records, employee databases, and attendance logs.',
+      'Support HR leadership in employee engagement initiatives, training calendars, and HR operations.'
     ],
     requirements: [
-      'B.Tech / M.Tech in Engineering with strong project management track record.',
-      '7+ years experience managing complex infrastructure or industrial EPC projects.',
-      'PMP / PRINCE2 certification is an added advantage.',
-    ],
+      'Bachelor’s / Master’s Degree in HR, Business Administration, or related discipline (BBA, MBA, MSW).',
+      '0–1 year experience (Enthusiastic freshers with excellent communication skills are strongly encouraged).',
+      'Strong organizational, telephone etiquette, and interpersonal abilities.',
+      'Proficiency in MS Office (Excel, Word, PowerPoint) and Google Workspace.'
+    ]
   },
+
+  // --- NORMAL HIRINGS ---
   {
-    id: 4,
-    title: 'Service & Maintenance Engineer',
-    department: 'Operations',
-    location: 'Pan India Sites',
+    id: 'norm-1',
+    title: 'Tender Executive',
+    department: 'Sales & Business Development',
+    location: 'Mumbai',
+    experience: '3–5 years',
     type: 'Full-time',
-    level: 'Entry to Mid (1-3 Yrs)',
-    teaser: 'Ensure 24/7 uptime and peak operational performance for installed fire protection, security, and IBMS systems.',
-    featured: false,
+    isUrgent: false,
+    teaser: 'Identify high-value public and private sector tenders, prepare compliant tender submissions, manage EMDs, and drive competitive bidding opportunities.',
     responsibilities: [
-      'Execute preventive maintenance schedules and rapid breakdown support for client facilities.',
-      'Perform system health checks, battery replacements, calibration, and sensor audits.',
-      'Provide technical training and operation guidance to client facility managers.',
+      'Monitor and evaluate e-procurement portals, government tenders (GeM, state EPC), and private RFPs.',
+      'Prepare pre-qualification dossiers, compliance checklists, bank guarantees, and tender fee instruments.',
+      'Coordinate with engineering and estimation teams to compile complete technical and financial bids.',
+      'Attend pre-bid meetings, track tender amendments/corrigenda, and manage post-bid clarification replies.',
+      'Maintain tender logbooks, win-loss analytics, and market competitor intelligence.'
     ],
     requirements: [
-      'Diploma / Degree in Electrical or Electronics Engineering.',
-      'Hands-on troubleshooting aptitude for life-safety systems.',
-      'Willingness to travel across regional project locations.',
-    ],
+      'Graduate / Diploma holder with specialized experience in tendering and contracting.',
+      '3–5 years experience managing e-tenders and formal RFP/RFQ responses in EPC/industrial sectors.',
+      'Thorough familiarity with e-procurement portals, GeM bidding, and statutory documentation.',
+      'Exceptional attention to detail, timeline vigilance, and organizational rigor.'
+    ]
   },
   {
-    id: 5,
-    title: 'BIM / CAD Coordination Specialist',
-    department: 'Design Engineering',
-    location: 'Pune (Hybrid)',
-    type: 'Full-time / Contract',
-    level: 'Mid (2-4 Yrs)',
-    teaser: 'Build clash-free 3D building models and detailed shop drawings to empower smooth on-site construction execution.',
-    featured: false,
+    id: 'norm-2',
+    title: 'Purchase Co-Ordinator',
+    department: 'Procurement & Supply Chain',
+    location: 'Mumbai',
+    experience: '2–4 years',
+    type: 'Full-time (Onsite)',
+    isUrgent: false,
+    teaser: 'Orchestrate material procurement, vendor negotiations, purchase order lifecycles, and on-time site dispatch logistics for ongoing project sites.',
     responsibilities: [
-      'Develop coordinated 3D BIM models for fire fighting, ELV, and containment systems.',
-      'Perform clash detection and coordination runs with architectural and MEP trades.',
-      'Generate accurate as-built drawings and material take-offs.',
+      'Review site material requisitions and float inquiries to approved vendors for competitive quotation.',
+      'Negotiate favorable pricing, credit terms, warranty coverage, and committed delivery schedules.',
+      'Generate and release Purchase Orders (POs) and track order fabrication and transit status.',
+      'Coordinate with logistics partners and site engineers for receipt inspection and inventory reconciliation.',
+      'Maintain vendor performance scorecards, price benchmarks, and invoice processing support.'
     ],
     requirements: [
-      'Expertise in Autodesk Revit, Navisworks, and AutoCAD MEP.',
-      '2+ years experience in MEP / EPC BIM coordination.',
-      'Strong eye for detail and spatial coordination.',
-    ],
+      'Degree / Diploma in Commerce, Supply Chain, Logistics, or Engineering.',
+      '2–4 years procurement experience in EPC, electrical, HVAC, or construction contracting.',
+      'Solid command over procurement ERP tools, purchase orders, and MS Excel analysis.',
+      'Effective vendor negotiation and collaborative problem-solving skills.'
+    ]
   },
+  {
+    id: 'norm-3',
+    title: 'Commissioning Engineer',
+    department: 'Service & Projects',
+    location: 'Mumbai',
+    experience: '2–5 years',
+    type: 'Full-time',
+    isUrgent: false,
+    teaser: 'Conduct rigorous pre-commissioning validations, integrated system testing, parameter calibration, and client handover for life-safety and automation systems.',
+    responsibilities: [
+      'Perform systematic pre-commissioning inspections, loop checks, and insulation resistance measurements.',
+      'Conduct functional testing and cause-and-effect matrix integration for fire protection and IBMS.',
+      'Interface with MEP consultants and client audit teams during formal witness testing.',
+      'Troubleshoot instrumentation, control panel faults, and communication bus discrepancies on site.',
+      'Generate comprehensive commissioning sign-off reports, snag closures, and O&M handover dossiers.'
+    ],
+    requirements: [
+      'B.E. / B.Tech / Diploma in Electrical, Electronics, or Instrumentation Engineering.',
+      '2–5 years hands-on testing & commissioning experience with MEP / life-safety systems.',
+      'Strong diagnostic capability across control panels, addressable networks, and field sensors.',
+      'Willingness to conduct site testing across high-profile facilities.'
+    ]
+  },
+  {
+    id: 'norm-4',
+    title: 'Technical Office Manager (Post Sales)',
+    department: 'Technical & Project Support',
+    location: 'Mumbai',
+    experience: '5–10 years',
+    type: 'Full-time',
+    isUrgent: false,
+    teaser: 'Lead post-sales engineering support, contractual compliance, variation billing approvals, as-built technical sign-offs, and client relationship management.',
+    responsibilities: [
+      'Lead technical office operations post-contract award, ensuring all technical deliverables are met.',
+      'Coordinate drawing approvals, technical submittals, and material inspection clearances.',
+      'Oversee commercial variation claims, extra item rate analysis, and monthly work certifications.',
+      'Supervise final project closeouts: as-built drawings, statutory approvals, warranty documentation.',
+      'Act as key bridge between site delivery teams, accounts, and client project management consultants.'
+    ],
+    requirements: [
+      'B.E. / B.Tech in Engineering with 5–10 years experience in post-sales technical project management.',
+      'Demonstrated background in EPC contracting, client billing, and technical office administration.',
+      'Strong contractual acumen, drawing review capabilities, and client-facing negotiation skills.',
+      'Exceptional leadership and multi-stakeholder communication aptitude.'
+    ]
+  }
 ];
 
 const pillars = [
@@ -172,32 +236,44 @@ export default function Career() {
 
   // Departments list with counts
   const departments = useMemo(() => {
-    const counts = { all: jobsData.length };
+    const counts = { all: jobsData.length, urgent: jobsData.filter((j) => j.isUrgent).length };
+    const deptList = [];
     jobsData.forEach((j) => {
       counts[j.department] = (counts[j.department] || 0) + 1;
+      if (!deptList.includes(j.department)) {
+        deptList.push(j.department);
+      }
     });
     return [
-      { id: 'all', label: 'All Teams', count: counts.all },
-      { id: 'Project Delivery', label: 'Project Delivery', count: counts['Project Delivery'] || 0 },
-      { id: 'Design Engineering', label: 'Design Engineering', count: counts['Design Engineering'] || 0 },
-      { id: 'Operations', label: 'Operations & Maintenance', count: counts['Operations'] || 0 },
+      { id: 'all', label: 'All Openings', count: counts.all },
+      { id: 'urgent', label: '★ Urgent Hiring', count: counts.urgent },
+      ...deptList.map((d) => ({ id: d, label: d, count: counts[d] || 0 })),
     ];
   }, []);
 
   // Filtered jobs
   const filteredJobs = useMemo(() => {
     return jobsData.filter((job) => {
-      const matchesDept = selectedDept === 'all' || job.department === selectedDept;
+      const matchesDept =
+        selectedDept === 'all'
+          ? true
+          : selectedDept === 'urgent'
+          ? job.isUrgent
+          : job.department === selectedDept;
       const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
         !q ||
         job.title.toLowerCase().includes(q) ||
         job.department.toLowerCase().includes(q) ||
         job.location.toLowerCase().includes(q) ||
+        job.experience.toLowerCase().includes(q) ||
         job.teaser.toLowerCase().includes(q);
       return matchesDept && matchesSearch;
     });
   }, [selectedDept, searchQuery]);
+
+  const urgentJobs = useMemo(() => filteredJobs.filter((j) => j.isUrgent), [filteredJobs]);
+  const normalJobs = useMemo(() => filteredJobs.filter((j) => !j.isUrgent), [filteredJobs]);
 
   return (
     <div className="careers-page">
@@ -260,7 +336,7 @@ export default function Career() {
             <span className="careers-section-kicker">CURRENT OPPORTUNITIES</span>
             <h2 className="careers-section-title">Explore Open Roles</h2>
             <p className="careers-section-subtitle">
-              Discover opportunities across our Project Delivery, Design Engineering, and Operations teams.
+              Discover active career opportunities across Estimation, Site Projects, Human Resources, Procurement, and Technical Support.
             </p>
           </div>
 
@@ -271,7 +347,7 @@ export default function Career() {
               <input
                 type="text"
                 className="careers-search-input"
-                placeholder="Search by role, team, or location..."
+                placeholder="Search by role, team, or experience..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -291,7 +367,7 @@ export default function Career() {
               {departments.map((dept) => (
                 <button
                   key={dept.id}
-                  className={`careers-tab-btn ${selectedDept === dept.id ? 'is-active' : ''}`}
+                  className={`careers-tab-btn ${selectedDept === dept.id ? 'is-active' : ''} ${dept.id === 'urgent' ? 'tab-urgent-highlight' : ''}`}
                   onClick={() => setSelectedDept(dept.id)}
                 >
                   <span>{dept.label}</span>
@@ -301,82 +377,163 @@ export default function Career() {
             </div>
           </div>
 
-          {/* Job Cards Grid */}
-          <div className="careers-jobs-grid">
-            <AnimatePresence mode="popLayout">
-              {filteredJobs.map((job) => (
-                <motion.div
-                  key={job.id}
-                  className={`careers-job-card ${job.featured ? 'is-featured' : ''}`}
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div>
-                    <div className="careers-job-top">
-                      <span className="careers-job-dept-badge">{job.department}</span>
-                      {job.featured && (
-                        <span className="careers-job-featured-badge">
-                          <FiZap /> Featured Role
-                        </span>
-                      )}
-                    </div>
-
-                    <h3 className="careers-job-title">{job.title}</h3>
-                    <p className="careers-job-desc">{job.teaser}</p>
-                  </div>
-
-                  <div>
-                    <div className="careers-job-meta-row">
-                      <div className="careers-job-meta-item">
-                        <FiMapPin /> {job.location}
-                      </div>
-                      <div className="careers-job-meta-item">
-                        <FiClock /> {job.type}
-                      </div>
-                      <div className="careers-job-meta-item">
-                        <FiBriefcase /> {job.level}
-                      </div>
-                    </div>
-
-                    <div className="careers-job-actions">
-                      <button
-                        className="careers-view-btn"
-                        onClick={() => setActiveModalJob(job)}
-                      >
-                        View Details
-                      </button>
-                      <a
-                        className="careers-apply-btn"
-                        href={`mailto:careers@prudentepc.com?subject=${encodeURIComponent(`Application: ${job.title}`)}`}
-                      >
-                        Apply <FiArrowUpRight />
-                      </a>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-
-            {filteredJobs.length === 0 && (
-              <div className="careers-empty-state">
-                <FiBriefcase className="careers-empty-icon" />
-                <h3>No matching roles found</h3>
-                <p>Try clearing your search or selecting another team filter.</p>
-                <button
-                  className="careers-empty-btn"
-                  onClick={() => {
-                    setSelectedDept('all');
-                    setSearchQuery('');
-                  }}
-                >
-                  Reset Filters
-                </button>
+          {/* SECTION A: URGENT HIRINGS (Special Design) */}
+          {urgentJobs.length > 0 && (
+            <div className="careers-urgent-tier">
+              <div className="careers-tier-header urgent-tier-header">
+                <div className="urgent-badge-pill">
+                  <span className="urgent-pulse-dot" />
+                  <span>URGENT REQUIREMENTS • IMMEDIATE JOINING</span>
+                </div>
+                <h3 className="urgent-tier-title">Priority Openings</h3>
+                <p className="urgent-tier-desc">
+                  These positions have fast-tracked interview schedules and immediate placement priorities.
+                </p>
               </div>
-            )}
-          </div>
+
+              <div className="careers-jobs-grid urgent-grid">
+                <AnimatePresence mode="popLayout">
+                  {urgentJobs.map((job) => (
+                    <motion.div
+                      key={job.id}
+                      className="prudent-job-card prudent-job-card--urgent"
+                      layout
+                      initial={{ opacity: 0, y: 18 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.96 }}
+                      transition={{ duration: 0.28 }}
+                    >
+                      {/* Top Ribbon Badge */}
+                      <div className="urgent-ribbon-badge">
+                        <span className="urgent-star">★</span> Urgent Hiring
+                      </div>
+
+                      <div className="prudent-card-inner">
+                        {/* Top Row: Category + Employment Type */}
+                        <div className="prudent-card-top">
+                          <span className="prudent-job-dept-badge">{job.department}</span>
+                          <span className="prudent-job-type">{job.type}</span>
+                        </div>
+
+                        {/* Job Title */}
+                        <h4 className="prudent-job-title">{job.title}</h4>
+
+                        {/* Location & Experience Meta */}
+                        <div className="prudent-job-meta">
+                          <span className="meta-loc">{job.location}</span>
+                          <span className="meta-dot">•</span>
+                          <span className="meta-exp">{job.experience}</span>
+                        </div>
+
+                        {/* Teaser summary */}
+                        <p className="prudent-job-teaser">{job.teaser}</p>
+
+                        {/* Actions matching reference: View role (outline) + Apply (blue solid) */}
+                        <div className="prudent-job-actions">
+                          <button
+                            className="prudent-btn-view"
+                            onClick={() => setActiveModalJob(job)}
+                          >
+                            View role
+                          </button>
+                          <a
+                            className="prudent-btn-apply"
+                            href={`mailto:careers@prudentepc.com?subject=${encodeURIComponent(`Urgent Application: ${job.title}`)}`}
+                          >
+                            Apply
+                          </a>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            </div>
+          )}
+
+          {/* SECTION B: NORMAL HIRINGS */}
+          {normalJobs.length > 0 && (
+            <div className="careers-normal-tier">
+              <div className="careers-tier-header normal-tier-header">
+                <span className="normal-tier-kicker">ADDITIONAL OPENINGS</span>
+                <h3 className="normal-tier-title">Open Positions</h3>
+                <p className="normal-tier-desc">
+                  Explore specialized career opportunities across our project and corporate departments.
+                </p>
+              </div>
+
+              <div className="careers-jobs-grid normal-grid">
+                <AnimatePresence mode="popLayout">
+                  {normalJobs.map((job) => (
+                    <motion.div
+                      key={job.id}
+                      className="prudent-job-card prudent-job-card--normal"
+                      layout
+                      initial={{ opacity: 0, y: 18 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.96 }}
+                      transition={{ duration: 0.28 }}
+                    >
+                      <div className="prudent-card-inner">
+                        {/* Top Row: Category + Employment Type */}
+                        <div className="prudent-card-top">
+                          <span className="prudent-job-dept-badge">{job.department}</span>
+                          <span className="prudent-job-type">{job.type}</span>
+                        </div>
+
+                        {/* Job Title */}
+                        <h4 className="prudent-job-title">{job.title}</h4>
+
+                        {/* Location & Experience Meta */}
+                        <div className="prudent-job-meta">
+                          <span className="meta-loc">{job.location}</span>
+                          <span className="meta-dot">•</span>
+                          <span className="meta-exp">{job.experience}</span>
+                        </div>
+
+                        {/* Teaser summary */}
+                        <p className="prudent-job-teaser">{job.teaser}</p>
+
+                        {/* Actions: View role (outline) + Apply (blue solid) */}
+                        <div className="prudent-job-actions">
+                          <button
+                            className="prudent-btn-view"
+                            onClick={() => setActiveModalJob(job)}
+                          >
+                            View role
+                          </button>
+                          <a
+                            className="prudent-btn-apply"
+                            href={`mailto:careers@prudentepc.com?subject=${encodeURIComponent(`Application: ${job.title}`)}`}
+                          >
+                            Apply
+                          </a>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {filteredJobs.length === 0 && (
+            <div className="careers-empty-state">
+              <FiBriefcase className="careers-empty-icon" />
+              <h3>No matching roles found</h3>
+              <p>Try clearing your search query or selecting another department filter.</p>
+              <button
+                className="careers-empty-btn"
+                onClick={() => {
+                  setSelectedDept('all');
+                  setSearchQuery('');
+                }}
+              >
+                Reset Filters
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -464,14 +621,21 @@ export default function Career() {
                 >
                   <FiX />
                 </button>
-                <span className="careers-job-dept-badge">{activeModalJob.department}</span>
-                <h3 className="careers-job-title" style={{ marginTop: 12, marginBottom: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                  <span className="prudent-job-dept-badge">{activeModalJob.department}</span>
+                  {activeModalJob.isUrgent && (
+                    <span className="urgent-ribbon-badge-modal">
+                      ★ Urgent Hiring • Immediate Placement
+                    </span>
+                  )}
+                </div>
+                <h3 className="careers-job-title" style={{ marginTop: 14, marginBottom: 8, fontSize: '1.45rem' }}>
                   {activeModalJob.title}
                 </h3>
-                <div style={{ display: 'flex', gap: 16, fontSize: '0.86rem', color: '#64748b', fontWeight: 600 }}>
+                <div style={{ display: 'flex', gap: 16, fontSize: '0.88rem', color: '#475569', fontWeight: 600, flexWrap: 'wrap' }}>
                   <span><FiMapPin style={{ color: '#f08020' }} /> {activeModalJob.location}</span>
-                  <span><FiClock style={{ color: '#f08020' }} /> {activeModalJob.type}</span>
-                  <span><FiBriefcase style={{ color: '#f08020' }} /> {activeModalJob.level}</span>
+                  <span><FiBriefcase style={{ color: '#006030' }} /> {activeModalJob.experience}</span>
+                  <span><FiClock style={{ color: '#2563eb' }} /> {activeModalJob.type}</span>
                 </div>
               </div>
 

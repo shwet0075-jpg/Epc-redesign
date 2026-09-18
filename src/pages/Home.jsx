@@ -195,7 +195,7 @@ export default function Home() {
         </motion.div>
 
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '60px', alignItems: 'start', position: 'relative' }}>
+          <div className="epc-hero-grid-v2">
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -419,7 +419,7 @@ export default function Home() {
           <ScrollStagger
             variant="rise-3d"
             stagger={0.14}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '60px' }}
+            className="epc-foundations-grid"
           >
             {foundations.map((foundation, index) => (
               <div className="epc-foundation-col" key={foundation.title}>

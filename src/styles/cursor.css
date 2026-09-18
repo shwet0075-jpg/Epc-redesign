@@ -33,30 +33,34 @@ html.custom-cursor-active [contenteditable="true"] {
   pointer-events: none;
   opacity: 0;
   will-change: transform;
-  /* Direct positioning via RAF loop — no transition lag on movement */
-  transition: opacity 0.15s ease;
+  transform: translate3d(-100px, -100px, 0);
+  /* Pure hardware direct dispatch — no transition delay on movement */
+  transition: opacity 0.1s ease;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .cursor-arrow-svg {
   display: block;
   width: 22px;
   height: 22px;
-  /* Path starts at (3, 3) — offset by -3px so the tip is exactly at the mouse coordinate */
+  /* Path tip is at (3, 3) — offset by -3px so tip is calibrated precisely to the mouse click coordinate */
   margin-top: -3px;
   margin-left: -3px;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+  transform-origin: 3px 3px;
+  filter: drop-shadow(0 1.5px 3.5px rgba(0, 0, 0, 0.35));
+  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), filter 0.15s ease;
 }
 
-/* Hover over buttons/links: subtle energetic scale and warm glow */
+/* Hover over buttons/links: subtle energetic scale from tip and warm glow */
 .custom-cursor-pointer.is-hovering .cursor-arrow-svg {
   transform: scale(1.12);
   filter: drop-shadow(0 0 10px rgba(240, 128, 32, 0.85)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
 }
 
-/* Click press: tactile micro-pinch */
+/* Click press: tactile micro-pinch pinned to click point */
 .custom-cursor-pointer.is-pressed .cursor-arrow-svg {
-  transform: scale(0.9);
+  transform: scale(0.92);
 }
 
 /* ==========================================================
