@@ -82,6 +82,51 @@
   z-index: 2;
 }
 
+/* ==========================================================================
+   MOTION.DEV TEXT REVEAL EFFECT FOR NAVBAR
+   ========================================================================== */
+
+.nav-reveal-text {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  height: 1.35em;
+  line-height: 1.35em;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.nav-reveal-copy {
+  display: inline-block;
+  height: 100%;
+  line-height: 1.35em;
+  white-space: nowrap;
+  transform: translateY(0%);
+  transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
+  will-change: transform;
+}
+
+.nav-reveal-copy--hover {
+  color: #006030;
+}
+
+.navbar-links a:hover .nav-reveal-copy {
+  transform: translateY(-100%);
+}
+
+.navbar-links a:hover .nav-reveal-copy--hover {
+  color: #006030;
+}
+
+.navbar-links a.active .nav-reveal-copy {
+  color: #005028;
+  font-weight: 700;
+}
+
+.navbar-links a.active:hover .nav-reveal-copy--hover {
+  color: #f08020;
+}
+
 /* Long Continuous Rail Track Covering All Page Names */
 .nav-rail-track {
   position: absolute;

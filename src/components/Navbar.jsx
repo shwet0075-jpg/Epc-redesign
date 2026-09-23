@@ -136,7 +136,12 @@ export default function Navbar() {
                 >
                   {({ isActive }) => (
                     <>
-                      <span className="nav-label-text">{link.label}</span>
+                      <span className="nav-label-text nav-reveal-text">
+                        <span className="nav-reveal-copy">{link.label}</span>
+                        <span className="nav-reveal-copy nav-reveal-copy--hover" aria-hidden="true">
+                          {link.label}
+                        </span>
+                      </span>
                       {link.children && <ChevronDown className="chevron" size={14} />}
                       {isActive && (
                         <motion.span

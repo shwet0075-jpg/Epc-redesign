@@ -46,12 +46,19 @@ function getCurtainMode(pathname) {
 function AppRoutes() {
   const location = useLocation();
   const mode = getCurtainMode(location.pathname);
-  const isFirstRender = useRef(true);
 
-  useEffect(() => {
-    // After the initial page mounts, allow curtain transitions for subsequent route changes
-    isFirstRender.current = false;
-  }, []);
+  // Track navigation: On startup / restart / refresh, only the Loading Line Reveal animation
+  // should run (no CurtainTransition). When navigating or returning from other screens,
+  // the previous curtain animation runs as expected.
+  const [hasNavigated, setHasNavigated] = useState(false);
+  const [prevPath, setPrevPath] = useState(location.pathname);
+
+  if (location.pathname !== prevPath) {
+    setPrevPath(location.pathname);
+    if (!hasNavigated) {
+      setHasNavigated(true);
+    }
+  }
 
   const routeTree = (
     <Suspense fallback={null}>
@@ -68,11 +75,12 @@ function AppRoutes() {
     </Suspense>
   );
 
-  // On first mount (initial page load / hot reload), render directly without double-curtain overlay
-  if (isFirstRender.current) {
+  // On initial site startup / restart / refresh, render directly without CurtainTransition
+  if (!hasNavigated) {
     return routeTree;
   }
 
+  // When returning from any different screen or switching routes, run CurtainTransition
   return (
     <AnimatePresence mode="wait">
       <CurtainTransition key={location.pathname} mode={mode}>
@@ -104,6 +112,17 @@ export default function App() {
   // Always run loading animation on every page reload
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (loading) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [loading]);
+
   const handleComplete = () => {
     setLoading(false);
   };
@@ -111,11 +130,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <CustomCursor />
-      <AnimatePresence mode="wait">
-        {loading ? (
+      {/* Live website mounted underneath loader so parting shutters reveal home screen */}
+      <Website key="website" />
+      <AnimatePresence>
+        {loading && (
           <PremiumLoader key="loader" onComplete={handleComplete} />
-        ) : (
-          <Website key="website" />
         )}
       </AnimatePresence>
     </BrowserRouter>
