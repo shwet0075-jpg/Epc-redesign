@@ -374,49 +374,119 @@
 
 /* Centered Typography Below the Emblem */
 .envato-typography-block {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  margin-top: 14px;
   will-change: transform, opacity, filter;
 }
 
 .envato-title {
+  position: relative;
   margin: 0;
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 0.3em;
-  font-size: 2.85rem;
-  font-weight: 850;
+  gap: 0.32em;
+  font-family: 'Fredoka', 'Comfortaa', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(2.35rem, 4.6vw, 3.3rem);
+  font-weight: 700;
   letter-spacing: -0.01em;
+  text-transform: uppercase;
   line-height: 1;
+  overflow: visible;
+  padding: 6px 14px;
+}
+
+/* Split-letter hidden overflow cell mask for modern mechanical 3D rise */
+.envato-char-cell {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: baseline;
+  padding: 0 0.5px;
+}
+
+.envato-char {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+  transform-style: preserve-3d;
+  -webkit-font-smoothing: antialiased;
 }
 
 .envato-text-prudent {
-  color: #006030;
+  display: inline-flex;
+  align-items: baseline;
+  letter-spacing: -0.005em;
+}
+
+.envato-char-green {
+  background: linear-gradient(150deg, #005228 0%, #007338 52%, #009348 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 10px rgba(0, 82, 40, 0.24));
+  font-weight: 700;
 }
 
 .envato-text-epc {
   display: inline-flex;
+  align-items: baseline;
+  letter-spacing: 0.03em;
+  margin-left: 0.12em;
 }
 
 .envato-letter-orange {
-  color: #F08020;
+  background: linear-gradient(145deg, #ffa244 0%, #f08020 50%, #d65f00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 12px rgba(240, 128, 32, 0.4));
+  font-weight: 700;
 }
 
 .envato-letter-green {
-  color: #006030;
+  background: linear-gradient(150deg, #005228 0%, #007338 52%, #009348 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 10px rgba(0, 82, 40, 0.24));
+  font-weight: 700;
 }
 
-.envato-tagline {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.74rem;
-  font-weight: 700;
-  color: #006030;
-  text-transform: uppercase;
-  will-change: letter-spacing, opacity;
+/* Specular Liquid Light Shimmer Sweep across the title */
+.envato-title-shimmer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 55%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.9) 50%,
+    transparent 100%
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 5;
+  transform: skewX(-24deg);
+}
+
+/* Precision Architectural Glow Laser Line beneath the title */
+.envato-title-underline {
+  width: 150px;
+  height: 2px;
+  margin-top: 12px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 82, 40, 0.4) 20%,
+    rgba(240, 128, 32, 0.95) 50%,
+    rgba(0, 82, 40, 0.4) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px rgba(240, 128, 32, 0.5);
+  border-radius: 2px;
+  transform-origin: center;
 }
 
 /* Static Reduced Motion Mode */
@@ -447,11 +517,7 @@
   }
 
   .envato-title {
-    font-size: 2rem;
-    gap: 0.25em;
-  }
-
-  .envato-tagline {
-    font-size: 0.65rem;
+    font-size: 2.1rem;
+    gap: 0.22em;
   }
 }

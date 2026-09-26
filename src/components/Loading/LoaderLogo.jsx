@@ -33,13 +33,14 @@ export default function LoaderLogo({ shouldReduceMotion }) {
         </div>
         <div className="envato-typography-block">
           <h2 className="envato-title">
-            <span className="envato-text-prudent">Prudent</span>
+            <span className="envato-text-prudent">
+              <span className="envato-char-green">PRUDENT</span>
+            </span>
             <span className="envato-text-epc">
               <span className="envato-letter-orange">E</span>
               <span className="envato-letter-green">PC</span>
             </span>
           </h2>
-          <span className="envato-tagline">ENGINEERING EXCELLENCE</span>
         </div>
       </div>
     );
@@ -266,45 +267,145 @@ export default function LoaderLogo({ shouldReduceMotion }) {
           />
         </motion.div>
 
-        {/* Centered Typography Reveal Below the Emblem (Envato T9TMYG8 Style) */}
-        <motion.div
-          className="envato-typography-block"
-          initial={{ opacity: 0, y: 32, filter: "blur(8px)" }}
-          animate={
-            stage === "locked"
-              ? {
-                  opacity: 1,
-                  y: 0,
-                  filter: "blur(0px)",
-                }
-              : { opacity: 0, y: 32, filter: "blur(8px)" }
-          }
-          transition={{
-            duration: 0.75,
-            delay: 0.15,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-        >
+        {/* Centered Typography Reveal Below the Emblem — Modern Split-Letter 3D Kinetic Roll & Specular Sheen */}
+        <div className="envato-typography-block">
           <h2 className="envato-title">
-            <span className="envato-text-prudent">Prudent</span>
-            <span className="envato-text-epc">
-              <span className="envato-letter-orange">E</span>
-              <span className="envato-letter-green">PC</span>
+            <span className="envato-text-prudent">
+              {"PRUDENT".split("").map((char, index) => (
+                <span key={index} className="envato-char-cell">
+                  <motion.span
+                    className="envato-char envato-char-green"
+                    initial={{
+                      y: "115%",
+                      opacity: 0,
+                      rotateX: 45,
+                      filter: "blur(6px)",
+                    }}
+                    animate={
+                      stage === "locked"
+                        ? {
+                            y: "0%",
+                            opacity: 1,
+                            rotateX: 0,
+                            filter: "blur(0px)",
+                          }
+                        : {}
+                    }
+                    transition={{
+                      duration: 0.58,
+                      delay: 0.05 + index * 0.04,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  >
+                    {char}
+                  </motion.span>
+                </span>
+              ))}
             </span>
+
+            <span className="envato-text-epc">
+              <span className="envato-char-cell">
+                <motion.span
+                  className="envato-char envato-letter-orange"
+                  initial={{
+                    y: "115%",
+                    opacity: 0,
+                    scale: 0.75,
+                    rotateX: 45,
+                    filter: "blur(6px)",
+                  }}
+                  animate={
+                    stage === "locked"
+                      ? {
+                          y: "0%",
+                          opacity: 1,
+                          scale: 1,
+                          rotateX: 0,
+                          filter: "blur(0px)",
+                        }
+                      : {}
+                  }
+                  transition={{
+                    duration: 0.58,
+                    delay: 0.36,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  E
+                </motion.span>
+              </span>
+
+              {"PC".split("").map((char, index) => (
+                <span key={index} className="envato-char-cell">
+                  <motion.span
+                    className="envato-char envato-letter-green"
+                    initial={{
+                      y: "115%",
+                      opacity: 0,
+                      rotateX: 45,
+                      filter: "blur(6px)",
+                    }}
+                    animate={
+                      stage === "locked"
+                        ? {
+                            y: "0%",
+                            opacity: 1,
+                            rotateX: 0,
+                            filter: "blur(0px)",
+                          }
+                        : {}
+                    }
+                    transition={{
+                      duration: 0.58,
+                      delay: 0.42 + index * 0.05,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  >
+                    {char}
+                  </motion.span>
+                </span>
+              ))}
+            </span>
+
+            {/* Specular Liquid Light Sheen sweep across typography */}
+            <motion.span
+              className="envato-title-shimmer"
+              initial={{ x: "-180%", opacity: 0 }}
+              animate={
+                stage === "locked"
+                  ? {
+                      x: ["-180%", "240%"],
+                      opacity: [0, 0.9, 0],
+                    }
+                  : {}
+              }
+              transition={{
+                duration: 1.05,
+                delay: 1.25,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            />
           </h2>
-          <motion.span
-            className="envato-tagline"
-            initial={{ opacity: 0, letterSpacing: "0.15em" }}
+
+          {/* Precision Architectural Glow Laser Line beneath the title */}
+          <motion.div
+            className="envato-title-underline"
+            initial={{ scaleX: 0, opacity: 0 }}
             animate={
               stage === "locked"
-                ? { opacity: 0.75, letterSpacing: "0.28em" }
-                : { opacity: 0 }
+                ? {
+                    scaleX: [0, 1.1, 1],
+                    opacity: [0, 0.75, 0.45],
+                  }
+                : {}
             }
-            transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
-          >
-            ENGINEERING EXCELLENCE
-          </motion.span>
-        </motion.div>
+            transition={{
+              duration: 0.7,
+              delay: 0.6,
+              ease: "easeOut",
+            }}
+          />
+        </div>
       </div>
     </div>
   );

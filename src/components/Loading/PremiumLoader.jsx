@@ -18,6 +18,9 @@ export default function PremiumLoader({ onComplete }) {
   const [phase, setPhase] = useState("logo"); // "logo" | "fade" | "draw" | "expand"
 
   useEffect(() => {
+    const isHoldMode = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("hold") === "1";
+    if (isHoldMode) return;
+
     if (shouldReduceMotion) {
       const timer = setTimeout(() => {
         onComplete?.();
