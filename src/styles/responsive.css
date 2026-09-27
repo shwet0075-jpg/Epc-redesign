@@ -198,6 +198,10 @@
     grid-template-columns: 1fr !important;
     gap: 36px !important;
   }
+  .cert-cards-row {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
   .dc-image-wrap {
     height: 280px !important;
   }
@@ -275,6 +279,10 @@
     grid-template-columns: 1fr !important;
     max-width: 320px;
     margin: 0 auto;
+  }
+  .cert-cards-row {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
   }
   .cert-card {
     flex-direction: column !important;

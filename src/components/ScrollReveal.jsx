@@ -6,8 +6,21 @@ export const revealVariants = {
   "fade-up": {
     hidden: {
       opacity: 0,
-      y: 36,
-      filter: "blur(8px)",
+      y: 40,
+      filter: "blur(4px)",
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+    },
+  },
+
+  "kk-glide-up": {
+    hidden: {
+      opacity: 0,
+      y: 42,
+      filter: "blur(4px)",
     },
     visible: {
       opacity: 1,
@@ -185,7 +198,7 @@ export default function ScrollReveal({
   children,
   variant = "fade-up",
   delay = 0,
-  duration = 0.7,
+  duration = 1.1,
   className = "",
   viewportOnce = false,
   amount = 0.15,
@@ -207,7 +220,7 @@ export default function ScrollReveal({
       transition={{
         duration,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1],
       }}
       variants={revealVariants[variant] || revealVariants["fade-up"]}
     >

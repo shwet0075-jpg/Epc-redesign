@@ -26,6 +26,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 32px;
+  perspective: 1400px;
 }
 .info-card {
   background: #fff; border-radius: var(--radius-md); overflow: hidden;
@@ -524,6 +525,13 @@
 }
 
 /* Premium solution and career cards */
+.solution-card-wrapper {
+  position: relative;
+  height: 100%;
+  perspective: 1200px;
+  will-change: transform, opacity, filter;
+}
+
 .solution-card-item {
   position: relative;
   display: flex;
@@ -537,9 +545,39 @@
   transition: box-shadow var(--transition-med), border-color var(--transition-med);
 }
 
+.solution-card-accent-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3.5px;
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+  transform-origin: left;
+  z-index: 5;
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(240, 128, 32, 0.35);
+}
+
+.solution-card-reveal-sheen {
+  position: absolute;
+  top: -25%;
+  left: 0;
+  width: 55%;
+  height: 150%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  transform: skewX(-24deg);
+  pointer-events: none;
+  z-index: 6;
+  mix-blend-mode: overlay;
+}
+
 .solution-card-item::before {
-  height: 3px !important;
-  background: linear-gradient(90deg, var(--color-secondary), var(--color-primary)) !important;
+  display: none;
 }
 
 .solution-card-item:hover {

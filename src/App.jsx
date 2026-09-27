@@ -12,6 +12,7 @@ import ContinuityThread from "./components/ContinuityThread";
 import PremiumLoader from "./components/Loading/PremiumLoader";
 import CustomCursor from "./components/CustomCursor";
 import CurtainTransition from "./components/animations/CurtainTransition";
+import { LoaderProvider, useLoader } from "./context/LoaderContext";
 
 // Critical landing page: Direct import for instant FCP / LCP
 import Home from "./pages/Home";
@@ -108,9 +109,8 @@ function Website() {
   );
 }
 
-export default function App() {
-  // Always run loading animation on every page reload
-  const [loading, setLoading] = useState(true);
+function AppContent() {
+  const { loading, handleUnveil, handleComplete } = useLoader();
 
   useEffect(() => {
     if (loading) {
@@ -123,10 +123,6 @@ export default function App() {
     };
   }, [loading]);
 
-  const handleComplete = () => {
-    setLoading(false);
-  };
-
   return (
     <BrowserRouter>
       <CustomCursor />
@@ -134,9 +130,21 @@ export default function App() {
       <Website key="website" />
       <AnimatePresence>
         {loading && (
-          <PremiumLoader key="loader" onComplete={handleComplete} />
+          <PremiumLoader
+            key="loader"
+            onUnveil={handleUnveil}
+            onComplete={handleComplete}
+          />
         )}
       </AnimatePresence>
     </BrowserRouter>
+  );
+}
+
+export default function App() {
+  return (
+    <LoaderProvider>
+      <AppContent />
+    </LoaderProvider>
   );
 }

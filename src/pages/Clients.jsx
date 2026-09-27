@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiX, FiArrowRight, FiCheckCircle, FiShield, FiCpu, FiServer, FiTrendingUp } from 'react-icons/fi';
 import { clients } from '../data/clients';
 import ScrollReveal from '../components/ScrollReveal';
+import ScrollText from '../components/ScrollText';
 import ContactCTA from '../components/ContactCTA';
 import '../styles/clients.css';
 
@@ -154,9 +155,9 @@ export default function Clients() {
             CLIENT SHOWCASE & PARTNERSHIPS
           </div>
 
-          <h1 className="clients-hero-title">
+          <ScrollText as="h1" className="clients-hero-title" delay={0.1}>
             Trusted by India’s Leading <span>Institutions & Enterprises</span>
-          </h1>
+          </ScrollText>
 
           <p className="clients-hero-lead">
             From national railways, airports, and defence facilities to major banking headquarters and Tier-III/IV data centres across India.

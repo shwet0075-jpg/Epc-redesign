@@ -264,7 +264,44 @@ function AboutStyles() {
         transform: scale(1.05);
       }
       .cert-cards-row {
+        display: grid;
         grid-template-columns: 1fr 1fr;
+        gap: 32px;
+        align-items: stretch;
+        margin-top: 64px;
+      }
+      @media (max-width: 900px) {
+        .cert-cards-row {
+          grid-template-columns: 1fr !important;
+          gap: 24px !important;
+          margin-top: 40px !important;
+        }
+        .cert-card-pro {
+          padding: 24px !important;
+          gap: 20px !important;
+        }
+      }
+      @media (max-width: 600px) {
+        .cert-card-pro {
+          flex-direction: column !important;
+          align-items: center !important;
+          text-align: center !important;
+          padding: 24px 18px !important;
+          gap: 18px !important;
+        }
+        .cert-card-pro .cert-card-image {
+          width: 170px !important;
+          height: 230px !important;
+        }
+        .cert-card-pro .cert-card-body {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        .cert-card-pro .eyebrow {
+          justify-content: center;
+        }
       }
       .director-executive-wrapper {
         position: relative;
@@ -725,14 +762,13 @@ export default function About() {
             About Us
           </motion.span>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
+          <ScrollText
+            as="h1"
+            delay={0.1}
             style={{ fontSize: 'clamp(3rem, 5vw,4.6rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}
           >
             Our <span className="about-shimmer-badge">Company</span>
-          </motion.h1>
+          </ScrollText>
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -1324,13 +1360,6 @@ export default function About() {
             <ScrollStagger
               variant="scale-in"
               stagger={0.15}
-              style={{
-                marginTop: '64px',
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '32px',
-                alignItems: 'stretch',
-              }}
               className="cert-cards-row"
             >
               {/* Certified Licensee */}

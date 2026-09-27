@@ -16,6 +16,7 @@ import {
 } from 'react-icons/fi';
 import { services } from '../data/services';
 import ScrollReveal from '../components/ScrollReveal';
+import ScrollText from '../components/ScrollText';
 import ContactCTA from '../components/ContactCTA';
 import MagneticButton from '../components/animations/MagneticButton';
 
@@ -354,14 +355,13 @@ export default function Services() {
             </span>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+          <ScrollText
+            as="h1"
+            delay={0.1}
             style={{ fontSize: 'clamp(2.8rem, 5.2vw, 4.8rem)', fontWeight: 800, margin: '6px 0 20px', color: '#ffffff', letterSpacing: '-0.03em' }}
           >
             Our <span style={{ color: '#F08020' }}>Services</span>
-          </motion.h1>
+          </ScrollText>
 
           <motion.p
             initial={{ opacity: 0, y: 15 }}
@@ -718,9 +718,12 @@ export default function Services() {
             >
               HOW WE WORK
             </span>
-            <h2 style={{ fontSize: 'clamp(2.2rem, 3.8vw, 3.4rem)', fontWeight: 800, color: '#0c1e15', lineHeight: 1.15, margin: '0 0 16px' }}>
+            <ScrollText
+              as="h2"
+              style={{ fontSize: 'clamp(2.2rem, 3.8vw, 3.4rem)', fontWeight: 800, color: '#0c1e15', lineHeight: 1.15, margin: '0 0 16px' }}
+            >
               Our 4-Step <span style={{ color: '#006030' }}>Process</span>
-            </h2>
+            </ScrollText>
             <p style={{ color: '#557262', fontSize: '1.05rem', margin: 0 }}>
               A straightforward, transparent approach that ensures your projects are finished on schedule and run safely.
             </p>
@@ -793,9 +796,12 @@ export default function Services() {
             >
               OUR PROMISE
             </span>
-            <h2 style={{ fontSize: 'clamp(2.2rem, 3.8vw, 3.4rem)', fontWeight: 800, color: '#ffffff', lineHeight: 1.15, margin: '0 0 16px' }}>
+            <ScrollText
+              as="h2"
+              style={{ fontSize: 'clamp(2.2rem, 3.8vw, 3.4rem)', fontWeight: 800, color: '#ffffff', lineHeight: 1.15, margin: '0 0 16px' }}
+            >
               Service Standards You Can <span style={{ color: '#F08020' }}>Count On</span>
-            </h2>
+            </ScrollText>
             <p style={{ color: '#9bb8a8', fontSize: '1.05rem', margin: 0 }}>
               Backed by experienced engineers, dependable equipment, and round-the-clock support.
             </p>

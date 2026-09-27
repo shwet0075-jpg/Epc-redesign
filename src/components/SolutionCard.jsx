@@ -46,79 +46,301 @@ export default function SolutionCard({ title, blurb, image, path, index }) {
     setIsHovered(false);
   };
 
+  // Left column (01, 03) comes from left; right column (02, 04) comes from right
+  const isLeft = index % 2 === 0;
+  const initialX = isLeft ? -85 : 85;
+  const initialRotateY = isLeft ? -9 : 9;
+  const initialRotateZ = isLeft ? -1.5 : 1.5;
+  const staggerDelay = isLeft ? 0.05 : 0.18;
+
+  // Variants for synchronized bi-directional entrance (scroll down & scroll bottom-to-top)
+  const wrapperVariants = {
+    hidden: {
+      opacity: 0,
+      x: initialX,
+      y: 40,
+      scale: 0.94,
+      rotateY: initialRotateY,
+      rotateZ: initialRotateZ,
+      filter: 'blur(8px)',
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      scale: 1,
+      rotateY: 0,
+      rotateZ: 0,
+      filter: 'blur(0px)',
+      transition: {
+        duration: 0.72,
+        delay: staggerDelay,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const accentVariants = {
+    hidden: { scaleX: 0 },
+    visible: {
+      scaleX: [0, 1, 0.24],
+      transition: {
+        duration: 0.85,
+        delay: staggerDelay + 0.15,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const sheenVariants = {
+    hidden: { x: '-160%', opacity: 0 },
+    visible: {
+      x: ['-160%', '240%'],
+      opacity: [0, 0.85, 0],
+      transition: {
+        duration: 0.95,
+        delay: staggerDelay + 0.28,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const imgVariants = {
+    hidden: { scale: 1.15, filter: 'brightness(0.92)' },
+    visible: {
+      scale: 1,
+      filter: 'brightness(1)',
+      transition: {
+        duration: 0.75,
+        delay: staggerDelay,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const numberVariants = {
+    hidden: { opacity: 0, x: isLeft ? -20 : 20, scale: 0.7 },
+    visible: {
+      opacity: 0.9,
+      x: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        delay: staggerDelay + 0.15,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const iconVariants = {
+    hidden: { scale: 0, rotate: isLeft ? -25 : 25, opacity: 0 },
+    visible: {
+      scale: 1,
+      rotate: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 20,
+        delay: staggerDelay + 0.18,
+      },
+    },
+  };
+
+  const kickerVariants = {
+    hidden: { opacity: 0, x: isLeft ? -10 : 10 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.45,
+        delay: staggerDelay + 0.22,
+        ease: 'easeOut',
+      },
+    },
+  };
+
+  const titleVariants = {
+    hidden: { opacity: 0, y: 14 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        delay: staggerDelay + 0.25,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const blurbVariants = {
+    hidden: { opacity: 0, y: 12 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        delay: staggerDelay + 0.28,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
+  const linkVariants = {
+    hidden: { opacity: 0, y: 8 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.45,
+        delay: staggerDelay + 0.32,
+        ease: 'easeOut',
+      },
+    },
+  };
+
   return (
-    <motion.article
-      className="solution-card-item"
-      initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.1 }}
-      transition={{ duration: 0.52, delay: shouldReduceMotion ? 0 : index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={shouldReduceMotion ? undefined : { y: -10, scale: 1.015 }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={handleMouseLeave}
-      style={
-        shouldReduceMotion
-          ? undefined
-          : {
-              rotateX: springRotateX,
-              rotateY: springRotateY,
-              transformPerspective: 1200,
-            }
-      }
+    <motion.div
+      className="solution-card-wrapper"
+      initial={shouldReduceMotion ? false : "hidden"}
+      whileInView={shouldReduceMotion ? false : "visible"}
+      viewport={{ once: false, amount: 0.15 }}
+      variants={shouldReduceMotion ? undefined : wrapperVariants}
     >
-      <motion.div className="solution-card-image-wrap" layoutId={`sol-img-${path}`}>
-        <motion.img
-          src={image}
-          alt={title}
-          className="solution-card-img"
-          animate={shouldReduceMotion ? undefined : { scale: isHovered ? 1.08 : 1 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        />
-        <div className="solution-card-overlay" aria-hidden="true" />
-        <div className="solution-card-glow" aria-hidden="true" />
+      <motion.article
+        className="solution-card-item"
+        whileHover={shouldReduceMotion ? undefined : { y: -10, scale: 1.015 }}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={handleMouseLeave}
+        style={
+          shouldReduceMotion
+            ? undefined
+            : {
+                rotateX: springRotateX,
+                rotateY: springRotateY,
+                transformPerspective: 1200,
+              }
+        }
+      >
+        {/* Animated Precision Engineering Top Accent Bar */}
         {!shouldReduceMotion && (
           <motion.div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: spotlight,
-              opacity: isHovered ? 1 : 0,
-              transition: 'opacity .3s ease',
-              pointerEvents: 'none',
-            }}
+            className="solution-card-accent-bar"
+            variants={accentVariants}
           />
         )}
-        <span className="solution-card-number" aria-hidden="true">{number}</span>
-      </motion.div>
 
-      <div className="solution-card-content">
-        <div className="solution-card-heading">
+        {/* Specular Liquid Light Sheen Sweep on Reveal */}
+        {!shouldReduceMotion && (
           <motion.div
-            className="solution-card-icon-wrap"
-            animate={shouldReduceMotion ? undefined : { rotate: isHovered ? -8 : 0, scale: isHovered ? 1.08 : 1 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 18 }}
-          >
-            <span className="solution-card-icon" aria-hidden="true">
-              <Icon />
-            </span>
-          </motion.div>
-          <span className="solution-card-kicker">Solution {number}</span>
-        </div>
-        <h3 className="solution-card-title">{title}</h3>
-        <p>{blurb}</p>
-        <Link to={path} className="solution-card-link">
-          Explore solution
+            className="solution-card-reveal-sheen"
+            variants={sheenVariants}
+          />
+        )}
+
+        <motion.div className="solution-card-image-wrap" layoutId={`sol-img-${path}`}>
+          <motion.img
+            src={image}
+            alt={title}
+            className="solution-card-img"
+            variants={shouldReduceMotion ? undefined : imgVariants}
+            animate={
+              shouldReduceMotion
+                ? undefined
+                : {
+                    scale: isHovered ? 1.08 : 1,
+                  }
+            }
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          />
+          <div className="solution-card-overlay" aria-hidden="true" />
+          <div className="solution-card-glow" aria-hidden="true" />
+
+          {/* Interactive Mouse Spotlight */}
+          {!shouldReduceMotion && (
+            <motion.div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: spotlight,
+                opacity: isHovered ? 1 : 0,
+                transition: 'opacity .3s ease',
+                pointerEvents: 'none',
+              }}
+            />
+          )}
+
+          {/* Animated Watermark Index Number */}
           <motion.span
-            style={{ display: 'inline-flex' }}
-            animate={shouldReduceMotion ? undefined : { x: isHovered ? 4 : 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            className="solution-card-number"
+            aria-hidden="true"
+            variants={shouldReduceMotion ? undefined : numberVariants}
           >
-            <FiArrowUpRight aria-hidden="true" />
+            {number}
           </motion.span>
-        </Link>
-      </div>
-    </motion.article>
+        </motion.div>
+
+        <div className="solution-card-content">
+          <div className="solution-card-heading">
+            <motion.div
+              className="solution-card-icon-wrap"
+              variants={shouldReduceMotion ? undefined : iconVariants}
+              animate={
+                shouldReduceMotion
+                  ? undefined
+                  : { rotate: isHovered ? -8 : 0, scale: isHovered ? 1.08 : 1 }
+              }
+              transition={{
+                type: 'spring',
+                stiffness: 300,
+                damping: 20,
+              }}
+            >
+              <span className="solution-card-icon" aria-hidden="true">
+                <Icon />
+              </span>
+            </motion.div>
+
+            <motion.span
+              className="solution-card-kicker"
+              variants={shouldReduceMotion ? undefined : kickerVariants}
+            >
+              Solution {number}
+            </motion.span>
+          </div>
+
+          <motion.h3
+            className="solution-card-title"
+            variants={shouldReduceMotion ? undefined : titleVariants}
+          >
+            {title}
+          </motion.h3>
+
+          <motion.p
+            variants={shouldReduceMotion ? undefined : blurbVariants}
+          >
+            {blurb}
+          </motion.p>
+
+          <motion.div
+            variants={shouldReduceMotion ? undefined : linkVariants}
+            style={{ width: '100%', marginTop: 'auto' }}
+          >
+            <Link to={path} className="solution-card-link">
+              Explore solution
+              <motion.span
+                style={{ display: 'inline-flex' }}
+                animate={shouldReduceMotion ? undefined : { x: isHovered ? 4 : 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              >
+                <FiArrowUpRight aria-hidden="true" />
+              </motion.span>
+            </Link>
+          </motion.div>
+        </div>
+      </motion.article>
+    </motion.div>
   );
 }

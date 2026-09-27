@@ -13,7 +13,7 @@ import LoaderLogo from "./LoaderLogo";
  * Phase 4 (3.37s – 4.25s) [expand]: Dual shutter panels part horizontally to -102% and +102% with glowing orange & green laser leading edges, revealing the live website beneath.
  * Phase 5 (4.25s+): Complete handover to interactive home screen.
  */
-export default function PremiumLoader({ onComplete }) {
+export default function PremiumLoader({ onComplete, onUnveil }) {
   const shouldReduceMotion = useReducedMotion();
   const [phase, setPhase] = useState("logo"); // "logo" | "fade" | "draw" | "expand"
 
@@ -23,6 +23,7 @@ export default function PremiumLoader({ onComplete }) {
 
     if (shouldReduceMotion) {
       const timer = setTimeout(() => {
+        onUnveil?.();
         onComplete?.();
       }, 250);
       return () => clearTimeout(timer);
@@ -38,6 +39,7 @@ export default function PremiumLoader({ onComplete }) {
 
     const tExpand = setTimeout(() => {
       setPhase("expand");
+      onUnveil?.();
     }, 3150);
 
     const tComplete = setTimeout(() => {
@@ -50,7 +52,7 @@ export default function PremiumLoader({ onComplete }) {
       clearTimeout(tExpand);
       clearTimeout(tComplete);
     };
-  }, [onComplete, shouldReduceMotion]);
+  }, [onComplete, onUnveil, shouldReduceMotion]);
 
   if (shouldReduceMotion) {
     return (

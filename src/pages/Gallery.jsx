@@ -371,10 +371,9 @@ export default function Gallery() {
             Visual Reconnaissance
           </motion.span>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+          <ScrollText
+            as="h1"
+            delay={0.1}
             style={{
               fontSize: 'clamp(2.6rem, 5vw, 4.2rem)',
               fontWeight: 800,
@@ -384,7 +383,7 @@ export default function Gallery() {
             }}
           >
             Our Work in <span style={{ color: '#f08020' }}>Action</span>
-          </motion.h1>
+          </ScrollText>
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}

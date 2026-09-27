@@ -17,6 +17,7 @@ import {
   FiSliders,
 } from 'react-icons/fi';
 import ScrollReveal from '../components/ScrollReveal';
+import ScrollText from '../components/ScrollText';
 import ContactCTA from '../components/ContactCTA';
 import '../styles/careers.css';
 
@@ -286,9 +287,9 @@ export default function Career() {
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <span className="careers-eyebrow-badge">⚡ CAREERS AT PRUDENT EPC</span>
 
-          <h1 className="careers-hero-title">
+          <ScrollText as="h1" className="careers-hero-title" delay={0.1}>
             Build <em>Mission-Critical</em> Infrastructure With Us.
-          </h1>
+          </ScrollText>
 
           <p className="careers-hero-desc">
             Join the forward-thinking engineers and leaders shaping fire safety, building automation,
@@ -334,7 +335,7 @@ export default function Career() {
         <div className="container">
           <div className="careers-section-header">
             <span className="careers-section-kicker">CURRENT OPPORTUNITIES</span>
-            <h2 className="careers-section-title">Explore Open Roles</h2>
+            <ScrollText as="h2" className="careers-section-title">Explore Open Roles</ScrollText>
             <p className="careers-section-subtitle">
               Discover active career opportunities across Estimation, Site Projects, Human Resources, Procurement, and Technical Support.
             </p>

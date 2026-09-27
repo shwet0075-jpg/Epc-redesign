@@ -12,6 +12,7 @@ import CountUp from '../components/animations/CountUp';
 import MagneticButton from '../components/animations/MagneticButton';
 import HeroEyebrow from '../components/animations/HeroEyebrow';
 import { useTilt3D } from '../animations/parallaxVariants';
+import { useLoader } from '../context/LoaderContext';
 
 // motion(Link) so the primary CTA gets a real spring/tap interaction
 // instead of relying on CSS :hover alone.
@@ -135,6 +136,7 @@ const marqueeItems = [
 ];
 
 export default function Home() {
+  const { isUnveiled } = useLoader();
   const [active, setActive] = useState(0);
   const shouldReduceMotion = useReducedMotion();
   const heroRef = useRef(null);
@@ -197,6 +199,7 @@ export default function Home() {
         <div className="container">
           <div className="epc-hero-grid-v2">
             <motion.div
+              key={isUnveiled ? 'hero-revealed' : 'hero-pending'}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: false, amount: 0.1 }}
@@ -350,7 +353,7 @@ export default function Home() {
       </div>
 
       {/* CAPABILITIES */}
-      <section id="capabilities" className="section capabilities-section" style={{ padding: '100px 0' }}>
+      <section id="capabilities" className="section capabilities-section epc-capabilities-section">
         <div className="container">
           <div className="epc-cap-header-row">
             <div>
@@ -360,8 +363,8 @@ export default function Home() {
               <ScrollText
                 as="h2"
                 text="Engineering capabilities built for critical infrastructure"
-                style={{ fontSize: 'clamp(2rem, 3.6vw, 3rem)', fontWeight: 800, color: 'var(--color-text-dark)', margin: '10px 0 0', lineHeight: 1.15 }}
-                amount={0.4}
+                className="epc-cap-title"
+                amount={0.15}
               />
             </div>
             <ScrollReveal variant="fade-left" delay={0.15}>

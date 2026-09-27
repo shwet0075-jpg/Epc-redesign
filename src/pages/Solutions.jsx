@@ -183,7 +183,7 @@ function SolutionsOverview() {
       </section>
 
       {/* SOLUTIONS LIST */}
-      <section className="section" style={{ background: '#ffffff' }}>
+      <section className="section" style={{ background: '#ffffff', overflow: 'hidden' }}>
         <div className="container">
           <div className="solutions-overview-grid">
             {solutionsOverview.map((sol, i) => (
