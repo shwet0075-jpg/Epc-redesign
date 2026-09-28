@@ -17,6 +17,9 @@ export default function Footer() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [footerHeight, setFooterHeight] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(
+    typeof window !== 'undefined' ? window.innerHeight : 800
+  );
   const footerRef = useRef(null);
   const contentRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
@@ -27,6 +30,9 @@ export default function Footer() {
     const updateHeight = () => {
       if (contentRef.current) {
         setFooterHeight(contentRef.current.offsetHeight);
+      }
+      if (typeof window !== 'undefined') {
+        setWindowHeight(window.innerHeight);
       }
     };
     updateHeight();
@@ -44,8 +50,15 @@ export default function Footer() {
     offset: ['start end', 'end end'],
   });
 
-  // Parallax Y offset for internal content unveiling as the user scrolls
-  const contentY = useTransform(scrollYProgress, [0, 1], [-70, 0]);
+  // Dynamic parallax calculation:
+  // - On desktop (footerHeight <= windowHeight): gentle -70px parallax lift
+  // - On mobile/tall footer (footerHeight > windowHeight): glides the excess height smoothly
+  //   so user sees from top CTA to bottom copyright with the curtain reveal effect
+  const contentY = useTransform(scrollYProgress, (progress) => {
+    const excess = Math.max(0, footerHeight - windowHeight);
+    const start = excess > 0 ? excess : -70;
+    return start * (1 - progress);
+  });
 
   const subscribe = (event) => {
     event.preventDefault();
@@ -64,6 +77,7 @@ export default function Footer() {
         className="footer-fixed-wrap"
         style={{
           height: footerHeight > 0 ? `${footerHeight}px` : undefined,
+          opacity: footerHeight > 0 ? 1 : 0,
         }}
       >
         <motion.div
