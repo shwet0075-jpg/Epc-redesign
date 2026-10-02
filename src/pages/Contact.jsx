@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiMapPin, FiPhone, FiMail, FiSend, FiDownload, FiCheck,
   FiFacebook, FiTwitter, FiInstagram, FiYoutube, FiMessageCircle, FiUser,
+  FiAlertCircle, FiRefreshCw,
 } from 'react-icons/fi';
 import ScrollReveal from '../components/ScrollReveal';
 import ScrollStagger from '../components/ScrollStagger';
@@ -38,6 +39,7 @@ const offices = [
   },
 ];
 
+const RECIPIENT_EMAIL = 'shwet0075@gmail.com';
 const SALES_EMAIL = 'sales@prudentepc.com';
 const MAIN_PHONE = '+91 22 3162 0157';
 const WHATSAPP_URL = 'https://wa.me/8369640531';
@@ -215,22 +217,64 @@ function QuickContactRail() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Contact form — controlled, local state. Wire the onSubmit handler   */
-/*  up to your backend / form service (e.g. Formspree, an API route).   */
+/*  Contact form — sends directly to shwet0075@gmail.com via AJAX     */
 /* ------------------------------------------------------------------ */
 function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
-  const [status, setStatus] = useState('idle'); // idle | sending | sent
+  const [status, setStatus] = useState('idle'); // idle | sending | sent | error
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isActivated, setIsActivated] = useState(true);
 
   const handleChange = (e) => {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
-    // TODO: replace with your actual submit endpoint
-    setTimeout(() => setStatus('sent'), 700);
+    setErrorMessage('');
+
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${RECIPIENT_EMAIL}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone || 'Not provided',
+          subject: form.subject || 'Website Inquiry',
+          message: form.message,
+          _subject: `[Prudent EPC Contact] ${form.subject || 'New Inquiry'} from ${form.name}`,
+          _replyto: form.email,
+          _template: 'table',
+          _captcha: 'false',
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && (data.success === 'true' || data.success === true)) {
+        setStatus('sent');
+        setIsActivated(true);
+        setForm({ name: '', email: '', phone: '', subject: '', message: '' });
+      } else if (data.message && data.message.includes('Activate Form')) {
+        // FormSubmit one-time activation notice sent to email
+        setStatus('sent');
+        setIsActivated(false);
+        setForm({ name: '', email: '', phone: '', subject: '', message: '' });
+      } else {
+        throw new Error(data.message || 'Failed to submit form.');
+      }
+    } catch (err) {
+      console.error('Contact form submission error:', err);
+      setStatus('error');
+      setErrorMessage(
+        err.message || 'Unable to send message right now. Please check your connection or contact us directly.'
+      );
+    }
   };
 
   return (
@@ -242,23 +286,60 @@ function ContactForm() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: -10 }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          style={{ textAlign: 'center', padding: '48px 24px' }}
+          style={{ textAlign: 'center', padding: '40px 20px' }}
         >
           <div
             style={{
-              width: '64px', height: '64px', borderRadius: '50%',
-              background: 'var(--color-primary-glow)', color: 'var(--color-primary)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
+              width: '64px',
+              height: '64px',
+              borderRadius: '50%',
+              background: 'rgba(0, 96, 48, 0.1)',
+              color: 'var(--color-primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 20px',
+              border: '2px solid rgba(0, 96, 48, 0.25)',
             }}
           >
-            <FiCheck size={28} />
+            <FiCheck size={30} />
           </div>
-          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '8px' }}>
-            Message sent
+          <h3 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '10px' }}>
+            Message Sent Successfully!
           </h3>
-          <p style={{ color: 'var(--color-text-muted)' }}>
-            Thanks for reaching out — our team will get back to you shortly.
+          <p style={{ color: 'var(--color-text-muted)', maxWidth: '440px', margin: '0 auto 24px', lineHeight: 1.6, fontSize: '0.95rem' }}>
+            {isActivated
+              ? `Thank you for reaching out! Your inquiry has been sent to ${RECIPIENT_EMAIL} and our engineering team will get back to you shortly.`
+              : `Thank you! Your message was submitted. FormSubmit has sent a one-time activation email to ${RECIPIENT_EMAIL} — click 'Activate Form' in your inbox to verify.`}
           </p>
+          <button
+            type="button"
+            onClick={() => setStatus('idle')}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 24px',
+              borderRadius: '999px',
+              border: '1.5px solid rgba(0, 96, 48, 0.25)',
+              background: 'transparent',
+              color: 'var(--color-primary)',
+              fontWeight: 700,
+              fontSize: '0.88rem',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'var(--color-primary)';
+              e.currentTarget.style.color = '#fff';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = 'var(--color-primary)';
+            }}
+          >
+            Send another message
+          </button>
         </motion.div>
       ) : (
         <motion.form
@@ -270,25 +351,91 @@ function ContactForm() {
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           style={{ display: 'grid', gap: '18px' }}
         >
+          {status === 'error' && (
+            <div
+              style={{
+                padding: '12px 16px',
+                borderRadius: 'var(--radius-md)',
+                background: 'rgba(239, 68, 68, 0.08)',
+                border: '1px solid rgba(239, 68, 68, 0.25)',
+                color: '#b91c1c',
+                fontSize: '0.88rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '10px',
+                flexWrap: 'wrap',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <FiAlertCircle size={18} style={{ flexShrink: 0 }} />
+                <span>{errorMessage}</span>
+              </div>
+              <a
+                href={`mailto:${RECIPIENT_EMAIL}?subject=${encodeURIComponent(form.subject || 'Website Inquiry')}&body=${encodeURIComponent(form.message)}`}
+                style={{
+                  color: '#b91c1c',
+                  fontWeight: 700,
+                  textDecoration: 'underline',
+                  fontSize: '0.85rem',
+                }}
+              >
+                Email directly
+              </a>
+            </div>
+          )}
+
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
             <div className="contact-input-wrap">
               <FiUser className="contact-input-icon" size={16} />
-              <input className="contact-input" name="name" placeholder="Your name" value={form.name} onChange={handleChange} required />
+              <input
+                className="contact-input"
+                name="name"
+                placeholder="Your name"
+                value={form.name}
+                onChange={handleChange}
+                required
+                disabled={status === 'sending'}
+              />
             </div>
             <div className="contact-input-wrap">
               <FiMail className="contact-input-icon" size={16} />
-              <input className="contact-input" type="email" name="email" placeholder="Email address" value={form.email} onChange={handleChange} required />
+              <input
+                className="contact-input"
+                type="email"
+                name="email"
+                placeholder="Email address"
+                value={form.email}
+                onChange={handleChange}
+                required
+                disabled={status === 'sending'}
+              />
             </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>
             <div className="contact-input-wrap">
               <FiPhone className="contact-input-icon" size={16} />
-              <input className="contact-input" name="phone" placeholder="Phone number" value={form.phone} onChange={handleChange} />
+              <input
+                className="contact-input"
+                name="phone"
+                placeholder="Phone number"
+                value={form.phone}
+                onChange={handleChange}
+                disabled={status === 'sending'}
+              />
             </div>
             <div className="contact-input-wrap">
               <FiMessageCircle className="contact-input-icon" size={16} />
-              <input className="contact-input" name="subject" placeholder="Subject" value={form.subject} onChange={handleChange} required />
+              <input
+                className="contact-input"
+                name="subject"
+                placeholder="Subject"
+                value={form.subject}
+                onChange={handleChange}
+                required
+                disabled={status === 'sending'}
+              />
             </div>
           </div>
 
@@ -301,24 +448,48 @@ function ContactForm() {
             onChange={handleChange}
             style={{ paddingLeft: '16px', resize: 'vertical' }}
             required
+            disabled={status === 'sending'}
           />
 
           <motion.button
             type="submit"
             disabled={status === 'sending'}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={status === 'sending' ? {} : { scale: 1.02 }}
+            whileTap={status === 'sending' ? {} : { scale: 0.98 }}
             style={{
               justifySelf: 'start',
-              display: 'inline-flex', alignItems: 'center', gap: '10px',
-              padding: '14px 28px', borderRadius: '999px', border: 'none',
-              background: 'var(--color-secondary)', color: '#fff', fontWeight: 700,
-              cursor: status === 'sending' ? 'wait' : 'pointer', opacity: status === 'sending' ? 0.7 : 1,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '14px 28px',
+              borderRadius: '999px',
+              border: 'none',
+              background: 'var(--color-secondary)',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: '0.95rem',
+              cursor: status === 'sending' ? 'not-allowed' : 'pointer',
+              opacity: status === 'sending' ? 0.75 : 1,
               boxShadow: '0 14px 30px rgba(240,128,32,.28)',
             }}
           >
-            {status === 'sending' ? 'Sending…' : 'Send message'}
-            <FiSend size={16} />
+            {status === 'sending' ? (
+              <>
+                <span>Sending message…</span>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                  style={{ display: 'inline-flex' }}
+                >
+                  <FiRefreshCw size={16} />
+                </motion.div>
+              </>
+            ) : (
+              <>
+                <span>Send message</span>
+                <FiSend size={16} />
+              </>
+            )}
           </motion.button>
         </motion.form>
       )}

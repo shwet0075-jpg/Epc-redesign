@@ -974,7 +974,34 @@ padding-block:clamp(80px,10vw,140px);
   50%{background-position:100% center}
   100%{background-position:200% center}
 }
-@media (max-width:768px){.footer-bottom-inner{padding-right:75px!important;flex-direction:column;align-items:flex-start;gap:8px}.footer-credit{font-size:.88rem!important}.footer-credit a strong{font-size:1.02rem!important}}
+@media (max-width:768px){
+  .footer-cta__inner{padding:10px 0!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:10px!important}
+  .footer-cta p{font-size:.58rem!important;margin-bottom:2px!important;letter-spacing:.12em!important}
+  .footer-cta h2{font-size:clamp(1rem, 3.5vw, 1.2rem)!important;line-height:1.12!important}
+  .footer-cta__button{flex-shrink:0!important;width:auto!important}
+  .footer-cta__button a{padding:7px 13px!important;font-size:.74rem!important;white-space:nowrap!important;gap:5px!important}
+  .footer-grid{grid-template-columns:1fr 1fr!important;gap:10px 14px!important;padding-top:10px!important;padding-bottom:8px!important}
+  .footer-brand{grid-column:1/-1!important}
+  .footer-logo{height:26px!important}
+  .footer-brand p{margin:4px 0 6px!important;font-size:.73rem!important;line-height:1.35!important;max-width:100%!important;color:#9eb3a5!important}
+  .footer-status{margin-top:4px!important;gap:8px!important;font-size:.58rem!important}
+  .footer-socials{margin-top:6px!important;gap:6px!important}
+  .footer-socials a{width:26px!important;height:26px!important;font-size:.72rem!important}
+  .footer-col h4{font-size:.66rem!important;margin-bottom:5px!important;letter-spacing:.12em!important;color:#f0a552!important}
+  .footer-col ul{gap:4px!important}
+  .footer-col a{font-size:.73rem!important;color:#b0c2b6!important}
+  .footer-all-services{margin-top:5px!important;font-size:.73rem!important}
+  .footer-contact-col{grid-column:1/-1!important;padding-top:8px!important;border-top:1px solid rgba(255,255,255,.08)!important}
+  .footer-contact-col>p{display:none!important}
+  .footer-newsletter{margin-bottom:6px!important}
+  .footer-newsletter input{font-size:.73rem!important;padding:4px 0!important}
+  .footer-contact{margin-top:5px!important;gap:4px!important;display:flex!important;flex-direction:column!important}
+  .footer-contact li{font-size:.71rem!important;gap:6px!important;line-height:1.25!important}
+  .footer-bottom{padding:7px 0!important}
+  .footer-bottom-inner{padding-right:70px!important;flex-direction:column!important;justify-content:flex-start!important;align-items:flex-start!important;font-size:.64rem!important;gap:2px!important}
+  .footer-credit{font-size:.7rem!important;margin-right:0!important}
+  .footer-credit a strong{font-size:.8rem!important}
+}
 
 /* Brand Signature Cinematic Curtain Screen Opening Transitions */
 .curtain-wrapper{position:relative;width:100%;min-height:100vh}
@@ -995,4 +1022,4 @@ padding-block:clamp(80px,10vw,140px);
 .curtain-brand-text{font-size:1.15rem;font-weight:900;letter-spacing:.22em;color:#ffffff;text-shadow:0 0 12px rgba(240,128,32,.5);line-height:1}
 .curtain-brand-sub{font-size:.62rem;font-weight:800;letter-spacing:.28em;color:#F08020;text-transform:uppercase}
 @media (max-width:900px){.career-culture__inner{grid-template-columns:1fr}.career-stats{max-width:600px}.career-filter-bar{grid-template-columns:1fr 1fr}.career-search{grid-column:1/-1}.career-jobs-grid{grid-template-columns:1fr}.career-job-card--featured{grid-row:auto}.footer-grid{grid-template-columns:repeat(2,1fr)!important}.career-process__steps{grid-template-columns:repeat(2,1fr);gap:30px}.career-process__steps article{min-height:160px}}
-@media (max-width:640px){.careers-hero{min-height:650px;padding-top:145px}.careers-hero__structure{width:90vw;opacity:.55}.career-culture__inner{padding-top:30px;padding-bottom:30px}.career-stats{grid-template-columns:1fr}.career-section-head,.career-process__header,.footer-cta__inner,.career-general__card{align-items:flex-start;flex-direction:column}.career-filter-bar{grid-template-columns:1fr}.career-search{grid-column:auto}.career-benefit-grid,.career-process__steps,.footer-grid{grid-template-columns:1fr!important}.career-general__card{padding:35px 25px}.career-general__button{width:100%}.career-general__button a{justify-content:center}.footer-cta__inner{padding-top:52px;padding-bottom:52px}.footer-cta__button{width:100%}.footer-cta__button a{justify-content:center}.career-hero__index{right:20px}.career-stats>div{border-left:0;border-top:1px solid rgba(255,255,255,.14);padding:12px 0 0}.career-stats>div:first-child{border-top:0;padding-top:0}}
+@media (max-width:640px){.careers-hero{min-height:650px;padding-top:145px}.careers-hero__structure{width:90vw;opacity:.55}.career-culture__inner{padding-top:30px;padding-bottom:30px}.career-stats{grid-template-columns:1fr}.career-section-head,.career-process__header,.career-general__card{align-items:flex-start;flex-direction:column}.career-filter-bar{grid-template-columns:1fr}.career-search{grid-column:auto}.career-benefit-grid,.career-process__steps{grid-template-columns:1fr!important}.career-general__card{padding:35px 25px}.career-general__button{width:100%}.career-general__button a{justify-content:center}.career-hero__index{right:20px}.career-stats>div{border-left:0;border-top:1px solid rgba(255,255,255,.14);padding:12px 0 0}.career-stats>div:first-child{border-top:0;padding-top:0}}

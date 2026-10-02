@@ -50,41 +50,48 @@ export default function Footer() {
     offset: ['start end', 'end end'],
   });
 
-  // Dynamic parallax calculation:
-  // - On desktop (footerHeight <= windowHeight): gentle -70px parallax lift
-  // - On mobile/tall footer (footerHeight > windowHeight): glides the excess height smoothly
-  //   so user sees from top CTA to bottom copyright with the curtain reveal effect
-  const contentY = useTransform(scrollYProgress, (progress) => {
-    const excess = Math.max(0, footerHeight - windowHeight);
-    const start = excess > 0 ? excess : -70;
-    return start * (1 - progress);
-  });
+  // Smooth, stable parallax lift across mobile and desktop
+  // Subtle -25px lift on mobile and -60px on desktop as the curtain opens
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const parallaxOffset = isMobile ? -25 : -60;
+  const contentY = useTransform(scrollYProgress, [0, 1], [parallaxOffset, 0]);
 
   const subscribe = (event) => {
     event.preventDefault();
     if (email) setSubmitted(true);
   };
 
+  // If viewport height is shorter than footer height (e.g. landscape phone),
+  // seamlessly render in normal document flow so user can scroll through all content.
+  // On all standard screens (laptop, tablet, and portrait phone), full curtain reveal is active!
+  const isShorterThanFooter = footerHeight > 0 && windowHeight < footerHeight;
+
   return (
     <div
       ref={footerRef}
       className="footer-reveal-container"
-      style={{
-        height: footerHeight > 0 ? `${footerHeight}px` : undefined,
-      }}
+      style={
+        isShorterThanFooter
+          ? { height: 'auto', position: 'relative' }
+          : { height: footerHeight > 0 ? `${footerHeight}px` : undefined }
+      }
     >
       <div
         className="footer-fixed-wrap"
-        style={{
-          height: footerHeight > 0 ? `${footerHeight}px` : undefined,
-          opacity: footerHeight > 0 ? 1 : 0,
-        }}
+        style={
+          isShorterThanFooter
+            ? { position: 'relative', height: 'auto', opacity: 1 }
+            : {
+                height: footerHeight > 0 ? `${footerHeight}px` : undefined,
+                opacity: footerHeight > 0 ? 1 : 0,
+              }
+        }
       >
         <motion.div
           ref={contentRef}
           className="footer-motion-inner"
           style={
-            shouldReduceMotion
+            shouldReduceMotion || isShorterThanFooter
               ? undefined
               : {
                   y: contentY,

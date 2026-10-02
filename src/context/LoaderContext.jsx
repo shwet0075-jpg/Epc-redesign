@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
 
 const LoaderContext = createContext({
   loading: true,
@@ -11,24 +11,27 @@ export function LoaderProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [isUnveiled, setIsUnveiled] = useState(false);
 
-  const handleUnveil = () => {
+  const handleUnveil = useCallback(() => {
     setIsUnveiled(true);
-  };
+  }, []);
 
-  const handleComplete = () => {
+  const handleComplete = useCallback(() => {
     setLoading(false);
     setIsUnveiled(true);
-  };
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      loading,
+      isUnveiled,
+      handleUnveil,
+      handleComplete,
+    }),
+    [loading, isUnveiled, handleUnveil, handleComplete]
+  );
 
   return (
-    <LoaderContext.Provider
-      value={{
-        loading,
-        isUnveiled,
-        handleUnveil,
-        handleComplete,
-      }}
-    >
+    <LoaderContext.Provider value={value}>
       {children}
     </LoaderContext.Provider>
   );
@@ -37,3 +40,4 @@ export function LoaderProvider({ children }) {
 export function useLoader() {
   return useContext(LoaderContext);
 }
+

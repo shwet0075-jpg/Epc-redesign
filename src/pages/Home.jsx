@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { AnimatePresence, motion, useInView, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { FiArrowDown, FiArrowRight, FiCpu, FiServer, FiShield, FiVideo } from 'react-icons/fi';
 import ScrollReveal from '../components/ScrollReveal';
 import ScrollStagger from '../components/ScrollStagger';
@@ -140,6 +140,9 @@ export default function Home() {
   const [active, setActive] = useState(0);
   const shouldReduceMotion = useReducedMotion();
   const heroRef = useRef(null);
+  const heroGridRef = useRef(null);
+  const isHeroInView = useInView(heroGridRef, { once: false, amount: 0.1 });
+  const shouldShowHero = isUnveiled && isHeroInView;
 
   useEffect(() => {
     // Defer non-critical carousel images until after initial render completes
@@ -199,13 +202,15 @@ export default function Home() {
         <div className="container">
           <div className="epc-hero-grid-v2">
             <motion.div
-              key={isUnveiled ? 'hero-revealed' : 'hero-pending'}
+              ref={heroGridRef}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.1 }}
+              animate={shouldShowHero ? "visible" : "hidden"}
               variants={{
-                hidden: {},
-                visible: { transition: { staggerChildren: shouldReduceMotion ? 0 : 0.12 } },
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: shouldReduceMotion ? 0 : 0.12 },
+                },
               }}
               style={{
                 position: 'relative',

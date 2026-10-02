@@ -1,4 +1,6 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useLoader } from "../context/LoaderContext";
 
 /**
  * KK Agro-Inspired Smooth Upward Text Reveal
@@ -21,6 +23,10 @@ export default function ScrollText({
   amount = 0.15,
 }) {
   const shouldReduceMotion = useReducedMotion();
+  const loader = useLoader();
+  const isUnveiled = loader?.isUnveiled ?? true;
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once, amount });
   const content = text !== undefined ? text : children;
 
   if (shouldReduceMotion) {
@@ -33,9 +39,11 @@ export default function ScrollText({
   }
 
   const MotionTag = motion[Tag] || motion.span;
+  const isShown = isUnveiled && isInView;
 
   return (
     <MotionTag
+      ref={ref}
       className={className}
       style={{
         ...style,
@@ -46,19 +54,26 @@ export default function ScrollText({
         y: 40,
         filter: "blur(4px)",
       }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-      }}
-      viewport={{ once, amount }}
+      animate={
+        isShown
+          ? {
+              opacity: 1,
+              y: 0,
+              filter: "blur(0px)",
+            }
+          : {
+              opacity: 0,
+              y: 40,
+              filter: "blur(4px)",
+            }
+      }
       transition={{
         duration,
-        delay,
+        delay: isShown ? delay : 0,
         ease: [0.16, 1, 0.3, 1],
       }}
     >
       {content}
     </MotionTag>
   );
-}
+}

@@ -1,6 +1,7 @@
 import CountUp from "react-countup";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
+import { useLoader } from "../../context/LoaderContext";
 
 export default function AnimatedCount({
   end,
@@ -8,6 +9,8 @@ export default function AnimatedCount({
   duration = 2,
   className = "",
 }) {
+  const loader = useLoader();
+  const isUnveiled = loader?.isUnveiled ?? true;
   const ref = useRef(null);
 
   const isInView = useInView(ref, {
@@ -15,12 +18,14 @@ export default function AnimatedCount({
     amount: 0.1,
   });
 
+  const shouldAnimate = isUnveiled && isInView;
+
   return (
     <div
       ref={ref}
       className={className}
     >
-      {isInView ? (
+      {shouldAnimate ? (
         <CountUp
           end={end}
           duration={duration}
@@ -31,4 +36,4 @@ export default function AnimatedCount({
       )}
     </div>
   );
-}
+}

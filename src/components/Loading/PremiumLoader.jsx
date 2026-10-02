@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 import LoaderLogo from "./LoaderLogo";
@@ -7,15 +7,23 @@ import LoaderLogo from "./LoaderLogo";
  * Prudent EPC — Cinematic Brand & Motion.dev Loading Line Reveal
  * 
  * Choreography Narrative:
- * Phase 1 (0.0s – 2.6s) [logo]: Envato 3D Studio Chevron assembly, lens flare, typography reveal & hold.
- * Phase 2 (2.6s – 2.95s) [fade]: Logo smoothly focuses and fades into the center vertical axis.
- * Phase 3 (2.95s – 3.37s) [draw]: Motion.dev Central Laser Beam extends down the center axis (scaleY: 0 -> 1) with radiant spark beacon.
- * Phase 4 (3.37s – 4.25s) [expand]: Dual shutter panels part horizontally to -102% and +102% with glowing orange & green laser leading edges, revealing the live website beneath.
- * Phase 5 (4.25s+): Complete handover to interactive home screen.
+ * Phase 1 (0.0s – 2.4s) [logo]: Envato 3D Studio Chevron assembly, lens flare, typography reveal & hold.
+ * Phase 2 (2.4s – 2.75s) [fade]: Logo smoothly focuses and fades into the center vertical axis.
+ * Phase 3 (2.75s – 3.15s) [draw]: Motion.dev Central Laser Beam extends down the center axis (scaleY: 0 -> 1) with radiant spark beacon.
+ * Phase 4 (3.15s – 3.95s) [expand]: Dual shutter panels part horizontally to -102% and +102% with glowing laser leading edges, revealing the live website beneath.
+ * Phase 5 (3.95s+): Complete handover to interactive home screen.
  */
 export default function PremiumLoader({ onComplete, onUnveil }) {
   const shouldReduceMotion = useReducedMotion();
   const [phase, setPhase] = useState("logo"); // "logo" | "fade" | "draw" | "expand"
+
+  const onUnveilRef = useRef(onUnveil);
+  const onCompleteRef = useRef(onComplete);
+
+  useEffect(() => {
+    onUnveilRef.current = onUnveil;
+    onCompleteRef.current = onComplete;
+  });
 
   useEffect(() => {
     const isHoldMode = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("hold") === "1";
@@ -23,8 +31,8 @@ export default function PremiumLoader({ onComplete, onUnveil }) {
 
     if (shouldReduceMotion) {
       const timer = setTimeout(() => {
-        onUnveil?.();
-        onComplete?.();
+        onUnveilRef.current?.();
+        onCompleteRef.current?.();
       }, 250);
       return () => clearTimeout(timer);
     }
@@ -39,11 +47,11 @@ export default function PremiumLoader({ onComplete, onUnveil }) {
 
     const tExpand = setTimeout(() => {
       setPhase("expand");
-      onUnveil?.();
+      onUnveilRef.current?.();
     }, 3150);
 
     const tComplete = setTimeout(() => {
-      onComplete?.();
+      onCompleteRef.current?.();
     }, 3950);
 
     return () => {
@@ -52,7 +60,8 @@ export default function PremiumLoader({ onComplete, onUnveil }) {
       clearTimeout(tExpand);
       clearTimeout(tComplete);
     };
-  }, [onComplete, onUnveil, shouldReduceMotion]);
+  }, [shouldReduceMotion]);
+
 
   if (shouldReduceMotion) {
     return (
