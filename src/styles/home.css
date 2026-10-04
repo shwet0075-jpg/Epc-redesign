@@ -1829,6 +1829,10 @@
   box-shadow: var(--elev-3);
 }
 
+.epc-featured-card-v2 h3 {
+  min-height: 2.8em;
+}
+
 .epc-featured-ring {
   position: absolute;
   top: -90px;

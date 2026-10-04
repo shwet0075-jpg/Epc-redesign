@@ -154,11 +154,13 @@ export default function FeaturedProjects() {
               {/* IMAGE */}
 
               <div className="fp-image">
-  <img
-    src={activeProject.image}
-    alt={activeProject.title}
-  />
-</div>
+                <img
+                  src={activeProject.image}
+                  alt={activeProject.title}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
 
               {/* CONTENT */}
 
