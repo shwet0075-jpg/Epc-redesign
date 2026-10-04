@@ -151,7 +151,7 @@ export default function Footer() {
                 </div>
               </div>
 
-              <div className="footer-col">
+              <div className="footer-col footer-col-explore">
                 <h4>Explore</h4>
                 <ul>
                   {navLinks
@@ -165,7 +165,7 @@ export default function Footer() {
                 </ul>
               </div>
 
-              <div className="footer-col">
+              <div className="footer-col footer-col-systems">
                 <h4>Systems</h4>
                 <ul>
                   {solutions.map(([label, path]) => (

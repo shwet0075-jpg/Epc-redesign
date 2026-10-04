@@ -155,6 +155,31 @@ function ContactStyles() {
         box-shadow: 0 10px 24px rgba(240,128,32,.3);
       }
 
+      @media (max-width: 900px) {
+        .contact-form-grid {
+          grid-template-columns: 1fr !important;
+          gap: 24px !important;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .contact-form-section {
+          padding-top: 20px !important;
+          padding-bottom: 6px !important;
+        }
+        .contact-form-section > .container {
+          padding-bottom: 0 !important;
+        }
+        .contact-form-grid {
+          grid-template-columns: 1fr !important;
+          gap: 20px !important;
+          margin-bottom: 0 !important;
+        }
+        .contact-download-profile-link {
+          margin-bottom: 0 !important;
+        }
+      }
+
       @media (prefers-reduced-motion: reduce) {
         .contact-blueprint-bg { animation: none !important; }
         .contact-tilt { transition: none !important; }
@@ -727,9 +752,9 @@ export default function Contact() {
       </section>
 
       {/* FORM + QUICK INFO */}
-      <section className="section">
+      <section className="section contact-form-section">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.4fr) minmax(280px, 1fr)', gap: 'clamp(28px, 3.5vw, 42px)', alignItems: 'start' }}>
+          <div className="contact-form-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.4fr) minmax(280px, 1fr)', gap: 'clamp(28px, 3.5vw, 42px)', alignItems: 'start' }}>
 
             <ScrollReveal variant="fade-right">
               <TiltPanel maxTilt={1}>
@@ -813,6 +838,7 @@ export default function Contact() {
                   href={COMPANY_PROFILE_URL}
                   target="_blank"
                   rel="noreferrer"
+                  className="contact-download-profile-link"
                   style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                     background: '#fbfdfc', border: '1.5px solid rgba(0,96,48,.14)',

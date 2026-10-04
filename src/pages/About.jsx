@@ -384,6 +384,69 @@ function AboutStyles() {
       @media (max-width: 992px) {
         .director-executive-wrapper { padding: 32px 24px; border-radius: 24px; }
       }
+      @media (max-width: 768px) {
+        /* 1. Remove 4 stats cards, cert cards, and certifications/recognition on mobile */
+        .about-stats-section {
+          display: none !important;
+        }
+        .cert-cards-row {
+          display: none !important;
+        }
+        .about-certifications-section {
+          display: none !important;
+        }
+
+        /* 2. Tighten vertical rhythm & alignments on mobile for clean scrolling */
+        .about-image-wrapper {
+          margin-top: 20px !important;
+        }
+        .timeline-section {
+          padding-top: 32px !important;
+          padding-bottom: 24px !important;
+        }
+        .timeline-line {
+          left: 18px !important;
+        }
+        .timeline-item {
+          padding-left: 36px !important;
+          margin-bottom: 8px !important;
+        }
+        .timeline-content {
+          width: 100% !important;
+          padding: 18px 16px !important;
+          border-radius: 16px !important;
+        }
+        .timeline-year-watermark {
+          font-size: 3.2rem !important;
+          right: 12px !important;
+          bottom: 2px !important;
+        }
+        .director-section {
+          padding: 32px 0 24px !important;
+        }
+        .director-executive-wrapper {
+          padding: 24px 16px !important;
+          border-radius: 20px !important;
+        }
+        .director-portrait-stage {
+          border-radius: 18px !important;
+        }
+        .director-floating-stat-badge {
+          bottom: 12px !important;
+          left: 12px !important;
+          right: 12px !important;
+          padding: 12px 14px !important;
+          border-radius: 14px !important;
+        }
+        .director-pillar-card {
+          padding: 16px 14px !important;
+          border-radius: 14px !important;
+        }
+        .director-cred-chip {
+          padding: 10px 14px !important;
+          border-radius: 12px !important;
+        }
+      }
       @media (prefers-reduced-motion: reduce) {
         .about-blueprint-bg, .about-shimmer-badge, .about-dot-active, .director-ring-motif { animation: none !important; }
         .about-tilt-card { transition: none !important; }
@@ -955,7 +1018,7 @@ export default function About() {
       </section>
 
       {/* STATS STRIP */}
-      <section className="stats-section" style={{ padding: 'clamp(44px, 5vw, 64px) 0', background: 'linear-gradient(180deg,#f8fbf9 0%,#ffffff 100%)', borderTop: '1px solid var(--color-gray-100)', borderBottom: '1px solid var(--color-gray-100)' }}>
+      <section className="stats-section about-stats-section" style={{ padding: 'clamp(44px, 5vw, 64px) 0', background: 'linear-gradient(180deg,#f8fbf9 0%,#ffffff 100%)', borderTop: '1px solid var(--color-gray-100)', borderBottom: '1px solid var(--color-gray-100)' }}>
         <div className="container">
           <ScrollStagger
             variant="rise-blur-3d"
@@ -1503,7 +1566,7 @@ export default function About() {
       </section>
 
       {/* ADDITIONAL SKILLS & CREDENTIALS DETAILS */}
-      <section className="section" style={{ background: '#ffffff' }}>
+      <section className="section about-certifications-section" style={{ background: '#ffffff' }}>
         <div className="container">
           <ScrollReveal variant="fade-up">
             <SectionTitle

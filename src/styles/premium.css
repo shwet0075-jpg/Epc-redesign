@@ -980,7 +980,8 @@ padding-block:clamp(80px,10vw,140px);
   .footer-cta h2{font-size:clamp(1rem, 3.5vw, 1.2rem)!important;line-height:1.12!important}
   .footer-cta__button{flex-shrink:0!important;width:auto!important}
   .footer-cta__button a{padding:7px 13px!important;font-size:.74rem!important;white-space:nowrap!important;gap:5px!important}
-  .footer-grid{grid-template-columns:1fr 1fr!important;gap:10px 14px!important;padding-top:10px!important;padding-bottom:8px!important}
+  .footer-col-explore, .footer-col-systems { display: none !important; }
+  .footer-grid{grid-template-columns:1fr!important;gap:12px!important;padding-top:10px!important;padding-bottom:8px!important}
   .footer-brand{grid-column:1/-1!important}
   .footer-logo{height:26px!important}
   .footer-brand p{margin:4px 0 6px!important;font-size:.73rem!important;line-height:1.35!important;max-width:100%!important;color:#9eb3a5!important}

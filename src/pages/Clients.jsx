@@ -337,10 +337,11 @@ export default function Clients() {
                   return (
                     <motion.div
                       layout
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, y: 32, scale: 0.96 }}
+                      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                      viewport={{ once: false, amount: 0.12 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                       key={client.name}
                       className="client-card-creative"
                       onClick={() => setSelectedClient(client)}
