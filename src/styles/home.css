@@ -2194,6 +2194,9 @@
     margin: 0;
     padding: 22px 18px;
   }
+  .epc-featured-card-v2 h3 {
+    min-height: 2.8em;
+  }
   .epc-capabilities-section {
     padding: 55px 0 40px;
   }

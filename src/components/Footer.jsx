@@ -125,7 +125,7 @@ export default function Footer() {
             </div>
             <div className="container footer-grid">
               <div className="footer-brand">
-                <img src="/assets/images/logo.png" alt="Prudent EPC" className="footer-logo" />
+                <img src="/assets/images/logo.png" alt="Prudent EPC" width="168" height="50" loading="lazy" decoding="async" className="footer-logo" />
                 <p>Engineered systems for safer, smarter and more resilient spaces—from first design to long-term performance.</p>
                 <div className="footer-status">
                   <span>

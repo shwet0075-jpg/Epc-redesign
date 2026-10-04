@@ -147,23 +147,6 @@ export default function Home() {
   const isHeroInView = useInView(heroGridRef, { once: false, amount: 0.1 });
   const shouldShowHero = isUnveiled && isHeroInView;
 
-  useEffect(() => {
-    // Defer non-critical carousel images until after initial render completes
-    const preload = () => {
-      slides.forEach(({ image }) => {
-        const preloadImage = new Image();
-        preloadImage.decoding = 'async';
-        preloadImage.src = image;
-      });
-    };
-
-    if ('requestIdleCallback' in window) {
-      const handle = window.requestIdleCallback(preload, { timeout: 3000 });
-      return () => window.cancelIdleCallback(handle);
-    }
-    const timer = setTimeout(preload, 2000);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     if (shouldReduceMotion) return undefined;

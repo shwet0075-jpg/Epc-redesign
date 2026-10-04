@@ -110,7 +110,7 @@ export default function Navbar() {
       >
         <div className="container navbar-inner">
           <NavLink to="/" className="navbar-logo" aria-label="Prudent EPC home">
-            <img src="/assets/images/logo.png" alt="Prudent EPC" />
+            <img src="/assets/images/logo.png" alt="Prudent EPC" width="168" height="50" />
           </NavLink>
 
           <nav className="navbar-links">
@@ -252,7 +252,7 @@ export default function Navbar() {
               {/* Modern Header Bar */}
               <div className="mobile-header">
                 <div className="mobile-brand">
-                  <img src="/assets/images/logo.png" alt="Prudent EPC" className="mobile-brand-logo" />
+                  <img src="/assets/images/logo.png" alt="Prudent EPC" width="168" height="50" className="mobile-brand-logo" />
                   <span className="mobile-status-chip">
                     <span className="mobile-pulse-dot" /> SYSTEMS ONLINE
                   </span>
