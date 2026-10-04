@@ -268,7 +268,7 @@ function AboutStyles() {
         grid-template-columns: 1fr 1fr;
         gap: 32px;
         align-items: stretch;
-        margin-top: 64px;
+        margin-top: clamp(28px, 3.5vw, 40px);
       }
       @media (max-width: 900px) {
         .cert-cards-row {
@@ -716,7 +716,7 @@ export default function About() {
       <AboutStyles />
 
       {/* PAGE HEADER */}
-      <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: '140px 0 80px', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+      <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: 'clamp(104px, 9.5vw, 124px) 0 clamp(38px, 4vw, 52px)', color: '#fff', position: 'relative', overflow: 'hidden' }}>
         {/* Blueprint grid motif — signature engineering texture, drifts subtly */}
         <div className="about-blueprint-bg" style={{ position: 'absolute', inset: 0, opacity: 0.5, pointerEvents: 'none' }} />
 
@@ -782,8 +782,8 @@ export default function About() {
           <div
             style={{
               display: 'grid',
-              gap: '28px',
-              marginTop: '48px',
+              gap: '20px',
+              marginTop: 'clamp(24px, 3vw, 34px)',
               maxWidth: '760px',
             }}
             className="about-hero-stats"
@@ -955,12 +955,12 @@ export default function About() {
       </section>
 
       {/* STATS STRIP */}
-      <section className="stats-section" style={{ padding: '80px 0', background: 'linear-gradient(180deg,#f8fbf9 0%,#ffffff 100%)', borderTop: '1px solid var(--color-gray-100)', borderBottom: '1px solid var(--color-gray-100)' }}>
+      <section className="stats-section" style={{ padding: 'clamp(44px, 5vw, 64px) 0', background: 'linear-gradient(180deg,#f8fbf9 0%,#ffffff 100%)', borderTop: '1px solid var(--color-gray-100)', borderBottom: '1px solid var(--color-gray-100)' }}>
         <div className="container">
           <ScrollStagger
             variant="rise-blur-3d"
             stagger={0.1}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', textAlign: 'center' }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'clamp(24px, 3vw, 36px)', textAlign: 'center' }}
           >
             {[
               { icon: <FiAward size={36} />, label: 'Projects Completed', value: '49+' },
@@ -1023,7 +1023,7 @@ export default function About() {
             />
           </ScrollReveal>
 
-          <div ref={timelineRef} style={{ position: 'relative', maxWidth: '1000px', margin: '60px auto 0' }}>
+          <div ref={timelineRef} style={{ position: 'relative', maxWidth: '1000px', margin: 'clamp(28px, 3.5vw, 40px) auto 0' }}>
             {/* Track (faint, always visible) */}
             <div
               style={{
@@ -1069,7 +1069,7 @@ export default function About() {
               }}
             />
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(28px, 3.5vw, 38px)' }}>
               {timelineData.map((item, i) => (
                 <TimelineItem key={item.year} item={item} index={i} />
               ))}
@@ -1079,7 +1079,7 @@ export default function About() {
       </section>
 
       {/* Mr. Avinash Patil Profile — Modern Executive Leadership Showcase */}
-      <section className="section director-section" style={{ background: 'var(--color-light)', padding: '100px 0', overflow: 'hidden' }}>
+      <section className="section director-section" style={{ background: 'var(--color-light)', padding: 'clamp(54px, 6vw, 76px) 0', overflow: 'hidden' }}>
         <div className="container">
           <div className="director-executive-wrapper">
             {/* Ambient Background Blueprint Motif */}
@@ -1515,7 +1515,7 @@ export default function About() {
           <ScrollStagger
             variant="rise-blur-3d"
             stagger={0.06}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '28px', marginTop: '48px' }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '28px', marginTop: 'clamp(24px, 3vw, 32px)' }}
           >
             {skills.slice(7).map((skill, index) => (
               <TiltCard
@@ -1574,7 +1574,7 @@ export default function About() {
           position: 'relative',
           overflow: 'hidden',
           background: 'linear-gradient(135deg,var(--color-primary-dark) 0%,var(--color-primary) 100%)',
-          padding: '110px 0',
+          padding: 'clamp(54px, 6vw, 76px) 0',
         }}
       >
         {/* Blueprint grid motif ties this closing CTA back to the hero — signature continuity element */}

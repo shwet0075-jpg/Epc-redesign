@@ -420,7 +420,7 @@ export default function Home() {
           <ScrollText
             as="h2"
             text="The pillars of our operations"
-            style={{ fontSize: 'clamp(2rem, 3.6vw, 3rem)', fontWeight: 800, color: 'var(--color-text-dark)', margin: '10px 0 60px' }}
+            style={{ fontSize: 'clamp(2rem, 3.6vw, 3rem)', fontWeight: 800, color: 'var(--color-text-dark)', margin: '8px 0 clamp(28px, 3.5vw, 38px)' }}
             amount={0.4}
           />
 
@@ -442,7 +442,10 @@ export default function Home() {
         </div>
       </section>
 
-      <ContactCTA />
+      <ContactCTA
+        showSecondary={false}
+        primaryButtonLink="/contact#contact-message-form"
+      />
     </>
   );
 }

@@ -1,10 +1,13 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+
 import {
   FiMapPin, FiPhone, FiMail, FiSend, FiDownload, FiCheck,
   FiFacebook, FiTwitter, FiInstagram, FiYoutube, FiMessageCircle, FiUser,
-  FiAlertCircle, FiRefreshCw,
+  FiAlertCircle, FiRefreshCw, FiCopy, FiExternalLink, FiX,
 } from 'react-icons/fi';
+
 import ScrollReveal from '../components/ScrollReveal';
 import ScrollStagger from '../components/ScrollStagger';
 import ScrollText from '../components/ScrollText';
@@ -199,22 +202,55 @@ function TiltPanel({ children, style, className = '', maxTilt = 3, ...rest }) {
 /* ------------------------------------------------------------------ */
 /*  Quick-action rail — call / WhatsApp / email, one tap away           */
 /* ------------------------------------------------------------------ */
-function QuickContactRail() {
+function QuickContactRail({ onEmailClick }) {
   const actions = [
     { icon: <FiPhone size={18} />, href: `tel:${MAIN_PHONE.replace(/\s/g, '')}`, label: 'Call us' },
     { icon: <FiMessageCircle size={18} />, href: WHATSAPP_URL, label: 'WhatsApp us' },
-    { icon: <FiMail size={18} />, href: `mailto:${SALES_EMAIL}`, label: 'Email us' },
+    {
+      icon: <FiMail size={18} />,
+      label: 'Email us',
+      onClick: (e) => {
+        e.preventDefault();
+        onEmailClick?.();
+      },
+    },
   ];
   return (
     <div className="contact-side-rail">
-      {actions.map((a) => (
-        <a key={a.label} href={a.href} target={a.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="contact-rail-btn" aria-label={a.label}>
-          {a.icon}
-        </a>
-      ))}
+      {actions.map((a) => {
+        if (a.onClick) {
+          return (
+            <button
+              key={a.label}
+              type="button"
+              onClick={a.onClick}
+              className="contact-rail-btn"
+              aria-label="Email us / Send message"
+              title="Email us (Open Gmail / Mail app / Form)"
+              style={{ cursor: 'pointer', border: 'none', background: 'var(--color-white)' }}
+            >
+              {a.icon}
+            </button>
+          );
+        }
+        return (
+          <a
+            key={a.label}
+            href={a.href}
+            target={a.href.startsWith('http') ? '_blank' : undefined}
+            rel="noreferrer"
+            className="contact-rail-btn"
+            aria-label={a.label}
+            title={a.label}
+          >
+            {a.icon}
+          </a>
+        );
+      })}
     </div>
   );
 }
+
 
 /* ------------------------------------------------------------------ */
 /*  Contact form — sends directly to shwet0075@gmail.com via AJAX     */
@@ -501,13 +537,81 @@ function ContactForm() {
 /*  Page                                                                */
 /* ------------------------------------------------------------------ */
 export default function Contact() {
+  const location = useLocation();
+  const [emailToast, setEmailToast] = useState({
+    visible: false,
+    email: SALES_EMAIL,
+    copied: false,
+  });
+
+  useEffect(() => {
+    if (location.hash === '#contact-message-form' || location.hash === '#send-message') {
+      const timer = setTimeout(() => {
+        const formEl = document.getElementById('contact-message-form');
+        if (formEl) {
+          formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const inputEl = formEl.querySelector('input[name="name"]');
+          if (inputEl) inputEl.focus();
+        }
+      }, 250);
+      return () => clearTimeout(timer);
+    }
+  }, [location.hash]);
+
+  const openEmailAction = (email = SALES_EMAIL, options = {}) => {
+
+    // 1. Copy email to clipboard
+    try {
+      if (navigator?.clipboard?.writeText) {
+        navigator.clipboard.writeText(email).catch(() => {});
+      } else {
+        const input = document.createElement('input');
+        input.value = email;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+      }
+    } catch (err) {
+      console.error('Clipboard copy error:', err);
+    }
+
+    // 2. Set toast state
+    setEmailToast({
+      visible: true,
+      email,
+      copied: true,
+    });
+
+    // 3. Optional scroll to form
+    if (options.scrollToForm) {
+      const formEl = document.getElementById('contact-message-form');
+      if (formEl) {
+        formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    // 4. Try opening mailto safely
+    const mailtoUrl = `mailto:${email}?cc=${encodeURIComponent(RECIPIENT_EMAIL)}&subject=${encodeURIComponent('Inquiry: Prudent EPC')}`;
+    try {
+      const link = document.createElement('a');
+      link.href = mailtoUrl;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (e) {
+      // Ignore mailto launch errors
+    }
+  };
+
   return (
     <>
       <ContactStyles />
-      <QuickContactRail />
+      <QuickContactRail onEmailClick={() => openEmailAction(SALES_EMAIL, { scrollToForm: true })} />
 
       {/* PAGE HEADER */}
-      <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: '140px 0 80px', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+      <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: 'clamp(104px, 9.5vw, 124px) 0 clamp(40px, 4.5vw, 54px)', color: '#fff', position: 'relative', overflow: 'hidden' }}>
         <div className="contact-blueprint-bg" style={{ position: 'absolute', inset: 0, opacity: 0.5, pointerEvents: 'none' }} />
 
         <motion.div
@@ -535,7 +639,7 @@ export default function Contact() {
           <ScrollText
             as="h1"
             text="Contact"
-            style={{ fontSize: 'clamp(3rem,5vw,4.8rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}
+            style={{ fontSize: 'clamp(3rem,5vw,4.8rem)', fontWeight: 800, margin: '6px 0 16px', color: '#fff' }}
             amount={0}
             delay={0.1}
           />
@@ -590,7 +694,15 @@ export default function Contact() {
                     ))}
 
                     {office.email && (
-                      <a href={`mailto:${office.email}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-body)', fontSize: '.92rem', fontWeight: 600, marginBottom: '18px', textDecoration: 'none' }}>
+                      <a
+                        href={`mailto:${office.email}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          openEmailAction(office.email);
+                        }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-body)', fontSize: '.92rem', fontWeight: 600, marginBottom: '18px', textDecoration: 'none', cursor: 'pointer' }}
+                        title="Click to email or copy address"
+                      >
                         <FiMail size={14} style={{ color: 'var(--color-secondary)' }} /> {office.email}
                       </a>
                     )}
@@ -617,15 +729,15 @@ export default function Contact() {
       {/* FORM + QUICK INFO */}
       <section className="section">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.4fr) minmax(280px, 1fr)', gap: '48px', alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.4fr) minmax(280px, 1fr)', gap: 'clamp(28px, 3.5vw, 42px)', alignItems: 'start' }}>
 
             <ScrollReveal variant="fade-right">
               <TiltPanel maxTilt={1}>
-                <div style={{ background: 'var(--color-white)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)', padding: '48px' }}>
+                <div id="contact-message-form" style={{ background: 'var(--color-white)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)', padding: 'clamp(28px, 3vw, 42px)' }}>
                   <h2 style={{ fontSize: 'clamp(1.6rem,2vw,2rem)', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '8px' }}>
                     Send us a message
                   </h2>
-                  <p style={{ color: 'var(--color-text-muted)', marginBottom: '32px' }}>
+                  <p style={{ color: 'var(--color-text-muted)', marginBottom: '22px' }}>
                     We typically reply within one business day.
                   </p>
                   <ContactForm />
@@ -644,8 +756,37 @@ export default function Contact() {
                   <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#fff', textDecoration: 'none', marginBottom: '14px' }}>
                     <FiMessageCircle size={16} style={{ color: 'var(--color-secondary)' }} /> WhatsApp us
                   </a>
-                  <a href={`mailto:${SALES_EMAIL}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#fff', textDecoration: 'none' }}>
-                    <FiMail size={16} style={{ color: 'var(--color-secondary)' }} /> {SALES_EMAIL}
+                  <a
+                    href={`mailto:${SALES_EMAIL}?cc=${encodeURIComponent(RECIPIENT_EMAIL)}&subject=${encodeURIComponent('Inquiry: Prudent EPC')}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openEmailAction(SALES_EMAIL);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      color: '#fff',
+                      textDecoration: 'none',
+                      cursor: 'pointer',
+                      padding: '6px 12px',
+                      margin: '-6px -12px',
+                      borderRadius: '8px',
+                      transition: 'background 0.2s ease, transform 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.12)';
+                      e.currentTarget.style.transform = 'translateX(4px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.transform = 'translateX(0)';
+                    }}
+                    title="Click to email or copy address"
+                  >
+                    <FiMail size={16} style={{ color: 'var(--color-secondary)' }} />
+                    <span style={{ textDecoration: 'underline', textUnderlineOffset: '3px' }}>{SALES_EMAIL}</span>
+                    <FiCopy size={12} style={{ opacity: 0.75, marginLeft: '2px' }} />
                   </a>
 
                   <div style={{ display: 'flex', gap: '10px', marginTop: '26px' }}>
@@ -688,6 +829,164 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      {/* Interactive Email Action Toast */}
+      <AnimatePresence>
+        {emailToast.visible && (
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 30, scale: 0.94 }}
+            transition={{ type: 'spring', stiffness: 380, damping: 26 }}
+            style={{
+              position: 'fixed',
+              bottom: '24px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 99999,
+              width: 'calc(100% - 32px)',
+              maxWidth: '540px',
+              background: 'linear-gradient(135deg, #031c0e 0%, #062f18 100%)',
+              border: '1.5px solid rgba(240, 128, 32, 0.45)',
+              boxShadow: '0 24px 60px rgba(0, 0, 0, 0.5), 0 0 35px rgba(0, 96, 48, 0.35)',
+              borderRadius: '18px',
+              padding: '20px 24px',
+              color: '#fff',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    background: 'rgba(16, 185, 129, 0.2)',
+                    color: '#34d399',
+                    border: '1px solid rgba(16, 185, 129, 0.4)',
+                  }}
+                >
+                  <FiCheck size={18} />
+                </span>
+                <div>
+                  <div style={{ fontWeight: 800, fontSize: '1rem', color: '#fff', letterSpacing: '0.01em' }}>
+                    {emailToast.email}
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: '#6ee7b7', fontWeight: 600 }}>
+                    Copied to clipboard! Choose where to open:
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEmailToast((prev) => ({ ...prev, visible: false }))}
+                style={{
+                  background: 'rgba(255,255,255,0.1)',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '28px',
+                  height: '28px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  transition: 'background 0.2s ease',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.2)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
+                aria-label="Close"
+              >
+                <FiX size={16} />
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px', marginTop: '14px', flexWrap: 'wrap' }}>
+              <a
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailToast.email)}&cc=${encodeURIComponent(RECIPIENT_EMAIL)}&su=${encodeURIComponent('Inquiry: Prudent EPC')}`}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  flex: '1 1 auto',
+                  minWidth: '140px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  padding: '10px 16px',
+                  borderRadius: '10px',
+                  background: 'var(--color-secondary)',
+                  color: '#fff',
+                  fontWeight: 700,
+                  fontSize: '0.86rem',
+                  textDecoration: 'none',
+                  boxShadow: '0 4px 14px rgba(240, 128, 32, 0.4)',
+                }}
+              >
+                <FiExternalLink size={15} /> Open in Gmail
+              </a>
+
+              <a
+                href={`mailto:${emailToast.email}?cc=${encodeURIComponent(RECIPIENT_EMAIL)}&subject=${encodeURIComponent('Inquiry: Prudent EPC')}`}
+                style={{
+                  flex: '1 1 auto',
+                  minWidth: '140px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  padding: '10px 16px',
+                  borderRadius: '10px',
+                  background: 'rgba(255,255,255,0.12)',
+                  color: '#fff',
+                  fontWeight: 600,
+                  fontSize: '0.86rem',
+                  textDecoration: 'none',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                }}
+              >
+                <FiMail size={15} /> Default Mail App
+              </a>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setEmailToast((prev) => ({ ...prev, visible: false }));
+                  const formEl = document.getElementById('contact-message-form');
+                  if (formEl) {
+                    formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    const inputEl = formEl.querySelector('input[name="name"]');
+                    if (inputEl) inputEl.focus();
+                  }
+                }}
+                style={{
+                  flex: '1 1 100%',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  padding: '8px 12px',
+                  borderRadius: '8px',
+                  background: 'transparent',
+                  color: 'rgba(255,255,255,0.75)',
+                  fontWeight: 600,
+                  fontSize: '0.82rem',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  textUnderlineOffset: '3px',
+                }}
+              >
+                Or fill the message form on this page ↓
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
+

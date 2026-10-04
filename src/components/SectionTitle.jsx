@@ -14,7 +14,7 @@ export default function SectionTitle({
     <div
       className={`section-title-wrap ${isCenter ? 'text-center' : ''} ${className}`}
       style={{
-        marginBottom: '48px',
+        marginBottom: 'clamp(28px, 3.5vw, 38px)',
         textAlign: align,
         maxWidth: isCenter ? '760px' : '100%',
         marginLeft: isCenter ? 'auto' : '0',
@@ -75,7 +75,7 @@ export default function SectionTitle({
           style={{
             fontSize: '1.1rem',
             color: 'var(--color-text-muted)',
-            marginTop: '18px',
+            marginTop: '12px',
             lineHeight: 1.6,
             maxWidth: '680px',
             marginLeft: isCenter ? 'auto' : '0',

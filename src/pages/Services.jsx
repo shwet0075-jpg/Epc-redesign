@@ -310,7 +310,7 @@ export default function Services() {
         className="page-header"
         style={{
           background: 'linear-gradient(135deg, #03160c 0%, #006030 100%)',
-          padding: '145px 0 85px',
+          padding: 'clamp(104px, 9.5vw, 124px) 0 clamp(40px, 4.5vw, 54px)',
           color: '#fff',
           position: 'relative',
           overflow: 'hidden',
@@ -367,7 +367,7 @@ export default function Services() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            style={{ fontSize: '1.15rem', color: '#d8e5df', maxWidth: '780px', margin: '0 0 36px', lineHeight: 1.65 }}
+            style={{ fontSize: '1.15rem', color: '#d8e5df', maxWidth: '780px', margin: '0 0 22px', lineHeight: 1.65 }}
           >
             From planning and installing electrical, fire safety, and automation systems to 24×7 monitoring and annual maintenance, we take care of your facilities every step of the way.
           </motion.p>
@@ -381,7 +381,7 @@ export default function Services() {
               display: 'flex',
               flexWrap: 'wrap',
               gap: '10px',
-              marginBottom: '36px',
+              marginBottom: '22px',
             }}
           >
             {services.map((s, idx) => (
@@ -454,8 +454,8 @@ export default function Services() {
       {/* =========================================================
           SERVICES LIST — Simple & Clear Cards
       ========================================================= */}
-      <section className="section services-list-bg" style={{ overflow: 'hidden', padding: '90px 0' }}>
-        <div ref={listRef} className="container services-list-content" style={{ display: 'flex', flexDirection: 'column', gap: '80px' }}>
+      <section className="section services-list-bg" style={{ overflow: 'hidden', padding: 'clamp(50px, 5.5vw, 72px) 0' }}>
+        <div ref={listRef} className="container services-list-content" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(36px, 4vw, 54px)' }}>
           {services.map((s, i) => (
             <div key={s.id} ref={(el) => (panelRefs.current[i] = el)}>
               <ScrollReveal
@@ -702,9 +702,9 @@ export default function Services() {
       {/* =========================================================
           SECTION: How We Work (Our 4-Step Process)
       ========================================================= */}
-      <section className="section" style={{ background: '#f2f6f3', padding: '90px 0' }}>
+      <section className="section" style={{ background: '#f2f6f3', padding: 'clamp(50px, 5.5vw, 72px) 0' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 60px' }}>
+          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto clamp(26px, 3.2vw, 36px)' }}>
             <span
               style={{
                 color: '#F08020',
@@ -780,9 +780,9 @@ export default function Services() {
       {/* =========================================================
           SECTION: Our Commitments to You
       ========================================================= */}
-      <section className="section" style={{ background: '#07180f', color: '#ffffff', padding: '95px 0' }}>
+      <section className="section" style={{ background: '#07180f', color: '#ffffff', padding: 'clamp(50px, 5.5vw, 72px) 0' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 60px' }}>
+          <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto clamp(26px, 3.2vw, 36px)' }}>
             <span
               style={{
                 color: '#F08020',
@@ -865,7 +865,10 @@ export default function Services() {
       {/* =========================================================
           CALL TO ACTION
       ========================================================= */}
-      <ContactCTA />
+      <ContactCTA
+        showSecondary={false}
+        primaryButtonLink="/contact#contact-message-form"
+      />
     </>
   );
 }

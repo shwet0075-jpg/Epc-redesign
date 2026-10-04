@@ -348,95 +348,64 @@ export default function Gallery() {
 
   return (
     <div className="gallery-page-wrapper">
-      {/* CINEMATIC PAGE HEADER */}
+      {/* 1. REFINED HERO BANNER */}
       <section className="gallery-hero" aria-label="Prudent EPC Project Gallery">
         <div className="gallery-blueprint-grid" />
         <div className="gallery-glow-orb gallery-glow-orange" />
         <div className="gallery-glow-orb gallery-glow-green" />
 
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-          <motion.span
-            initial={{ opacity: 0, y: -8 }}
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="eyebrow"
-            style={{
-              color: 'var(--color-secondary)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '10px',
-            }}
+            transition={{ duration: 0.45 }}
           >
-            <span style={{ width: '28px', height: '2px', background: 'var(--color-secondary)' }} />
-            Visual Reconnaissance
-          </motion.span>
+            <span className="gallery-eyebrow-badge">
+              <FiShield size={13} />
+              Execution Portfolio & Archive
+            </span>
+          </motion.div>
 
           <ScrollText
             as="h1"
-            delay={0.1}
-            style={{
-              fontSize: 'clamp(2.6rem, 5vw, 4.2rem)',
-              fontWeight: 800,
-              margin: '8px 0 20px',
-              color: '#ffffff',
-              letterSpacing: '-0.02em',
-            }}
+            delay={0.08}
+            className="gallery-hero-title"
           >
-            Our Work in <span style={{ color: '#f08020' }}>Action</span>
+            Our Work in <span>Action</span>
           </ScrollText>
 
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            style={{
-              fontSize: '1.15rem',
-              color: '#d3ded9',
-              maxWidth: '720px',
-              margin: '0',
-              lineHeight: 1.7,
-            }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="gallery-hero-desc"
           >
             Authentic on-site captures of high-stakes Fire Protection, TIER-III Data Centre builds,
             Intelligent Building Automation, and Security Grids engineered and commissioned across India.
           </motion.p>
 
-          {/* Live Telemetry Stats Strip */}
-          <div className="gallery-stats-strip">
+          {/* Streamlined Inline Metrics Ribbon */}
+          <div className="gallery-stats-ribbon">
             {[
-              { icon: FiLayers, label: 'Visual Project Logs', val: '18+' },
+              { icon: FiLayers, label: 'Projects Logged', val: '18+' },
               { icon: FiShield, label: 'Strategic Sectors', val: '4 Key' },
               { icon: FiCheckCircle, label: 'Commissioning Rate', val: '100%' },
-              { icon: FiMapPin, label: 'On-Ground Footprint', val: 'Pan India' },
-            ].map((stat, i) => {
+              { icon: FiMapPin, label: 'Execution', val: 'Pan-India' },
+            ].map((stat) => {
               const Icon = stat.icon;
               return (
-                <motion.div
-                  key={stat.label}
-                  className="gallery-stat-pill"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 + i * 0.08 }}
-                >
-                  <div className="gallery-stat-icon">
-                    <Icon size={18} />
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', lineHeight: 1.1 }}>
-                      {stat.val}
-                    </div>
-                    <div style={{ fontSize: '.72rem', color: '#a2c2b3', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.08em', marginTop: '2px' }}>
-                      {stat.label}
-                    </div>
-                  </div>
-                </motion.div>
+                <div key={stat.label} className="gallery-stat-chip">
+                  <Icon size={14} style={{ color: '#f08020' }} />
+                  <span className="gallery-stat-chip-val">{stat.val}</span>
+                  <span className="gallery-stat-chip-label">{stat.label}</span>
+                </div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* MOTION.DEV INSPIRED AUTOPLAY CAROUSEL WITH PROGRESS BAR INDICATOR */}
+      {/* 2. CURATED LANDMARK SHOWCASE (COMPACT & SLEEK) */}
       <section className="motion-carousel-section">
         <div className="container">
           <MotionCarouselAutoplay
@@ -449,10 +418,19 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* GALLERY SECTOR MATRIX (ALL NORMAL CARDS BELOW) */}
-      <section className="section" style={{ background: '#f8fbf9', padding: '60px 0 100px' }}>
+      {/* 3. MAIN GALLERY MATRIX & CONTROLS */}
+      <section className="gallery-main-section">
         <div className="container">
-          {/* Controls Bar: Glowing Sector Filters & Live Search */}
+          {/* Deck Header */}
+          <div className="gallery-deck-header">
+            <div className="gallery-deck-title-group">
+              <span className="eyebrow" style={{ marginBottom: '4px', display: 'inline-block' }}>Execution Archive</span>
+              <h2>On-Ground Project Portfolio</h2>
+              <p>Explore engineering deliverables across infrastructure, defence, banking, and data centres.</p>
+            </div>
+          </div>
+
+          {/* Controls Bar: Filters & Live Search */}
           <ScrollReveal variant="fade-up">
             <div className="gallery-controls-bar">
               <div className="gallery-filters-group">
@@ -477,7 +455,7 @@ export default function Gallery() {
                           transition={{ type: 'spring', stiffness: 450, damping: 32 }}
                         />
                       )}
-                      <Icon size={15} />
+                      <Icon size={14} />
                       <span>{cat.label}</span>
                       <span className="gallery-count-badge">{count}</span>
                     </button>
@@ -486,40 +464,30 @@ export default function Gallery() {
               </div>
 
               {/* Quick Search */}
-              <div style={{ position: 'relative', flex: '1 1 200px', width: '100%' }}>
-                <FiSearch
-                  style={{
-                    position: 'absolute',
-                    left: '14px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    color: '#64748b',
-                    pointerEvents: 'none',
-                  }}
-                  size={15}
-                />
+              <div className="gallery-search-box">
+                <FiSearch className="gallery-search-icon" size={15} />
                 <input
                   type="text"
-                  placeholder="Filter by keyword..."
+                  placeholder="Filter by keyword, tech, location..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '8px 14px 8px 36px',
-                    borderRadius: '999px',
-                    border: '1px solid rgba(0,96,48,0.15)',
-                    background: '#f1f5f3',
-                    fontSize: '0.84rem',
-                    color: '#121a16',
-                    outline: 'none',
-                    transition: 'all .25s ease',
-                  }}
+                  className="gallery-search-input"
                 />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    className="gallery-search-clear"
+                    onClick={() => setSearchQuery('')}
+                    aria-label="Clear search"
+                  >
+                    <FiX size={14} />
+                  </button>
+                )}
               </div>
             </div>
           </ScrollReveal>
 
-          {/* Interactive Creative Gallery Grid */}
+          {/* Modern Architectural Cards Grid */}
           <motion.div layout className="gallery-interactive-grid">
             <AnimatePresence mode="popLayout">
               {filteredItems.map((item) => {
@@ -529,10 +497,10 @@ export default function Gallery() {
                   <motion.div
                     layout
                     key={item.id}
-                    initial={{ opacity: 0, scale: 0.92, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.92 }}
-                    transition={{ duration: 0.35 }}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
                     className="gallery-card-creative"
                     onClick={() => setLightboxIndex(originalIndex)}
                     role="button"
@@ -545,26 +513,6 @@ export default function Gallery() {
                       }
                     }}
                   >
-                    {/* Laser Scanline Beam Animation */}
-                    <div className="gallery-card-scanline" />
-
-                    {/* HUD Architectural Corner Brackets */}
-                    <span className="gallery-corner-bracket corner-tl" aria-hidden="true" />
-                    <span className="gallery-corner-bracket corner-tr" aria-hidden="true" />
-                    <span className="gallery-corner-bracket corner-bl" aria-hidden="true" />
-                    <span className="gallery-corner-bracket corner-br" aria-hidden="true" />
-
-                    {/* Top Telemetry Badge */}
-                    <div className="gallery-card-top-tag">
-                      <span className="gallery-live-pulse-dot" />
-                      <span>{item.code}</span>
-                    </div>
-
-                    {/* Zoom Inspection Trigger Button */}
-                    <div className="gallery-zoom-trigger" title="Inspect Project Details">
-                      <FiMaximize2 size={16} />
-                    </div>
-
                     {/* Media Container */}
                     <div className="gallery-card-media-wrapper">
                       <img
@@ -573,13 +521,31 @@ export default function Gallery() {
                         loading="lazy"
                         className="gallery-card-img"
                       />
+
+                      {/* Top Badges */}
+                      <div className="gallery-card-top-tag">
+                        <span className="gallery-live-pulse-dot" />
+                        <span>{item.code}</span>
+                      </div>
+
+                      <div className="gallery-card-category-badge">
+                        {item.categoryLabel.split(' ')[0]}
+                      </div>
+
+                      {/* Hover Zoom Overlay */}
+                      <div className="gallery-zoom-trigger">
+                        <div className="gallery-zoom-btn-inner">
+                          <FiMaximize2 size={13} />
+                          <span>View Specs</span>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Glassmorphic Info Drawer Overlay */}
-                    <div className="gallery-card-bottom-info">
-                      <div className="gallery-card-sector-label">
-                        <FiShield size={12} />
-                        <span>{item.categoryLabel}</span>
+                    {/* Card Body */}
+                    <div className="gallery-card-body">
+                      <div className="gallery-card-location">
+                        <FiMapPin size={12} style={{ color: '#f08020' }} />
+                        <span>{item.location}</span>
                       </div>
 
                       <h3 className="gallery-card-title">{item.name}</h3>
@@ -593,6 +559,17 @@ export default function Gallery() {
                           </span>
                         ))}
                       </div>
+
+                      <div className="gallery-card-footer">
+                        <span className="gallery-card-status">
+                          <FiCheckCircle size={13} style={{ color: '#006030' }} />
+                          <span>{item.status.split(' ')[0]}</span>
+                        </span>
+                        <span className="gallery-card-view-link">
+                          <span>Inspect</span>
+                          <FiArrowRight size={13} />
+                        </span>
+                      </div>
                     </div>
                   </motion.div>
                 );
@@ -601,18 +578,18 @@ export default function Gallery() {
           </motion.div>
 
           {filteredItems.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '80px 20px', color: '#64748b' }}>
-              <FiSearch size={42} style={{ marginBottom: '16px', opacity: 0.5 }} />
-              <h3 style={{ fontSize: '1.4rem', color: 'var(--color-text-dark)', margin: '0 0 8px' }}>
+            <div style={{ textAlign: 'center', padding: '64px 20px', color: '#64748b' }}>
+              <FiSearch size={38} style={{ marginBottom: '14px', opacity: 0.4, color: '#006030' }} />
+              <h3 style={{ fontSize: '1.3rem', color: 'var(--color-text-dark)', margin: '0 0 8px' }}>
                 No Matching Project Records
               </h3>
-              <p style={{ margin: 0 }}>Try clearing your search query or selecting another sector.</p>
+              <p style={{ margin: 0, fontSize: '0.9rem' }}>Try clearing your search query or selecting another sector tab.</p>
             </div>
           )}
         </div>
       </section>
 
-      {/* FULL-SCREEN CINEMATIC INSPECTION LIGHTBOX THEATER */}
+      {/* 4. ARCHITECTURAL LIGHTBOX THEATER */}
       <AnimatePresence>
         {activeProject && (
           <motion.div
@@ -630,72 +607,45 @@ export default function Gallery() {
               onClick={handleClose}
               aria-label="Close Project Viewer"
             >
-              <FiX size={22} />
+              <FiX size={20} />
             </button>
 
             {/* Modal Container */}
             <motion.div
-              initial={{ scale: 0.94, opacity: 0, y: 20 }}
+              initial={{ scale: 0.94, opacity: 0, y: 16 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.94, opacity: 0, y: 20 }}
+              exit={{ scale: 0.94, opacity: 0, y: 16 }}
               transition={{ type: 'spring', stiffness: 400, damping: 30 }}
               className="gallery-lightbox-modal"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Left Side: High-Res Image Presentation Stage */}
+              {/* Left Side: High-Res Image Stage */}
               <div className="gallery-lightbox-image-stage">
                 <img
                   src={activeProject.image}
                   alt={activeProject.name}
                   className="gallery-lightbox-main-img"
                 />
-
-                {/* Laser Corner HUD */}
-                <span className="gallery-corner-bracket corner-tl" style={{ top: 20, left: 20, width: 20, height: 20 }} />
-                <span className="gallery-corner-bracket corner-tr" style={{ top: 20, right: 20, width: 20, height: 20 }} />
-                <span className="gallery-corner-bracket corner-bl" style={{ bottom: 20, left: 20, width: 20, height: 20 }} />
-                <span className="gallery-corner-bracket corner-br" style={{ bottom: 20, right: 20, width: 20, height: 20 }} />
               </div>
 
-              {/* Right Side: Engineering Project Telemetry & HUD Panel */}
+              {/* Right Side: Engineering Project Telemetry & Specs */}
               <div className="gallery-lightbox-hud-panel">
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-                    <span
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        fontSize: '.74rem',
-                        fontWeight: 700,
-                        letterSpacing: '.12em',
-                        textTransform: 'uppercase',
-                        color: '#f08020',
-                        background: 'rgba(240, 128, 32, 0.14)',
-                        padding: '4px 12px',
-                        borderRadius: '999px',
-                        border: '1px solid rgba(240, 128, 32, 0.3)',
-                      }}
-                    >
-                      <span className="gallery-live-pulse-dot" />
-                      {activeProject.code} // {activeProject.categoryLabel}
-                    </span>
-
-                    <span style={{ fontSize: '.78rem', color: '#9ec3ae', fontWeight: 600 }}>
-                      {String((lightboxIndex ?? 0) + 1).padStart(2, '0')} / {String(galleryProjects.length).padStart(2, '0')}
-                    </span>
+                  <div className="gallery-lightbox-eyebrow">
+                    <span className="gallery-lightbox-code">{activeProject.code}</span>
+                    <span className="gallery-lightbox-cat">{activeProject.categoryLabel}</span>
                   </div>
 
-                  <h2 style={{ fontSize: '1.65rem', fontWeight: 800, color: '#ffffff', lineHeight: 1.25, margin: '0 0 10px', letterSpacing: '-0.01em' }}>
+                  <h2 className="gallery-lightbox-title">
                     {activeProject.name}
                   </h2>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#9ec3ae', fontSize: '.84rem', marginBottom: '18px' }}>
-                    <FiMapPin size={15} style={{ color: '#f08020' }} />
+                  <div className="gallery-lightbox-location">
+                    <FiMapPin size={14} style={{ color: '#f08020' }} />
                     <span>{activeProject.location}</span>
                   </div>
 
-                  <p style={{ color: '#c2dcd0', fontSize: '.92rem', lineHeight: 1.6, margin: '0 0 18px' }}>
+                  <p className="gallery-lightbox-desc">
                     {activeProject.desc}
                   </p>
 
@@ -703,7 +653,7 @@ export default function Gallery() {
                   <div className="gallery-lightbox-spec-grid">
                     <div className="gallery-lightbox-spec-item">
                       <span className="gallery-lightbox-spec-label">Project Status</span>
-                      <span className="gallery-lightbox-spec-value" style={{ color: '#22c55e' }}>
+                      <span className="gallery-lightbox-spec-value" style={{ color: '#006030' }}>
                         {activeProject.status}
                       </span>
                     </div>
@@ -717,23 +667,23 @@ export default function Gallery() {
 
                     <div className="gallery-lightbox-spec-item" style={{ gridColumn: 'span 2' }}>
                       <span className="gallery-lightbox-spec-label">Scope Deliverables</span>
-                      <span className="gallery-lightbox-spec-value" style={{ fontSize: '.82rem', fontWeight: 500, color: '#e2f0e8' }}>
+                      <span className="gallery-lightbox-spec-value" style={{ fontSize: '.84rem', fontWeight: 500, color: '#334155' }}>
                         {activeProject.scope}
                       </span>
                     </div>
 
                     <div className="gallery-lightbox-spec-item" style={{ gridColumn: 'span 2' }}>
                       <span className="gallery-lightbox-spec-label">Compliance Code</span>
-                      <span className="gallery-lightbox-spec-value" style={{ fontSize: '.78rem', color: '#f08020' }}>
+                      <span className="gallery-lightbox-spec-value" style={{ fontSize: '.8rem', color: '#f08020' }}>
                         {activeProject.compliance}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                {/* Footer Navigation Carousel Controls */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '24px', paddingTop: '18px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ display: 'flex', gap: '10px' }}>
+                {/* Footer Controls */}
+                <div className="gallery-lightbox-actions">
+                  <div className="gallery-lightbox-nav-group">
                     <button
                       type="button"
                       className="gallery-lightbox-nav-btn"
@@ -741,7 +691,7 @@ export default function Gallery() {
                       title="Previous Project (Left Arrow)"
                       aria-label="Previous Project"
                     >
-                      <FiArrowLeft size={18} />
+                      <FiArrowLeft size={16} />
                     </button>
                     <button
                       type="button"
@@ -750,13 +700,22 @@ export default function Gallery() {
                       title="Next Project (Right Arrow)"
                       aria-label="Next Project"
                     >
-                      <FiArrowRight size={18} />
+                      <FiArrowRight size={16} />
                     </button>
+                    <span style={{ fontSize: '.78rem', color: '#64748b', marginLeft: '6px' }}>
+                      {String((lightboxIndex ?? 0) + 1).padStart(2, '0')} / {String(galleryProjects.length).padStart(2, '0')}
+                    </span>
                   </div>
 
-                  <span style={{ fontSize: '.76rem', color: '#688c7b', fontWeight: 600 }}>
-                    Use keyboard ← / → arrows to navigate
-                  </span>
+                  <a
+                    href="/contact#contact-message-form"
+                    className="btn btn-primary"
+                    style={{ padding: '8px 18px', fontSize: '0.82rem' }}
+                    onClick={handleClose}
+                  >
+                    <span>Inquire About Project</span>
+                    <FiArrowRight size={13} />
+                  </a>
                 </div>
               </div>
             </motion.div>
@@ -764,7 +723,10 @@ export default function Gallery() {
         )}
       </AnimatePresence>
 
-      <ContactCTA />
+      <ContactCTA
+        showSecondary={false}
+        primaryButtonLink="/contact#contact-message-form"
+      />
     </div>
   );
 }

@@ -117,8 +117,12 @@
     bottom: 24px !important;
   }
   
+  .section {
+    padding: 44px 0 !important;
+  }
+  
   .page-header {
-    padding: 105px 0 45px !important;
+    padding: 100px 0 40px !important;
   }
   .page-header h1 {
     font-size: 1.85rem !important;
@@ -135,29 +139,22 @@
   }
   
  .footer{
-
     background:
         linear-gradient(
             180deg,
             #082c1b 0%,
             #051c11 100%
         );
-
     color:var(--color-gray-500);
-
-    padding:100px 0 0;
-
+    padding: 48px 0 0 !important;
     border-top:4px solid #F08020;
-
     position:relative;
-
     overflow:hidden;
-
 }
   .footer-grid {
     grid-template-columns: 1fr !important;
-    gap: 40px !important;
-    padding-bottom: 40px !important;
+    gap: 32px !important;
+    padding-bottom: 32px !important;
   }
   .footer-bottom-inner {
     flex-direction: column;
@@ -269,8 +266,14 @@
     padding-left: 16px !important;
     padding-right: 16px !important;
   }
+  .section {
+    padding: 36px 0 !important;
+  }
   .page-header {
-    padding: 98px 0 38px !important;
+    padding: 94px 0 34px !important;
+  }
+  .footer {
+    padding: 40px 0 0 !important;
   }
   .page-header h1 {
     font-size: 1.65rem !important;

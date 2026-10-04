@@ -463,7 +463,10 @@ export default function Clients() {
       {/* =========================================================
           6. CALL TO ACTION
       ========================================================= */}
-      <ContactCTA />
+      <ContactCTA
+        showSecondary={false}
+        primaryButtonLink="/contact#contact-message-form"
+      />
     </>
   );
 }

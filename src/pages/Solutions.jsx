@@ -100,7 +100,7 @@ function SolutionsOverview() {
       <SolutionsStyles />
 
       {/* PAGE HEADER */}
-      <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: '140px 0 80px', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+      <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: 'clamp(104px, 9.5vw, 124px) 0 clamp(38px, 4vw, 52px)', color: '#fff', position: 'relative', overflow: 'hidden' }}>
         <div
           style={{
             position: 'absolute',
@@ -117,7 +117,7 @@ function SolutionsOverview() {
           <ScrollText
             as="h1"
             text="What We Do"
-            style={{ fontSize: 'clamp(3rem,5vw,4.8rem)', fontWeight: 800, margin: '8px 0 20px', color: '#fff' }}
+            style={{ fontSize: 'clamp(3rem,5vw,4.8rem)', fontWeight: 800, margin: '6px 0 16px', color: '#fff' }}
             amount={0}
           />
           <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '760px', margin: '0' }}>
@@ -131,8 +131,8 @@ function SolutionsOverview() {
             className="solutions-hero-stats"
             style={{
               display: 'grid',
-              gap: '24px',
-              marginTop: '46px',
+              gap: '20px',
+              marginTop: 'clamp(24px, 3vw, 34px)',
               maxWidth: '760px',
             }}
           >
@@ -200,6 +200,12 @@ function SolutionsOverview() {
           </div>
         </div>
       </section>
+
+      {/* CALL TO ACTION */}
+      <ContactCTA
+        showSecondary={false}
+        primaryButtonLink="/contact#contact-message-form"
+      />
     </>
   );
 }
@@ -214,7 +220,7 @@ function SolutionDetail() {
       <SolutionsStyles />
 
       {/* PAGE HEADER */}
-      <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: '140px 0 80px', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+      <section className="page-header" style={{ background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', padding: 'clamp(104px, 9.5vw, 124px) 0 clamp(38px, 4vw, 52px)', color: '#fff', position: 'relative', overflow: 'hidden' }}>
         <div
           style={{
             position: 'absolute',
@@ -248,7 +254,7 @@ function SolutionDetail() {
                 color: 'var(--color-text-body)',
                 lineHeight: 1.7,
                 maxWidth: '960px',
-                margin: '0 auto 60px',
+                margin: '0 auto clamp(26px, 3vw, 36px)',
                 textAlign: 'center',
               }}
             >
@@ -260,7 +266,7 @@ function SolutionDetail() {
         {/* Layout A: image + side-by-side bullet groups (Data Centre / IBMS) */}
         {sol.bulletGroups && (
           <div className="container">
-            <div className="dc-layout" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '64px', alignItems: 'start' }}>
+            <div className="dc-layout" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 'clamp(28px, 3.5vw, 44px)', alignItems: 'start' }}>
               <ScrollReveal variant="fade-right">
                 <motion.div
                   layoutId={`sol-img-${sol.path}`}
@@ -318,7 +324,7 @@ function SolutionDetail() {
 
         {/* Layout B: repeating feature cards (Fire Safety, Security, etc.) */}
         {sol.details && (
-          <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '64px', marginTop: '24px' }}>
+          <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(28px, 3.5vw, 40px)', marginTop: '16px' }}>
             {sol.details.map((d, i) => (
               <ScrollReveal
                 key={d.title}
@@ -330,10 +336,10 @@ function SolutionDetail() {
                   style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                    gap: '64px',
+                    gap: 'clamp(28px, 3.5vw, 44px)',
                     alignItems: 'center',
                     background: 'var(--color-white)',
-                    padding: '32px',
+                    padding: 'clamp(22px, 2.5vw, 32px)',
                     borderRadius: 'var(--radius-lg)',
                     boxShadow: 'var(--shadow-sm)',
                     border: '1px solid var(--color-gray-100)',
@@ -362,7 +368,10 @@ function SolutionDetail() {
       </section>
 
       {/* CALL TO ACTION */}
-      <ContactCTA />
+      <ContactCTA
+        showSecondary={false}
+        primaryButtonLink="/contact#contact-message-form"
+      />
     </>
   );
 }

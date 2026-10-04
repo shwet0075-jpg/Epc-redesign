@@ -691,6 +691,7 @@ export default function Career() {
         primaryButtonLink="mailto:careers@prudentepc.com?subject=General%20Application%20-%20Prudent%20EPC"
         secondaryButtonText="Contact Us"
         secondaryButtonLink="/contact"
+        showSecondary={true}
       />
     </div>
   );

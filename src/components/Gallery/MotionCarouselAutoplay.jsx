@@ -33,16 +33,16 @@ export default function MotionCarouselAutoplay({
 
     if (width < 640) {
       // Mobile
-      setCardWidth(Math.min(width - 48, 380));
-      setCardGap(16);
+      setCardWidth(Math.min(width - 40, 360));
+      setCardGap(14);
     } else if (width < 1024) {
       // Tablet
-      setCardWidth(Math.min(width * 0.72, 540));
-      setCardGap(20);
+      setCardWidth(Math.min(width * 0.68, 500));
+      setCardGap(18);
     } else {
       // Desktop / Laptop
-      setCardWidth(Math.min(width * 0.58, 680));
-      setCardGap(28);
+      setCardWidth(Math.min(width * 0.52, 600));
+      setCardGap(24);
     }
   }, []);
 
@@ -163,12 +163,6 @@ export default function MotionCarouselAutoplay({
                   />
                   <div className="motion-card-scrim" />
                 </div>
-
-                {/* Card Corner Tech Decals */}
-                <span className="motion-card-corner motion-corner-tl" />
-                <span className="motion-card-corner motion-corner-tr" />
-                <span className="motion-card-corner motion-corner-bl" />
-                <span className="motion-card-corner motion-corner-br" />
 
                 {/* Card Overlay Content */}
                 <div className="motion-card-overlay">

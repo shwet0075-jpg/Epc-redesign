@@ -7,9 +7,10 @@ export default function ContactCTA({
   title = "Have a project in mind? Let's engineer it together.",
   description = "From high-capacity fire safety networks and IP-CCTV security grids to robust TIER-III data centres, we bring engineering trust to every critical system.",
   primaryButtonText = "Get In Touch",
-  primaryButtonLink = "/contact",
+  primaryButtonLink = "/contact#contact-message-form",
   secondaryButtonText = "Write Email",
   secondaryButtonLink = "mailto:info@prudentepc.com",
+  showSecondary = false,
 }) {
   return (
     <section className="cta-section" style={{ padding: '24px 0 42px', background: 'var(--color-light)' }}>
@@ -87,22 +88,24 @@ export default function ContactCTA({
                   {primaryButtonText} <FiArrowRight />
                 </Link>
               )}
-              {secondaryButtonLink.startsWith('mailto:') ? (
-                <a
-                  href={secondaryButtonLink}
-                  className="btn btn-outline"
-                  style={{ background: '#fff' }}
-                >
-                  <FiMail /> {secondaryButtonText}
-                </a>
-              ) : (
-                <Link
-                  to={secondaryButtonLink}
-                  className="btn btn-outline"
-                  style={{ background: '#fff' }}
-                >
-                  {secondaryButtonText}
-                </Link>
+              {showSecondary && secondaryButtonText && (
+                secondaryButtonLink.startsWith('mailto:') ? (
+                  <a
+                    href={secondaryButtonLink}
+                    className="btn btn-outline"
+                    style={{ background: '#fff' }}
+                  >
+                    <FiMail /> {secondaryButtonText}
+                  </a>
+                ) : (
+                  <Link
+                    to={secondaryButtonLink}
+                    className="btn btn-outline"
+                    style={{ background: '#fff' }}
+                  >
+                    {secondaryButtonText}
+                  </Link>
+                )
               )}
             </div>
           </div>
@@ -111,3 +114,4 @@ export default function ContactCTA({
     </section>
   );
 }
+
