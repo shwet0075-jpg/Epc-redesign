@@ -13,6 +13,8 @@ import MagneticButton from '../components/animations/MagneticButton';
 import HeroEyebrow from '../components/animations/HeroEyebrow';
 import { useTilt3D } from '../animations/parallaxVariants';
 import { useLoader } from '../context/LoaderContext';
+import { useIsMobile } from '../hooks/useIsMobile';
+import MobileTypewriter from '../components/animations/MobileTypewriter';
 
 // motion(Link) so the primary CTA gets a real spring/tap interaction
 // instead of relying on CSS :hover alone.
@@ -136,6 +138,7 @@ const marqueeItems = [
 ];
 
 export default function Home() {
+  const isMobile = useIsMobile(768);
   const { isUnveiled } = useLoader();
   const [active, setActive] = useState(0);
   const shouldReduceMotion = useReducedMotion();
@@ -225,9 +228,21 @@ export default function Home() {
                 <ScrollText as="span" text={heroLine2} className="epc-hero-title-line accent" amount={0} delay={0.42} />
               </h1>
 
-              <motion.p className="epc-hero-desc-v2" variants={heroCopy} transition={{ duration: 0.55, delay: 0.15 }}>
-                {companyInfo.description}
-              </motion.p>
+              {isMobile ? (
+                <p className="epc-hero-desc-v2">
+                  <MobileTypewriter
+                    text={companyInfo.description}
+                    as="span"
+                    delay={0.8}
+                    speed={16}
+                    cursorColor="#006030"
+                  />
+                </p>
+              ) : (
+                <motion.p className="epc-hero-desc-v2" variants={heroCopy} transition={{ duration: 0.55, delay: 0.15 }}>
+                  {companyInfo.description}
+                </motion.p>
+              )}
 
               <motion.div className="epc-hero-actions-v2" variants={heroCopy} transition={{ delay: 0.2 }}>
                 <MagneticButton style={{ display: 'inline-block' }}>

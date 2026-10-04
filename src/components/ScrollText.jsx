@@ -1,11 +1,12 @@
 import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useLoader } from "../context/LoaderContext";
+import { useIsMobile } from "../hooks/useIsMobile";
+import MobileTypewriter from "./animations/MobileTypewriter";
 
 /**
- * KK Agro-Inspired Smooth Upward Text Reveal
- * Signature Treatment: translateY(40px) -> 0, opacity 0 -> 1, 1.1s duration,
- * with luxurious [0.16, 1, 0.3, 1] cubic-bezier deceleration curve.
+ * KK Agro-Inspired Smooth Upward Text Reveal on Desktop,
+ * with High-Tech Typewriter Animation on Mobile screens.
  *
  * Usage:
  *   <ScrollText as="h2" text="Some heading text" />
@@ -22,12 +23,14 @@ export default function ScrollText({
   once = false,
   amount = 0.15,
 }) {
+  const isMobile = useIsMobile(768);
   const shouldReduceMotion = useReducedMotion();
   const loader = useLoader();
   const isUnveiled = loader?.isUnveiled ?? true;
   const ref = useRef(null);
   const isInView = useInView(ref, { once, amount });
   const content = text !== undefined ? text : children;
+  const isShown = isUnveiled && isInView;
 
   if (shouldReduceMotion) {
     const StaticTag = Tag;
@@ -38,8 +41,23 @@ export default function ScrollText({
     );
   }
 
+  // Mobile-only high-tech typewriter animation
+  if (isMobile && typeof content === "string") {
+    return (
+      <MobileTypewriter
+        text={content}
+        as={Tag}
+        className={className}
+        style={style}
+        delay={delay}
+        once={once}
+        amount={amount}
+      />
+    );
+  }
+
+  // Desktop / Laptop: Exact signature 1.1s upward blur reveal curve (100% untouched)
   const MotionTag = motion[Tag] || motion.span;
-  const isShown = isUnveiled && isInView;
 
   return (
     <MotionTag

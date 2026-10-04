@@ -9,6 +9,7 @@
 @import './styles/home-overrides.css';
 @import './styles/cursor.css';
 @import './styles/gallery.css';
+@import './styles/mobile-animations.css';
 
 main {
     min-height: 60vh;

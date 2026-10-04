@@ -1,4 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion';
+import { useIsMobile } from '../hooks/useIsMobile';
+import MobileTypewriter from './animations/MobileTypewriter';
 
 export default function SectionTitle({
   eyebrow,
@@ -9,6 +11,7 @@ export default function SectionTitle({
 }) {
   const isCenter = align === 'center';
   const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile(768);
 
   return (
     <div
@@ -29,6 +32,7 @@ export default function SectionTitle({
           viewport={{ once: false, amount: 0.1 }}
           transition={{ duration: 0.42 }}
         >
+          {isMobile && <span className="mobile-live-beacon" aria-hidden="true" />}
           {eyebrow}
         </motion.span>
       )}
@@ -49,8 +53,13 @@ export default function SectionTitle({
         viewport={{ once: false, amount: 0.1 }}
         transition={{ duration: 0.52, delay: shouldReduceMotion ? 0 : 0.06 }}
       >
-        {title}
+        {isMobile && typeof title === 'string' ? (
+          <MobileTypewriter text={title} as="span" />
+        ) : (
+          title
+        )}
         <motion.span
+          className={isMobile ? 'mobile-laser-line' : ''}
           style={{
             display: 'block',
             height: '4px',

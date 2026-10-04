@@ -1,0 +1,143 @@
+/* ==========================================================================
+   MOBILE-ONLY KINETIC & TYPEWRITER ANIMATION SYSTEM
+   Strictly scoped to screens <= 768px. Desktop/Laptop is 100% unaffected.
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* 1. Typewriter Animation & Blinking Cursor */
+  .epc-hero-title-line {
+    display: inline !important;
+    margin-right: 0.26em;
+  }
+
+  .mobile-typewriter-text {
+    display: inline;
+    position: relative;
+    word-break: break-word;
+  }
+
+  .mobile-typewriter-cursor {
+    display: inline-block;
+    color: #f08020;
+    font-weight: 300;
+    margin-left: 2px;
+    animation: mobileCursorBlink 0.75s step-start infinite;
+    text-shadow: 0 0 10px rgba(240, 128, 32, 0.7);
+    line-height: 1;
+    vertical-align: baseline;
+  }
+
+  @keyframes mobileCursorBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* 2. Radiant Gradient Text on Key Headings & Accents */
+  .epc-hero-title-v2 .accent,
+  .section-main-title strong,
+  .mobile-gradient-text {
+    background: linear-gradient(135deg, #006030 0%, #009647 45%, #f08020 100%) !important;
+    background-size: 200% auto !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    animation: mobileTextShimmer 4s ease infinite alternate;
+  }
+
+  @keyframes mobileTextShimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+
+  /* 3. Live Telemetry Beacon Dot on Eyebrows & Badges */
+  .mobile-live-beacon {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f08020;
+    margin-right: 8px;
+    box-shadow: 0 0 0 0 rgba(240, 128, 32, 0.7);
+    animation: mobileBeaconPulse 1.8s infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes mobileBeaconPulse {
+    0% { box-shadow: 0 0 0 0 rgba(240, 128, 32, 0.7); transform: scale(0.95); }
+    70% { box-shadow: 0 0 0 8px rgba(240, 128, 32, 0); transform: scale(1.15); }
+    100% { box-shadow: 0 0 0 0 rgba(240, 128, 32, 0); transform: scale(0.95); }
+  }
+
+  /* 4. Laser Draw Accent Line under Section Headings */
+  .mobile-laser-line {
+    position: relative;
+    overflow: hidden;
+    height: 3px;
+    background: linear-gradient(90deg, #006030, #f08020);
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(240, 128, 32, 0.4);
+  }
+
+  .mobile-laser-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -30%;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #ffffff, transparent);
+    animation: mobileLaserGlide 2.5s ease-in-out infinite;
+  }
+
+  @keyframes mobileLaserGlide {
+    0% { left: -30%; }
+    100% { left: 130%; }
+  }
+
+  /* 5. Tactile Touch Micro-Interactions on Mobile Cards */
+  .client-card-creative,
+  .gallery-card-creative,
+  .solution-next-card,
+  .service-card,
+  .differentiator-card,
+  .timeline-card-creative,
+  .epc-btn-primary-v2,
+  .epc-btn-outline-v2,
+  .epc-featured-card-v2 {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .client-card-creative:active,
+  .gallery-card-creative:active,
+  .solution-next-card:active,
+  .timeline-card-creative:active,
+  .differentiator-card:active {
+    transform: scale(0.98) !important;
+    transition: transform 0.15s ease !important;
+  }
+
+  /* 6. Subtle Ambient Glow on Mobile Cards */
+  .client-card-creative,
+  .gallery-card-creative,
+  .timeline-content {
+    border-color: rgba(0, 96, 48, 0.16) !important;
+    box-shadow: 0 10px 25px rgba(0, 40, 20, 0.05) !important;
+  }
+
+  /* 7. Animated Gradient Shimmer on Stat Numbers */
+  .epc-hero-stat-v2 h3 {
+    background: linear-gradient(135deg, #006030 0%, #f08020 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+  }
+
+  /* 8. Pulsing Status Indicator in Mobile Eyebrow */
+  .epc-hero-eyebrow {
+    animation: mobileEyebrowGlow 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes mobileEyebrowGlow {
+    0% { filter: drop-shadow(0 0 2px rgba(240, 128, 32, 0.2)); }
+    100% { filter: drop-shadow(0 0 8px rgba(240, 128, 32, 0.5)); }
+  }
+}
