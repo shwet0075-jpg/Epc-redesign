@@ -20,6 +20,7 @@ import ScrollStagger from '../components/ScrollStagger';
 import ScrollText from '../components/ScrollText';
 import SectionTitle from '../components/SectionTitle';
 import MagneticButton from '../components/animations/MagneticButton';
+import ScreenTextReveal, { ScreenTextStagger } from '../components/animations/ScreenTextReveal';
 
 const skills = [
   'Design engineering',
@@ -649,7 +650,9 @@ function TimelineItem({ item, index }) {
           </div>
 
           {/* Header Row: Category Tag & Phase Badge */}
-          <div
+          <ScreenTextReveal
+            variant="milestone"
+            delay={0.06}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -685,10 +688,14 @@ function TimelineItem({ item, index }) {
             >
               {item.badge || `Milestone ${String(index + 1).padStart(2, '0')}`}
             </span>
-          </div>
+          </ScreenTextReveal>
 
           {/* Main Title & Year Row */}
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '8px', position: 'relative', zIndex: 1 }}>
+          <ScreenTextReveal
+            variant="milestone"
+            delay={0.14}
+            style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '8px', position: 'relative', zIndex: 1 }}
+          >
             <span
               style={{
                 fontSize: '2rem',
@@ -711,25 +718,32 @@ function TimelineItem({ item, index }) {
             >
               {item.title}
             </h4>
-          </div>
+          </ScreenTextReveal>
 
           {/* Description */}
-          <p
-            style={{
-              color: '#475569',
-              fontSize: '0.92rem',
-              margin: '0 0 18px',
-              lineHeight: 1.6,
-              position: 'relative',
-              zIndex: 1,
-            }}
+          <ScreenTextReveal
+            variant="milestone"
+            delay={0.2}
+            style={{ margin: '0 0 18px', position: 'relative', zIndex: 1 }}
           >
-            {item.text}
-          </p>
+            <p
+              style={{
+                color: '#475569',
+                fontSize: '0.92rem',
+                margin: 0,
+                lineHeight: 1.6,
+              }}
+            >
+              {item.text}
+            </p>
+          </ScreenTextReveal>
 
           {/* Achievement Chips Row */}
           {item.chips && (
-            <div
+            <ScreenTextStagger
+              variant="milestone"
+              stagger={0.06}
+              delayChildren={0.25}
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -743,7 +757,7 @@ function TimelineItem({ item, index }) {
                   {chip}
                 </span>
               ))}
-            </div>
+            </ScreenTextStagger>
           )}
         </TiltCard>
 
@@ -1304,12 +1318,21 @@ export default function About() {
                     amount={0.4}
                   />
 
-                  <p style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--color-primary)', margin: '0 0 24px', lineHeight: 1.4 }}>
-                    Director — Prudent Controls Pvt. Ltd. & Prudent EPC Pvt. Ltd.
-                  </p>
+                  <ScreenTextReveal
+                    variant="executive"
+                    delay={0.08}
+                    style={{ margin: '0 0 24px' }}
+                  >
+                    <p style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--color-primary)', margin: 0, lineHeight: 1.4 }}>
+                      Director — Prudent Controls Pvt. Ltd. & Prudent EPC Pvt. Ltd.
+                    </p>
+                  </ScreenTextReveal>
 
                   {/* Academic & Legal Credentials Row */}
-                  <div
+                  <ScreenTextStagger
+                    variant="executive"
+                    stagger={0.08}
+                    delayChildren={0.14}
                     style={{
                       display: 'grid',
                       gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
@@ -1347,10 +1370,15 @@ export default function About() {
                         </div>
                       );
                     })}
-                  </div>
+                  </ScreenTextStagger>
 
                   {/* 2 Strategic Leadership Dimension Cards */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '26px' }}>
+                  <ScreenTextStagger
+                    variant="executive"
+                    stagger={0.12}
+                    delayChildren={0.22}
+                    style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '26px' }}
+                  >
                     <div className="director-pillar-card">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
                         <FiBriefcase style={{ color: 'var(--color-secondary)' }} size={17} />
@@ -1379,20 +1407,29 @@ export default function About() {
                         and commercial contract law.
                       </p>
                     </div>
-                  </div>
+                  </ScreenTextStagger>
 
                   {/* Trusted Enterprise Partners & Bodies */}
                   <div style={{ marginBottom: '28px' }}>
-                    <div style={{ fontSize: '.72rem', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: '#64748b', marginBottom: '10px' }}>
+                    <ScreenTextReveal
+                      variant="executive"
+                      delay={0.24}
+                      style={{ fontSize: '.72rem', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: '#64748b', marginBottom: '10px' }}
+                    >
                       Key Engagements & Strategic Infrastructure Partners
-                    </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    </ScreenTextReveal>
+                    <ScreenTextStagger
+                      variant="executive"
+                      stagger={0.04}
+                      delayChildren={0.28}
+                      style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}
+                    >
                       {directorPartners.map((partner, idx) => (
                         <span key={idx} className="director-partner-pill">
                           {partner}
                         </span>
                       ))}
-                    </div>
+                    </ScreenTextStagger>
                   </div>
 
                   {/* 4 Impact Metric Highlights */}

@@ -20,8 +20,9 @@ function shouldBypassLoader() {
 }
 
 export function LoaderProvider({ children }) {
-  const [loading, setLoading] = useState(false);
-  const [isUnveiled, setIsUnveiled] = useState(true);
+  const isAudit = useMemo(() => shouldBypassLoader(), []);
+  const [loading, setLoading] = useState(!isAudit);
+  const [isUnveiled, setIsUnveiled] = useState(isAudit);
 
   const handleUnveil = useCallback(() => {
     setIsUnveiled(true);

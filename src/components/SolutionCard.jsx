@@ -8,6 +8,7 @@ import {
   useMotionTemplate,
 } from 'framer-motion';
 import { FiArrowUpRight, FiCpu, FiServer, FiShield, FiVideo } from 'react-icons/fi';
+import ScreenTextReveal from './animations/ScreenTextReveal';
 
 const solutionIcons = [FiShield, FiVideo, FiServer, FiCpu];
 
@@ -303,29 +304,38 @@ export default function SolutionCard({ title, blurb, image, path, index }) {
               </span>
             </motion.div>
 
-            <motion.span
+            <ScreenTextReveal
+              as="span"
+              variant="blueprint"
+              delay={staggerDelay + 0.12}
               className="solution-card-kicker"
-              variants={shouldReduceMotion ? undefined : kickerVariants}
             >
               Solution {number}
-            </motion.span>
+            </ScreenTextReveal>
           </div>
 
-          <motion.h3
+          <ScreenTextReveal
+            as="h3"
+            variant="blueprint"
+            delay={staggerDelay + 0.18}
             className="solution-card-title"
-            variants={shouldReduceMotion ? undefined : titleVariants}
           >
             {title}
-          </motion.h3>
+          </ScreenTextReveal>
 
-          <motion.p
-            variants={shouldReduceMotion ? undefined : blurbVariants}
+          <ScreenTextReveal
+            as="p"
+            variant="blueprint"
+            delay={staggerDelay + 0.24}
+            className="solution-card-blurb"
           >
             {blurb}
-          </motion.p>
+          </ScreenTextReveal>
 
-          <motion.div
-            variants={shouldReduceMotion ? undefined : linkVariants}
+          <ScreenTextReveal
+            as="div"
+            variant="blueprint"
+            delay={staggerDelay + 0.3}
             style={{ width: '100%', marginTop: 'auto' }}
           >
             <Link to={path} className="solution-card-link">
@@ -338,7 +348,7 @@ export default function SolutionCard({ title, blurb, image, path, index }) {
                 <FiArrowUpRight aria-hidden="true" />
               </motion.span>
             </Link>
-          </motion.div>
+          </ScreenTextReveal>
         </div>
       </motion.article>
     </motion.div>

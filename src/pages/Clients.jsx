@@ -5,6 +5,7 @@ import { clients } from '../data/clients';
 import ScrollReveal from '../components/ScrollReveal';
 import ScrollText from '../components/ScrollText';
 import ContactCTA from '../components/ContactCTA';
+import ScreenTextReveal from '../components/animations/ScreenTextReveal';
 import '../styles/clients.css';
 
 // Dynamic categorization helper
@@ -359,8 +360,12 @@ export default function Clients() {
 
                       {/* Client Name & Project Scope */}
                       <div>
-                        <h3 className="client-card-name">{client.name}</h3>
-                        <p className="client-card-desc">{client.desc}</p>
+                        <ScreenTextReveal as="h3" variant="focus" delay={0.08} className="client-card-name">
+                          {client.name}
+                        </ScreenTextReveal>
+                        <ScreenTextReveal as="p" variant="focus" delay={0.14} className="client-card-desc">
+                          {client.desc}
+                        </ScreenTextReveal>
                       </div>
 
                       {/* Interactive Bottom Action */}

@@ -19,6 +19,7 @@ import ScrollReveal from '../components/ScrollReveal';
 import ScrollText from '../components/ScrollText';
 import ContactCTA from '../components/ContactCTA';
 import MagneticButton from '../components/animations/MagneticButton';
+import ScreenTextReveal, { ScreenTextStagger } from '../components/animations/ScreenTextReveal';
 
 const iconMap = {
   epc: <FiCpu size={28} />,
@@ -596,18 +597,25 @@ export default function Services() {
                         >
                           {iconMap[s.id] || <FiCpu size={28} />}
                         </div>
-                        <h3 style={{ fontSize: 'clamp(1.5rem, 2vw, 1.95rem)', fontWeight: 800, color: '#102219', lineHeight: 1.25, margin: 0 }}>
-                          {s.title}
-                        </h3>
+                        <ScreenTextReveal as="h3" variant="matrix" delay={0.1} style={{ margin: 0 }}>
+                          <span style={{ fontSize: 'clamp(1.5rem, 2vw, 1.95rem)', fontWeight: 800, color: '#102219', lineHeight: 1.25 }}>
+                            {s.title}
+                          </span>
+                        </ScreenTextReveal>
                       </div>
 
-                      <p style={{ color: '#4a6356', fontSize: '1.02rem', lineHeight: 1.65, marginBottom: '24px' }}>
-                        {s.text}
-                      </p>
+                      <ScreenTextReveal as="p" variant="matrix" delay={0.16}>
+                        <span style={{ color: '#4a6356', fontSize: '1.02rem', lineHeight: 1.65, display: 'block', marginBottom: '24px' }}>
+                          {s.text}
+                        </span>
+                      </ScreenTextReveal>
 
                       {/* KPI Highlights */}
                       {s.kpis && (
-                        <div
+                        <ScreenTextStagger
+                          variant="matrix"
+                          stagger={0.06}
+                          delayChildren={0.2}
                           style={{
                             display: 'grid',
                             gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
@@ -621,12 +629,17 @@ export default function Services() {
                               <strong>{kpi.value}</strong>
                             </div>
                           ))}
-                        </div>
+                        </ScreenTextStagger>
                       )}
 
                       {/* Capabilities Check List */}
                       {s.bullets && (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 190px), 1fr))', gap: '10px', marginBottom: '28px' }}>
+                        <ScreenTextStagger
+                          variant="matrix"
+                          stagger={0.05}
+                          delayChildren={0.24}
+                          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 190px), 1fr))', gap: '10px', marginBottom: '28px' }}
+                        >
                           {s.bullets.map((bullet) => (
                             <div
                               key={bullet}
@@ -651,7 +664,7 @@ export default function Services() {
                               <span style={{ fontSize: '0.88rem', fontWeight: 600, color: '#273f32' }}>{bullet}</span>
                             </div>
                           ))}
-                        </div>
+                        </ScreenTextStagger>
                       )}
 
                       {/* Action Button */}

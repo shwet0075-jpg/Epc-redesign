@@ -1,3 +1,5 @@
+@import './styles/olympic-reveal.css';
+
 html, body, #root { 
   min-height: 100%; 
 }

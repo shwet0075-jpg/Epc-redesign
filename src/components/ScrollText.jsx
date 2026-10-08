@@ -1,36 +1,27 @@
-import { useRef } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
-import { useLoader } from "../context/LoaderContext";
-import { useIsMobile } from "../hooks/useIsMobile";
-import MobileTypewriter from "./animations/MobileTypewriter";
+import React from "react";
+import OlympicTextReveal from "./animations/OlympicTextReveal";
+import { useReducedMotion } from "framer-motion";
 
 /**
- * KK Agro-Inspired Smooth Upward Text Reveal on Desktop,
- * with High-Tech Typewriter Animation on Mobile screens.
- *
- * Usage:
- *   <ScrollText as="h2" text="Some heading text" />
- *   <ScrollText as="h1">Header with <span>Accent</span></ScrollText>
+ * Prudent EPC — Olympic.no Exact 3D Text Reveal
+ * Reference: https://www.olympic.no/
+ * 
+ * Reveals seamlessly on scrolling DOWN and re-reveals on scrolling UP.
  */
 export default function ScrollText({
   text,
   children,
-  as: Tag = "span",
+  as = "div",
+  type = "lines", // "lines" | "words"
   className = "",
   style,
   delay = 0,
-  duration = 1.1,
-  once = false,
+  stagger = null,
   amount = 0.15,
 }) {
-  const isMobile = useIsMobile(768);
   const shouldReduceMotion = useReducedMotion();
-  const loader = useLoader();
-  const isUnveiled = loader?.isUnveiled ?? true;
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once, amount });
   const content = text !== undefined ? text : children;
-  const isShown = isUnveiled && isInView;
+  const Tag = as || "div";
 
   if (shouldReduceMotion) {
     const StaticTag = Tag;
@@ -41,57 +32,21 @@ export default function ScrollText({
     );
   }
 
-  // Mobile-only high-tech typewriter animation
-  if (isMobile && typeof content === "string") {
-    return (
-      <MobileTypewriter
-        text={content}
-        as={Tag}
-        className={className}
-        style={style}
-        delay={delay}
-        once={once}
-        amount={amount}
-      />
-    );
-  }
-
-  // Desktop / Laptop: Exact signature 1.1s upward blur reveal curve (100% untouched)
-  const MotionTag = motion[Tag] || motion.span;
+  // Convert fractional delay (e.g. 0.1s -> 100ms) to integer ms if needed
+  const delayMs = typeof delay === "number" && delay < 10 ? Math.round(delay * 1000) : delay;
 
   return (
-    <MotionTag
-      ref={ref}
-      className={className}
-      style={{
-        ...style,
-        willChange: "transform, opacity, filter",
-      }}
-      initial={{
-        opacity: 0,
-        y: 40,
-        filter: "blur(4px)",
-      }}
-      animate={
-        isShown
-          ? {
-              opacity: 1,
-              y: 0,
-              filter: "blur(0px)",
-            }
-          : {
-              opacity: 0,
-              y: 40,
-              filter: "blur(4px)",
-            }
-      }
-      transition={{
-        duration,
-        delay: isShown ? delay : 0,
-        ease: [0.16, 1, 0.3, 1],
-      }}
+    <OlympicTextReveal
+      text={text}
+      as={Tag}
+      type={type}
+      className={`scroll-text-olympic ${className}`}
+      style={style}
+      delay={delayMs}
+      stagger={stagger}
+      threshold={amount}
     >
-      {content}
-    </MotionTag>
+      {children}
+    </OlympicTextReveal>
   );
-}
+}

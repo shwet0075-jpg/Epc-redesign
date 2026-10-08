@@ -11,6 +11,7 @@ import {
 import ScrollReveal from '../components/ScrollReveal';
 import ScrollStagger from '../components/ScrollStagger';
 import ScrollText from '../components/ScrollText';
+import ScreenTextReveal, { ScreenTextStagger } from '../components/animations/ScreenTextReveal';
 
 /* ------------------------------------------------------------------ */
 /*  Real office data — pulled from the live site, not placeholders     */
@@ -704,33 +705,39 @@ export default function Contact() {
                       <FiMapPin size={22} />
                     </div>
 
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '10px' }}>
-                      {office.label}
-                    </h3>
+                    <ScreenTextReveal variant="elevation" delay={0.05}>
+                      <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--color-text-dark)', marginBottom: '10px' }}>
+                        {office.label}
+                      </h3>
+                    </ScreenTextReveal>
 
-                    <p style={{ color: 'var(--color-text-muted)', fontSize: '.95rem', lineHeight: 1.6, marginBottom: '16px' }}>
-                      {office.address}
-                    </p>
+                    <ScreenTextReveal variant="elevation" delay={0.1}>
+                      <p style={{ color: 'var(--color-text-muted)', fontSize: '.95rem', lineHeight: 1.6, marginBottom: '16px' }}>
+                        {office.address}
+                      </p>
+                    </ScreenTextReveal>
 
-                    {office.phones.map((p) => (
-                      <a key={p} href={`tel:${p.replace(/\s/g, '')}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-body)', fontSize: '.92rem', fontWeight: 600, marginBottom: '6px', textDecoration: 'none' }}>
-                        <FiPhone size={14} style={{ color: 'var(--color-secondary)' }} /> {p}
-                      </a>
-                    ))}
+                    <ScreenTextStagger variant="elevation" stagger={0.04} delayChildren={0.14}>
+                      {office.phones.map((p) => (
+                        <a key={p} href={`tel:${p.replace(/\s/g, '')}`} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-body)', fontSize: '.92rem', fontWeight: 600, marginBottom: '6px', textDecoration: 'none' }}>
+                          <FiPhone size={14} style={{ color: 'var(--color-secondary)' }} /> {p}
+                        </a>
+                      ))}
 
-                    {office.email && (
-                      <a
-                        href={`mailto:${office.email}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          openEmailAction(office.email);
-                        }}
-                        style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-body)', fontSize: '.92rem', fontWeight: 600, marginBottom: '18px', textDecoration: 'none', cursor: 'pointer' }}
-                        title="Click to email or copy address"
-                      >
-                        <FiMail size={14} style={{ color: 'var(--color-secondary)' }} /> {office.email}
-                      </a>
-                    )}
+                      {office.email && (
+                        <a
+                          href={`mailto:${office.email}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            openEmailAction(office.email);
+                          }}
+                          style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-body)', fontSize: '.92rem', fontWeight: 600, marginBottom: '18px', textDecoration: 'none', cursor: 'pointer' }}
+                          title="Click to email or copy address"
+                        >
+                          <FiMail size={14} style={{ color: 'var(--color-secondary)' }} /> {office.email}
+                        </a>
+                      )}
+                    </ScreenTextStagger>
 
                     <div style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', height: '180px', marginTop: office.email || office.phones.length ? 0 : '18px' }}>
                       <iframe

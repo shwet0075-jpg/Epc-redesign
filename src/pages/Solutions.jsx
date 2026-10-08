@@ -5,6 +5,7 @@ import { solutionsOverview } from '../data/solutions';
 import ScrollReveal from '../components/ScrollReveal';
 import ScrollStagger from '../components/ScrollStagger';
 import ScrollText from '../components/ScrollText';
+import ScreenTextReveal from '../components/animations/ScreenTextReveal';
 import SolutionCard from '../components/SolutionCard';
 import ContactCTA from '../components/ContactCTA';
 
@@ -120,11 +121,13 @@ function SolutionsOverview() {
             style={{ fontSize: 'clamp(3rem,5vw,4.8rem)', fontWeight: 800, margin: '6px 0 16px', color: '#fff' }}
             amount={0}
           />
-          <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '760px', margin: '0' }}>
-            Our services cover the full spectrum — from conceptualization to testing &amp;
-            commissioning — across Building Automation, Fire Detection &amp; Alarm, Public
-            Address, and Security &amp; Surveillance Systems.
-          </p>
+          <ScreenTextReveal variant="blueprint" delay={0.1}>
+            <p style={{ fontSize: '1.2rem', color: '#d3ded9', maxWidth: '760px', margin: '0' }}>
+              Our services cover the full spectrum — from conceptualization to testing &amp;
+              commissioning — across Building Automation, Fire Detection &amp; Alarm, Public
+              Address, and Security &amp; Surveillance Systems.
+            </p>
+          </ScreenTextReveal>
           <ScrollStagger
             variant="rise-blur-3d"
             stagger={0.08}

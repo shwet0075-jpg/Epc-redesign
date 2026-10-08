@@ -1,0 +1,515 @@
+/* ==========================================================================
+   Prudent EPC — Olympic.no Exact 3D Perspective Text Reveal Animation
+   Reference: https://www.olympic.no/
+   Keyframes & Curves extracted directly from Olympic.no production styles
+   ========================================================================== */
+
+:root {
+  --olympic-stagger: 95ms;
+  --olympic-word-stagger: 32ms;
+  --olympic-ease-in: cubic-bezier(0.22, 0.7, 0.2, 1);
+  --olympic-ease-out: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+}
+
+/* ==========================================================================
+   1. LINE REVEAL 3D (Headings & Large Display Text)
+   ========================================================================== */
+[data-split-anim="line-reveal-3d"],
+.olympic-line-reveal {
+  display: block;
+  overflow: visible;
+  --stagger-delay: var(--olympic-stagger);
+  --additional-delay: 0ms;
+}
+
+[data-split-anim="line-reveal-3d"] .line,
+.olympic-line-reveal .line {
+  display: block;
+  transform-style: preserve-3d;
+  perspective: 900px;
+  perspective-origin: 35% 90%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  will-change: transform;
+}
+
+[data-split-anim="line-reveal-3d"] .line__inner,
+.olympic-line-reveal .line__inner {
+  display: inline-block;
+  transform-origin: bottom center;
+  will-change: transform, clip-path, opacity;
+  transform: scaleX(1) scaleY(0.55) rotateX(-90deg) translateY(120%) translateZ(20px);
+  -webkit-clip-path: inset(100% 0 0 0);
+  clip-path: inset(100% 0 0 0);
+  opacity: 0;
+}
+
+/* IN-VIEWPORT: Triggered on scroll down AND scroll up into view */
+[data-split-anim="line-reveal-3d"].is-in-viewport .line .line__inner,
+.olympic-line-reveal.is-in-viewport .line .line__inner {
+  animation: olympic-line-reveal-3d 1.4s var(--olympic-ease-in) forwards;
+}
+
+/* OUT-OF-VIEWPORT: Triggered on scroll down past or scroll up past */
+[data-split-anim="line-reveal-3d"].is-out-viewport .line .line__inner,
+.olympic-line-reveal.is-out-viewport .line .line__inner {
+  animation: olympic-line-reveal-3d-out 0.55s var(--olympic-ease-out) both;
+}
+
+@keyframes olympic-line-reveal-3d {
+  0% {
+    transform: scaleX(1) scaleY(0.55) rotateX(-90deg) translateY(120%) translateZ(20px);
+    -webkit-clip-path: inset(100% 0 0 0);
+    clip-path: inset(100% 0 0 0);
+    opacity: 0;
+  }
+  12% {
+    -webkit-clip-path: inset(0 0 0 0);
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1) scaleY(1) rotateX(0deg) translateY(0) translateZ(0);
+    -webkit-clip-path: inset(0 0 0 0);
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+@keyframes olympic-line-reveal-3d-out {
+  0% {
+    transform: scaleX(1) scaleY(1) rotateX(0deg) translateY(0) translateZ(0);
+    -webkit-clip-path: inset(0 0 0 0);
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1) scaleY(0.55) rotateX(90deg) translateY(-120%) translateZ(20px);
+    -webkit-clip-path: inset(0 0 100% 0);
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+  }
+}
+
+/* Stagger delays for up to 25 lines */
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(1) .line__inner,
+.olympic-line-reveal .line:nth-of-type(1) .line__inner {
+  animation-delay: calc(0 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(2) .line__inner,
+.olympic-line-reveal .line:nth-of-type(2) .line__inner {
+  animation-delay: calc(1 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(3) .line__inner,
+.olympic-line-reveal .line:nth-of-type(3) .line__inner {
+  animation-delay: calc(2 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(4) .line__inner,
+.olympic-line-reveal .line:nth-of-type(4) .line__inner {
+  animation-delay: calc(3 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(5) .line__inner,
+.olympic-line-reveal .line:nth-of-type(5) .line__inner {
+  animation-delay: calc(4 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(6) .line__inner,
+.olympic-line-reveal .line:nth-of-type(6) .line__inner {
+  animation-delay: calc(5 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(7) .line__inner,
+.olympic-line-reveal .line:nth-of-type(7) .line__inner {
+  animation-delay: calc(6 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(8) .line__inner,
+.olympic-line-reveal .line:nth-of-type(8) .line__inner {
+  animation-delay: calc(7 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(9) .line__inner,
+.olympic-line-reveal .line:nth-of-type(9) .line__inner {
+  animation-delay: calc(8 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(10) .line__inner,
+.olympic-line-reveal .line:nth-of-type(10) .line__inner {
+  animation-delay: calc(9 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(11) .line__inner,
+.olympic-line-reveal .line:nth-of-type(11) .line__inner {
+  animation-delay: calc(10 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(12) .line__inner,
+.olympic-line-reveal .line:nth-of-type(12) .line__inner {
+  animation-delay: calc(11 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(13) .line__inner,
+.olympic-line-reveal .line:nth-of-type(13) .line__inner {
+  animation-delay: calc(12 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(14) .line__inner,
+.olympic-line-reveal .line:nth-of-type(14) .line__inner {
+  animation-delay: calc(13 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(15) .line__inner,
+.olympic-line-reveal .line:nth-of-type(15) .line__inner {
+  animation-delay: calc(14 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(16) .line__inner,
+.olympic-line-reveal .line:nth-of-type(16) .line__inner {
+  animation-delay: calc(15 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(17) .line__inner,
+.olympic-line-reveal .line:nth-of-type(17) .line__inner {
+  animation-delay: calc(16 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(18) .line__inner,
+.olympic-line-reveal .line:nth-of-type(18) .line__inner {
+  animation-delay: calc(17 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(19) .line__inner,
+.olympic-line-reveal .line:nth-of-type(19) .line__inner {
+  animation-delay: calc(18 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(20) .line__inner,
+.olympic-line-reveal .line:nth-of-type(20) .line__inner {
+  animation-delay: calc(19 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(21) .line__inner,
+.olympic-line-reveal .line:nth-of-type(21) .line__inner {
+  animation-delay: calc(20 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(22) .line__inner,
+.olympic-line-reveal .line:nth-of-type(22) .line__inner {
+  animation-delay: calc(21 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(23) .line__inner,
+.olympic-line-reveal .line:nth-of-type(23) .line__inner {
+  animation-delay: calc(22 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(24) .line__inner,
+.olympic-line-reveal .line:nth-of-type(24) .line__inner {
+  animation-delay: calc(23 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="line-reveal-3d"] .line:nth-of-type(25) .line__inner,
+.olympic-line-reveal .line:nth-of-type(25) .line__inner {
+  animation-delay: calc(24 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+
+/* ==========================================================================
+   2. WORDS REVEAL (Paragraphs, Subheadings, Body Text)
+   ========================================================================== */
+[data-split-anim="words-reveal"],
+.olympic-words-reveal {
+  display: block;
+  overflow: visible;
+  --stagger-delay: var(--olympic-word-stagger);
+  --additional-delay: 0ms;
+}
+
+[data-split-anim="words-reveal"] .word,
+.olympic-words-reveal .word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  margin-right: 0.28em;
+  padding-bottom: 0.05em;
+}
+
+[data-split-anim="words-reveal"] .word__inner,
+.olympic-words-reveal .word__inner {
+  display: inline-block;
+  transform-origin: bottom center;
+  will-change: transform, opacity;
+  transform: translateY(160%);
+  opacity: 0;
+}
+
+[data-split-anim="words-reveal"].is-in-viewport .word .word__inner,
+.olympic-words-reveal.is-in-viewport .word .word__inner {
+  animation: olympic-text-reveal 1.15s var(--olympic-ease-in) forwards;
+}
+
+[data-split-anim="words-reveal"].is-out-viewport .word .word__inner,
+.olympic-words-reveal.is-out-viewport .word .word__inner {
+  animation: olympic-text-reveal-out 0.45s var(--olympic-ease-out) both;
+}
+
+@keyframes olympic-text-reveal {
+  0% {
+    transform: translateY(160%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes olympic-text-reveal-out {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+}
+
+/* Stagger delays for up to 60 words */
+[data-split-anim="words-reveal"] .word:nth-of-type(1) .word__inner,
+.olympic-words-reveal .word:nth-of-type(1) .word__inner {
+  animation-delay: calc(0 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(2) .word__inner,
+.olympic-words-reveal .word:nth-of-type(2) .word__inner {
+  animation-delay: calc(1 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(3) .word__inner,
+.olympic-words-reveal .word:nth-of-type(3) .word__inner {
+  animation-delay: calc(2 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(4) .word__inner,
+.olympic-words-reveal .word:nth-of-type(4) .word__inner {
+  animation-delay: calc(3 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(5) .word__inner,
+.olympic-words-reveal .word:nth-of-type(5) .word__inner {
+  animation-delay: calc(4 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(6) .word__inner,
+.olympic-words-reveal .word:nth-of-type(6) .word__inner {
+  animation-delay: calc(5 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(7) .word__inner,
+.olympic-words-reveal .word:nth-of-type(7) .word__inner {
+  animation-delay: calc(6 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(8) .word__inner,
+.olympic-words-reveal .word:nth-of-type(8) .word__inner {
+  animation-delay: calc(7 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(9) .word__inner,
+.olympic-words-reveal .word:nth-of-type(9) .word__inner {
+  animation-delay: calc(8 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(10) .word__inner,
+.olympic-words-reveal .word:nth-of-type(10) .word__inner {
+  animation-delay: calc(9 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(11) .word__inner,
+.olympic-words-reveal .word:nth-of-type(11) .word__inner {
+  animation-delay: calc(10 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(12) .word__inner,
+.olympic-words-reveal .word:nth-of-type(12) .word__inner {
+  animation-delay: calc(11 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(13) .word__inner,
+.olympic-words-reveal .word:nth-of-type(13) .word__inner {
+  animation-delay: calc(12 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(14) .word__inner,
+.olympic-words-reveal .word:nth-of-type(14) .word__inner {
+  animation-delay: calc(13 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(15) .word__inner,
+.olympic-words-reveal .word:nth-of-type(15) .word__inner {
+  animation-delay: calc(14 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(16) .word__inner,
+.olympic-words-reveal .word:nth-of-type(16) .word__inner {
+  animation-delay: calc(15 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(17) .word__inner,
+.olympic-words-reveal .word:nth-of-type(17) .word__inner {
+  animation-delay: calc(16 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(18) .word__inner,
+.olympic-words-reveal .word:nth-of-type(18) .word__inner {
+  animation-delay: calc(17 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(19) .word__inner,
+.olympic-words-reveal .word:nth-of-type(19) .word__inner {
+  animation-delay: calc(18 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(20) .word__inner,
+.olympic-words-reveal .word:nth-of-type(20) .word__inner {
+  animation-delay: calc(19 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(21) .word__inner,
+.olympic-words-reveal .word:nth-of-type(21) .word__inner {
+  animation-delay: calc(20 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(22) .word__inner,
+.olympic-words-reveal .word:nth-of-type(22) .word__inner {
+  animation-delay: calc(21 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(23) .word__inner,
+.olympic-words-reveal .word:nth-of-type(23) .word__inner {
+  animation-delay: calc(22 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(24) .word__inner,
+.olympic-words-reveal .word:nth-of-type(24) .word__inner {
+  animation-delay: calc(23 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(25) .word__inner,
+.olympic-words-reveal .word:nth-of-type(25) .word__inner {
+  animation-delay: calc(24 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(26) .word__inner,
+.olympic-words-reveal .word:nth-of-type(26) .word__inner {
+  animation-delay: calc(25 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(27) .word__inner,
+.olympic-words-reveal .word:nth-of-type(27) .word__inner {
+  animation-delay: calc(26 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(28) .word__inner,
+.olympic-words-reveal .word:nth-of-type(28) .word__inner {
+  animation-delay: calc(27 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(29) .word__inner,
+.olympic-words-reveal .word:nth-of-type(29) .word__inner {
+  animation-delay: calc(28 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(30) .word__inner,
+.olympic-words-reveal .word:nth-of-type(30) .word__inner {
+  animation-delay: calc(29 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(31) .word__inner,
+.olympic-words-reveal .word:nth-of-type(31) .word__inner {
+  animation-delay: calc(30 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(32) .word__inner,
+.olympic-words-reveal .word:nth-of-type(32) .word__inner {
+  animation-delay: calc(31 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(33) .word__inner,
+.olympic-words-reveal .word:nth-of-type(33) .word__inner {
+  animation-delay: calc(32 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(34) .word__inner,
+.olympic-words-reveal .word:nth-of-type(34) .word__inner {
+  animation-delay: calc(33 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(35) .word__inner,
+.olympic-words-reveal .word:nth-of-type(35) .word__inner {
+  animation-delay: calc(34 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(36) .word__inner,
+.olympic-words-reveal .word:nth-of-type(36) .word__inner {
+  animation-delay: calc(35 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(37) .word__inner,
+.olympic-words-reveal .word:nth-of-type(37) .word__inner {
+  animation-delay: calc(36 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(38) .word__inner,
+.olympic-words-reveal .word:nth-of-type(38) .word__inner {
+  animation-delay: calc(37 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(39) .word__inner,
+.olympic-words-reveal .word:nth-of-type(39) .word__inner {
+  animation-delay: calc(38 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(40) .word__inner,
+.olympic-words-reveal .word:nth-of-type(40) .word__inner {
+  animation-delay: calc(39 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(41) .word__inner,
+.olympic-words-reveal .word:nth-of-type(41) .word__inner {
+  animation-delay: calc(40 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(42) .word__inner,
+.olympic-words-reveal .word:nth-of-type(42) .word__inner {
+  animation-delay: calc(41 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(43) .word__inner,
+.olympic-words-reveal .word:nth-of-type(43) .word__inner {
+  animation-delay: calc(42 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(44) .word__inner,
+.olympic-words-reveal .word:nth-of-type(44) .word__inner {
+  animation-delay: calc(43 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(45) .word__inner,
+.olympic-words-reveal .word:nth-of-type(45) .word__inner {
+  animation-delay: calc(44 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(46) .word__inner,
+.olympic-words-reveal .word:nth-of-type(46) .word__inner {
+  animation-delay: calc(45 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(47) .word__inner,
+.olympic-words-reveal .word:nth-of-type(47) .word__inner {
+  animation-delay: calc(46 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(48) .word__inner,
+.olympic-words-reveal .word:nth-of-type(48) .word__inner {
+  animation-delay: calc(47 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(49) .word__inner,
+.olympic-words-reveal .word:nth-of-type(49) .word__inner {
+  animation-delay: calc(48 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(50) .word__inner,
+.olympic-words-reveal .word:nth-of-type(50) .word__inner {
+  animation-delay: calc(49 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(51) .word__inner,
+.olympic-words-reveal .word:nth-of-type(51) .word__inner {
+  animation-delay: calc(50 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(52) .word__inner,
+.olympic-words-reveal .word:nth-of-type(52) .word__inner {
+  animation-delay: calc(51 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(53) .word__inner,
+.olympic-words-reveal .word:nth-of-type(53) .word__inner {
+  animation-delay: calc(52 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(54) .word__inner,
+.olympic-words-reveal .word:nth-of-type(54) .word__inner {
+  animation-delay: calc(53 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(55) .word__inner,
+.olympic-words-reveal .word:nth-of-type(55) .word__inner {
+  animation-delay: calc(54 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(56) .word__inner,
+.olympic-words-reveal .word:nth-of-type(56) .word__inner {
+  animation-delay: calc(55 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(57) .word__inner,
+.olympic-words-reveal .word:nth-of-type(57) .word__inner {
+  animation-delay: calc(56 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(58) .word__inner,
+.olympic-words-reveal .word:nth-of-type(58) .word__inner {
+  animation-delay: calc(57 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(59) .word__inner,
+.olympic-words-reveal .word:nth-of-type(59) .word__inner {
+  animation-delay: calc(58 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+[data-split-anim="words-reveal"] .word:nth-of-type(60) .word__inner,
+.olympic-words-reveal .word:nth-of-type(60) .word__inner {
+  animation-delay: calc(59 * var(--stagger-delay) + var(--additional-delay)) !important;
+}
+
+/* Reduce motion accessibility fallback */
+@media (prefers-reduced-motion: reduce) {
+  [data-split-anim="line-reveal-3d"] .line__inner,
+  .olympic-line-reveal .line__inner,
+  [data-split-anim="words-reveal"] .word__inner,
+  .olympic-words-reveal .word__inner {
+    transform: none !important;
+    clip-path: none !important;
+    -webkit-clip-path: none !important;
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}

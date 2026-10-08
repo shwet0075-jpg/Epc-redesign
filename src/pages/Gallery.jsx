@@ -18,6 +18,7 @@ import {
 } from 'react-icons/fi';
 import ScrollReveal from '../components/ScrollReveal';
 import ScrollText from '../components/ScrollText';
+import ScreenTextReveal, { ScreenTextStagger } from '../components/animations/ScreenTextReveal';
 import ContactCTA from '../components/ContactCTA';
 import MotionCarouselAutoplay from '../components/Gallery/MotionCarouselAutoplay';
 
@@ -425,8 +426,10 @@ export default function Gallery() {
           <div className="gallery-deck-header">
             <div className="gallery-deck-title-group">
               <span className="eyebrow" style={{ marginBottom: '4px', display: 'inline-block' }}>Execution Archive</span>
-              <h2>On-Ground Project Portfolio</h2>
-              <p>Explore engineering deliverables across infrastructure, defence, banking, and data centres.</p>
+              <ScrollText as="h2" text="On-Ground Project Portfolio" />
+              <ScreenTextReveal variant="focus" delay={0.08}>
+                <p>Explore engineering deliverables across infrastructure, defence, banking, and data centres.</p>
+              </ScreenTextReveal>
             </div>
           </div>
 
@@ -544,24 +547,30 @@ export default function Gallery() {
 
                     {/* Card Body */}
                     <div className="gallery-card-body">
-                      <div className="gallery-card-location">
-                        <FiMapPin size={12} style={{ color: '#f08020' }} />
-                        <span>{item.location}</span>
-                      </div>
+                      <ScreenTextReveal variant="focus" delay={0.04}>
+                        <div className="gallery-card-location">
+                          <FiMapPin size={12} style={{ color: '#f08020' }} />
+                          <span>{item.location}</span>
+                        </div>
+                      </ScreenTextReveal>
 
-                      <h3 className="gallery-card-title">{item.name}</h3>
+                      <ScreenTextReveal variant="focus" delay={0.08}>
+                        <h3 className="gallery-card-title">{item.name}</h3>
+                      </ScreenTextReveal>
 
-                      <p className="gallery-card-desc">{item.desc}</p>
+                      <ScreenTextReveal variant="focus" delay={0.12}>
+                        <p className="gallery-card-desc">{item.desc}</p>
+                      </ScreenTextReveal>
 
-                      <div className="gallery-card-tag-row">
+                      <ScreenTextStagger variant="focus" stagger={0.04} delayChildren={0.16} className="gallery-card-tag-row">
                         {item.tags.map((tag, idx) => (
                           <span key={idx} className="gallery-micro-tag">
                             {tag}
                           </span>
                         ))}
-                      </div>
+                      </ScreenTextStagger>
 
-                      <div className="gallery-card-footer">
+                      <ScreenTextReveal variant="focus" delay={0.2} className="gallery-card-footer">
                         <span className="gallery-card-status">
                           <FiCheckCircle size={13} style={{ color: '#006030' }} />
                           <span>{item.status.split(' ')[0]}</span>
@@ -570,7 +579,7 @@ export default function Gallery() {
                           <span>Inspect</span>
                           <FiArrowRight size={13} />
                         </span>
-                      </div>
+                      </ScreenTextReveal>
                     </div>
                   </motion.div>
                 );

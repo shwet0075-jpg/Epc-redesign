@@ -18,6 +18,7 @@ import {
 } from 'react-icons/fi';
 import ScrollReveal from '../components/ScrollReveal';
 import ScrollText from '../components/ScrollText';
+import ScreenTextReveal, { ScreenTextStagger } from '../components/animations/ScreenTextReveal';
 import ContactCTA from '../components/ContactCTA';
 import '../styles/careers.css';
 
@@ -291,13 +292,15 @@ export default function Career() {
             Build <em>Mission-Critical</em> Infrastructure With Us.
           </ScrollText>
 
-          <p className="careers-hero-desc">
-            Join the forward-thinking engineers and leaders shaping fire safety, building automation,
-            and turnkey industrial infrastructure across India.
-          </p>
+          <ScreenTextReveal variant="elevation" delay={0.15}>
+            <p className="careers-hero-desc">
+              Join the forward-thinking engineers and leaders shaping fire safety, building automation,
+              and turnkey industrial infrastructure across India.
+            </p>
+          </ScreenTextReveal>
 
           {/* Quick Stats Bar */}
-          <div className="careers-stats-bar">
+          <ScreenTextStagger variant="elevation" stagger={0.06} delayChildren={0.2} className="careers-stats-bar">
             <div className="careers-stat-item">
               <div className="careers-stat-num">
                 {yearsExp}
@@ -326,7 +329,7 @@ export default function Career() {
               </div>
               <div className="careers-stat-label">On-Time Execution</div>
             </div>
-          </div>
+          </ScreenTextStagger>
         </div>
       </section>
 
@@ -336,9 +339,11 @@ export default function Career() {
           <div className="careers-section-header">
             <span className="careers-section-kicker">CURRENT OPPORTUNITIES</span>
             <ScrollText as="h2" className="careers-section-title">Explore Open Roles</ScrollText>
-            <p className="careers-section-subtitle">
-              Discover active career opportunities across Estimation, Site Projects, Human Resources, Procurement, and Technical Support.
-            </p>
+            <ScreenTextReveal variant="elevation" delay={0.08}>
+              <p className="careers-section-subtitle">
+                Discover active career opportunities across Estimation, Site Projects, Human Resources, Procurement, and Technical Support.
+              </p>
+            </ScreenTextReveal>
           </div>
 
           {/* Filters & Search */}
@@ -411,23 +416,31 @@ export default function Career() {
 
                       <div className="prudent-card-inner">
                         {/* Top Row: Category + Employment Type */}
-                        <div className="prudent-card-top">
-                          <span className="prudent-job-dept-badge">{job.department}</span>
-                          <span className="prudent-job-type">{job.type}</span>
-                        </div>
+                        <ScreenTextReveal variant="elevation" delay={0.04}>
+                          <div className="prudent-card-top">
+                            <span className="prudent-job-dept-badge">{job.department}</span>
+                            <span className="prudent-job-type">{job.type}</span>
+                          </div>
+                        </ScreenTextReveal>
 
                         {/* Job Title */}
-                        <h4 className="prudent-job-title">{job.title}</h4>
+                        <ScreenTextReveal variant="elevation" delay={0.08}>
+                          <h4 className="prudent-job-title">{job.title}</h4>
+                        </ScreenTextReveal>
 
                         {/* Location & Experience Meta */}
-                        <div className="prudent-job-meta">
-                          <span className="meta-loc">{job.location}</span>
-                          <span className="meta-dot">•</span>
-                          <span className="meta-exp">{job.experience}</span>
-                        </div>
+                        <ScreenTextReveal variant="elevation" delay={0.12}>
+                          <div className="prudent-job-meta">
+                            <span className="meta-loc">{job.location}</span>
+                            <span className="meta-dot">•</span>
+                            <span className="meta-exp">{job.experience}</span>
+                          </div>
+                        </ScreenTextReveal>
 
                         {/* Teaser summary */}
-                        <p className="prudent-job-teaser">{job.teaser}</p>
+                        <ScreenTextReveal variant="elevation" delay={0.16}>
+                          <p className="prudent-job-teaser">{job.teaser}</p>
+                        </ScreenTextReveal>
 
                         {/* Actions matching reference: View role (outline) + Apply (blue solid) */}
                         <div className="prudent-job-actions">
@@ -477,23 +490,31 @@ export default function Career() {
                     >
                       <div className="prudent-card-inner">
                         {/* Top Row: Category + Employment Type */}
-                        <div className="prudent-card-top">
-                          <span className="prudent-job-dept-badge">{job.department}</span>
-                          <span className="prudent-job-type">{job.type}</span>
-                        </div>
+                        <ScreenTextReveal variant="elevation" delay={0.04}>
+                          <div className="prudent-card-top">
+                            <span className="prudent-job-dept-badge">{job.department}</span>
+                            <span className="prudent-job-type">{job.type}</span>
+                          </div>
+                        </ScreenTextReveal>
 
                         {/* Job Title */}
-                        <h4 className="prudent-job-title">{job.title}</h4>
+                        <ScreenTextReveal variant="elevation" delay={0.08}>
+                          <h4 className="prudent-job-title">{job.title}</h4>
+                        </ScreenTextReveal>
 
                         {/* Location & Experience Meta */}
-                        <div className="prudent-job-meta">
-                          <span className="meta-loc">{job.location}</span>
-                          <span className="meta-dot">•</span>
-                          <span className="meta-exp">{job.experience}</span>
-                        </div>
+                        <ScreenTextReveal variant="elevation" delay={0.12}>
+                          <div className="prudent-job-meta">
+                            <span className="meta-loc">{job.location}</span>
+                            <span className="meta-dot">•</span>
+                            <span className="meta-exp">{job.experience}</span>
+                          </div>
+                        </ScreenTextReveal>
 
                         {/* Teaser summary */}
-                        <p className="prudent-job-teaser">{job.teaser}</p>
+                        <ScreenTextReveal variant="elevation" delay={0.16}>
+                          <p className="prudent-job-teaser">{job.teaser}</p>
+                        </ScreenTextReveal>
 
                         {/* Actions: View role (outline) + Apply (blue solid) */}
                         <div className="prudent-job-actions">

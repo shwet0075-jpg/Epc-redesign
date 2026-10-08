@@ -15,6 +15,7 @@ import { useTilt3D } from '../animations/parallaxVariants';
 import { useLoader } from '../context/LoaderContext';
 import { useIsMobile } from '../hooks/useIsMobile';
 import MobileTypewriter from '../components/animations/MobileTypewriter';
+import ScreenTextReveal from '../components/animations/ScreenTextReveal';
 
 // motion(Link) so the primary CTA gets a real spring/tap interaction
 // instead of relying on CSS :hover alone.
@@ -396,8 +397,12 @@ export default function Home() {
                     <span className="epc-cap-icon" aria-hidden="true">{cap.icon}</span>
                   </ScrollReveal>
                   <div>
-                    <h4>{cap.label}</h4>
-                    <p>{cap.desc}</p>
+                    <ScreenTextReveal as="h4" variant="kinetic" delay={index * 0.05 + 0.12}>
+                      {cap.label}
+                    </ScreenTextReveal>
+                    <ScreenTextReveal as="p" variant="kinetic" delay={index * 0.05 + 0.18}>
+                      {cap.desc}
+                    </ScreenTextReveal>
                   </div>
                   <FiArrowRight className="epc-cap-arrow" size={20} aria-hidden="true" />
                 </Link>
@@ -432,8 +437,12 @@ export default function Home() {
                 <span className="epc-foundation-ghost" aria-hidden="true">
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <h3>{foundation.title}</h3>
-                <p>{foundation.text}</p>
+                <ScreenTextReveal as="h3" variant="kinetic" delay={index * 0.08 + 0.1}>
+                  {foundation.title}
+                </ScreenTextReveal>
+                <ScreenTextReveal as="p" variant="kinetic" delay={index * 0.08 + 0.16}>
+                  {foundation.text}
+                </ScreenTextReveal>
               </div>
             ))}
           </ScrollStagger>
