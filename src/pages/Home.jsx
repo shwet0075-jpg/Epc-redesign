@@ -196,7 +196,6 @@ export default function Home() {
                 hidden: { opacity: 0 },
                 visible: {
                   opacity: 1,
-                  transition: { staggerChildren: shouldReduceMotion ? 0 : 0.12 },
                 },
               }}
               style={{
@@ -205,11 +204,11 @@ export default function Home() {
                 ...(shouldReduceMotion ? {} : { scale: heroCopyScale, opacity: heroCopyOpacity }),
               }}
             >
-              <HeroEyebrow text={companyInfo.eyebrow} delay={0.06} />
+              <HeroEyebrow text={companyInfo.eyebrow} isVisible={shouldShowHero} />
 
               <h1 className="epc-hero-title-v2">
-                <ScrollText as="span" text={heroLine1} className="epc-hero-title-line" amount={0} delay={0.1} />
-                <ScrollText as="span" text={heroLine2} className="epc-hero-title-line accent" amount={0} delay={0.42} />
+                <ScrollText as="span" text={heroLine1} className="epc-hero-title-line" amount={0} delay={3.25} />
+                <ScrollText as="span" text={heroLine2} className="epc-hero-title-line accent" amount={0} delay={3.65} />
               </h1>
 
               {isMobile ? (
@@ -217,18 +216,18 @@ export default function Home() {
                   <MobileTypewriter
                     text={companyInfo.description}
                     as="span"
-                    delay={0.8}
+                    delay={4.05}
                     speed={16}
                     cursorColor="#006030"
                   />
                 </p>
               ) : (
-                <motion.p className="epc-hero-desc-v2" variants={heroCopy} transition={{ duration: 0.55, delay: 0.15 }}>
+                <motion.p className="epc-hero-desc-v2" variants={heroCopy} transition={{ duration: 0.55, delay: 4.05 }}>
                   {companyInfo.description}
                 </motion.p>
               )}
 
-              <motion.div className="epc-hero-actions-v2" variants={heroCopy} transition={{ delay: 0.2 }}>
+              <motion.div className="epc-hero-actions-v2" variants={heroCopy} transition={{ duration: 0.5, delay: 4.40 }}>
                 <MagneticButton style={{ display: 'inline-block' }}>
                   <MotionLink
                     to="/solutions"
@@ -246,7 +245,7 @@ export default function Home() {
                 </Link>
               </motion.div>
 
-              <motion.div className="epc-hero-stats-v2" variants={heroCopy} transition={{ delay: 0.25 }}>
+              <motion.div className="epc-hero-stats-v2" variants={heroCopy} transition={{ duration: 0.5, delay: 4.70 }}>
                 {heroStats.map((stat) => (
                   <div key={stat.label} className="epc-hero-stat-v2">
                     <h3>
@@ -272,76 +271,82 @@ export default function Home() {
                 aria-hidden="true"
                 style={shouldReduceMotion ? undefined : { rotate: ringRotate }}
               />
-              <motion.div
-                className="epc-featured-card-v2"
-                {...(shouldReduceMotion ? {} : featuredTilt.handlers)}
-                style={shouldReduceMotion ? undefined : featuredTilt.style}
+              <div
+                className={`epc-featured-card-wrapper ${shouldShowHero ? 'is-hero-visible' : ''}`}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
-                  <span style={{ fontSize: '.68rem', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--color-text-muted)' }}>
-                    Featured Solution / {String(active + 1).padStart(2, '0')}
-                  </span>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '.68rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--color-secondary)' }}>
-                    <span className="epc-live-dot" /> Live
-                  </span>
-                </div>
-
-                <div
-                  style={{
-                    width: '46px', height: '46px', borderRadius: '12px',
-                    background: 'rgba(0,96,48,.08)', color: 'var(--color-primary)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    marginBottom: '18px',
-                  }}
-                >
-                  <FiShield size={20} />
-                </div>
-
-                <AnimatePresence mode="wait">
-                  <motion.h3
-                    key={activeSlide.title}
-                    initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
-                    transition={{ duration: 0.4 }}
-                    style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--color-text-dark)', margin: '0 0 18px', lineHeight: 1.3 }}
+                <div className="epc-featured-card-float">
+                  <motion.div
+                    className="epc-featured-card-v2"
+                    {...(shouldReduceMotion ? {} : featuredTilt.handlers)}
+                    style={shouldReduceMotion ? undefined : featuredTilt.style}
                   >
-                    {activeSlide.title}
-                  </motion.h3>
-                </AnimatePresence>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+                      <span style={{ fontSize: '.68rem', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--color-text-muted)' }}>
+                        Featured Solution / {String(active + 1).padStart(2, '0')}
+                      </span>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '.68rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--color-secondary)' }}>
+                        <span className="epc-live-dot" /> Live
+                      </span>
+                    </div>
 
-                <Link
-                  to={activeSlide.path}
-                  style={{
-                    display: 'inline-flex', alignItems: 'center', gap: '8px',
-                    fontSize: '.78rem', fontWeight: 700, letterSpacing: '.08em',
-                    textTransform: 'uppercase', color: 'var(--color-primary)', textDecoration: 'none',
-                  }}
-                >
-                  {activeSlide.cta} <FiArrowRight />
-                </Link>
-
-                <div style={{ display: 'flex', gap: '8px', marginTop: '24px' }}>
-                  {slides.map((slide, index) => (
-                    <button
-                      key={slide.path}
-                      type="button"
-                      onClick={() => setActive(index)}
-                      aria-label={`Slide ${index + 1}`}
-                      aria-pressed={index === active}
+                    <div
                       style={{
-                        width: index === active ? '22px' : '8px',
-                        height: '8px',
-                        borderRadius: '999px',
-                        border: 'none',
-                        cursor: 'pointer',
-                        background: index === active ? 'var(--color-secondary)' : 'var(--color-gray-300)',
-                        transition: 'all .3s ease',
+                        width: '46px', height: '46px', borderRadius: '12px',
+                        background: 'rgba(0,96,48,.08)', color: 'var(--color-primary)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        marginBottom: '18px',
                       }}
-                    />
-                  ))}
+                    >
+                      <FiShield size={20} />
+                    </div>
+
+                    <AnimatePresence mode="wait">
+                      <motion.h3
+                        key={activeSlide.title}
+                        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                        transition={{ duration: 0.4 }}
+                        style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--color-text-dark)', margin: '0 0 18px', lineHeight: 1.3 }}
+                      >
+                        {activeSlide.title}
+                      </motion.h3>
+                    </AnimatePresence>
+
+                    <Link
+                      to={activeSlide.path}
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '8px',
+                        fontSize: '.78rem', fontWeight: 700, letterSpacing: '.08em',
+                        textTransform: 'uppercase', color: 'var(--color-primary)', textDecoration: 'none',
+                      }}
+                    >
+                      {activeSlide.cta} <FiArrowRight />
+                    </Link>
+
+                    <div style={{ display: 'flex', gap: '8px', marginTop: '24px' }}>
+                      {slides.map((slide, index) => (
+                        <button
+                          key={slide.path}
+                          type="button"
+                          onClick={() => setActive(index)}
+                          aria-label={`Slide ${index + 1}`}
+                          aria-pressed={index === active}
+                          style={{
+                            width: index === active ? '22px' : '8px',
+                            height: '8px',
+                            borderRadius: '999px',
+                            border: 'none',
+                            cursor: 'pointer',
+                            background: index === active ? 'var(--color-secondary)' : 'var(--color-gray-300)',
+                            transition: 'all .3s ease',
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </motion.div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
